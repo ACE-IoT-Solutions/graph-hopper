@@ -70,7 +70,7 @@ def download_recent(ctx, count: int, output_dir: str, output_json: bool, verbose
                 
                 content = json.dumps(data, indent=2)
                 # Create JSON filename with timestamp
-                base_name = filename.replace('.ttl', '')
+                base_name = filename.replace('.ttl', '').replace('.TTL', '')
                 output_filename = f"{base_name}_{timestamp}.json"
                 
             else:
@@ -82,7 +82,7 @@ def download_recent(ctx, count: int, output_dir: str, output_json: bool, verbose
                     continue
                 
                 # Create TTL filename with timestamp
-                base_name = filename.replace('.ttl', '')
+                base_name = filename.replace('.ttl', '').replace('.TTL', '')
                 output_filename = f"{base_name}_{timestamp}.ttl"
             
             # Write file

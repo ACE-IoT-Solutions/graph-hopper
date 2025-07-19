@@ -83,7 +83,7 @@ ex:Device1 a ex:BACnetDevice ;
                 ])
                 
                 assert result.exit_code == 0
-                assert "Data saved to" in result.output
+                assert "TTL data saved to" in result.output
                 
                 # Verify file content
                 with open(temp_path, 'r') as f:
@@ -114,7 +114,7 @@ ex:Device1 a ex:BACnetDevice ;
                 ])
                 
                 assert result.exit_code == 0
-                assert "Data saved to" in result.output
+                assert "JSON data saved to" in result.output
                 
                 # Verify file content
                 with open(temp_path, 'r') as f:

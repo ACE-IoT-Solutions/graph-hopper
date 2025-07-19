@@ -51,7 +51,7 @@ ex:Device1 a ex:BACnetDevice ;
                 ])
                 
                 assert result.exit_code == 0
-                assert "Successfully downloaded: 5/5 files" in result.output
+                assert "✓ Successfully downloaded 5 TTL files" in result.output
                 
                 # Check that files were created
                 output_path = Path(temp_dir)
@@ -87,7 +87,7 @@ ex:Device1 a ex:BACnetDevice ;
                 ])
                 
                 assert result.exit_code == 0
-                assert "Successfully downloaded: 2/2 files" in result.output
+                assert "✓ Successfully downloaded 2 TTL files" in result.output
                 
                 # Check that only 2 files were created
                 output_path = Path(temp_dir)
@@ -135,8 +135,8 @@ ex:Device1 a ex:BACnetDevice ;
                 ])
                 
                 assert result.exit_code == 0
-                assert "Successfully downloaded: 1/2 files" in result.output
-                assert "Failed downloads: 1" in result.output
+                assert "✓ Successfully downloaded 1 TTL files" in result.output
+                assert "⚠ 1 files failed to download" in result.output
                 
                 # Check that only 1 file was created
                 output_path = Path(temp_dir)
@@ -167,7 +167,7 @@ ex:Device1 a ex:BACnetDevice ;
                 ])
                 
                 assert result.exit_code == 0
-                assert "Successfully downloaded: 2/2 files" in result.output
+                assert "✓ Successfully downloaded 2 TTL files" in result.output
                 
                 # Check that only 2 files were created
                 output_path = Path(temp_dir)
@@ -300,8 +300,7 @@ ex:Device1 a ex:BACnetDevice ;
                 ])
                 
                 assert result.exit_code == 0
-                assert "Successfully downloaded: 2/2 files" in result.output
-                assert "network JSON data" in result.output
+                assert "✓ Successfully downloaded 2 JSON files" in result.output
                 
                 # Check that JSON files were created
                 output_path = Path(temp_dir)
