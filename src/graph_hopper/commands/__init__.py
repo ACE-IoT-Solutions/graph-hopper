@@ -9,6 +9,7 @@ from .list_commands import list_graphs, list_compares
 from .get_network import get_network
 from .download_recent import download_recent
 from .merge_graphs import merge_graphs
+from .check_graph import check_graph
 
 __all__ = [
     'status',
@@ -16,5 +17,6 @@ __all__ = [
     'list_compares',
     'get_network',
     'download_recent',
-    'merge_graphs'
+    'merge_graphs',
+    'check_graph'
 ]

@@ -342,4 +342,198 @@ uv run graph-hopper -h https://api.example.com list-graphs
 
 ---
 
+## Session 4: TTL-First Format Changes & Merge-Graphs Feature
+**Date**: July 18, 2025  
+**Goal**: Change CLI to default to TTL format with --json option, add merge-graphs command for TTL file consolidation
+
+### 🎯 Objectives Completed
+
+1. ✅ **TTL-First Format Implementation**
+   - Changed `get-network` and `download-recent` commands to default to TTL format
+   - Added `--json` flag to retrieve JSON network data when needed
+   - Updated all success messages to indicate file format ("TTL data saved" vs "JSON data saved")
+   - Maintained backward compatibility while improving default behavior
+
+2. ✅ **Merge-Graphs Command**
+   - Added new `merge-graphs` command for combining TTL files
+   - Supports directory or glob pattern input for TTL files
+   - Uses RDFLib 7.1.4 for proper RDF graph merging
+   - Outputs deduplicated, merged TTL content to stdout or file
+   - Does not require `-h` flag (local file operation)
+
+3. ✅ **Host Flag Optimization**
+   - Made `-h/--host` flag optional for local commands (merge-graphs)
+   - API-dependent commands still require host flag
+   - Improved command categorization and help text
+
+### 🛠️ Technical Implementation Details
+
+#### Format Changes
+- **Before**: Commands defaulted to JSON with TTL as option
+- **After**: Commands default to TTL with `--json` flag for network data
+- **API Endpoints Used**:
+  - TTL mode: `/api/operations/ttl_file/{filename}` with `Accept: text/turtle`
+  - JSON mode: `/api/operations/ttl_network/{filename}` (existing endpoint)
+
+#### New Merge-Graphs Command
+```bash
+# Merge TTL files from directory
+uv run graph-hopper merge-graphs data/ttl_files/
+
+# Merge specific files with glob pattern  
+uv run graph-hopper merge-graphs "data/*.ttl" --output merged_network.ttl
+
+# Output to stdout (default)
+uv run graph-hopper merge-graphs data/file1.ttl data/file2.ttl
+```
+
+#### Dependencies Added
+- **RDFLib 7.1.4**: For TTL parsing and graph merging
+- Handles proper RDF deduplication and namespace management
+- Supports multiple TTL format variations
+
+### 🧪 Testing Results
+- **Total Tests**: 60 (significantly expanded test coverage)
+- **New Test Categories**:
+  - TTL format default behavior validation
+  - JSON flag functionality testing
+  - Merge-graphs command testing (directory, glob, individual files)
+  - Host flag requirement validation
+- **All Tests Passing**: Full functionality preserved with new defaults
+
+---
+
+## Session 5: Copilot Instructions & Modular Restructure
+**Date**: July 18, 2025  
+**Goal**: Generate AI coding guidance and restructure codebase into maintainable modules
+
+### 🎯 Objectives Completed
+
+1. ✅ **Copilot Instructions Generation**
+   - Created comprehensive `.github/copilot-instructions.md`
+   - Documented project architecture, development workflows, and coding patterns
+   - Added API integration patterns, testing strategies, and error handling guidance
+   - Provided essential context for AI-assisted development sessions
+
+2. ✅ **Major Code Restructure**
+   - **Before**: Single 571-line `src/graph_hopper/__init__.py` monolithic file
+   - **After**: Modular architecture with focused responsibilities:
+     - `src/graph_hopper/api/client.py` - GrasshopperClient HTTP API interactions
+     - `src/graph_hopper/commands/` - Individual command modules (6 commands)
+     - `src/graph_hopper/utils/` - URL parsing and file operations
+     - `src/graph_hopper/__init__.py` - Clean CLI entry point with command registration
+
+3. ✅ **Test Suite Maintenance**
+   - Fixed 8 failing tests after modular restructure
+   - Updated test assertions to match new output message formats
+   - Fixed case-sensitive file extension bug in download_recent command
+   - All 60 tests now passing with improved code organization
+
+### 🛠️ Technical Implementation Details
+
+#### Modular Architecture
+```
+src/graph_hopper/
+├── __init__.py              # CLI entry point (50 lines, was 571)
+├── api/
+│   └── client.py           # GrasshopperClient class
+├── commands/
+│   ├── base.py             # Shared command utilities
+│   ├── status.py           # API health check
+│   ├── list_commands.py    # list-graphs, list-compares
+│   ├── get_network.py      # Single file retrieval
+│   ├── download_recent.py  # Bulk recent downloads
+│   └── merge_graphs.py     # TTL file merging
+└── utils/
+    ├── url_parsing.py      # Host URL parsing
+    └── file_operations.py  # File handling utilities
+```
+
+#### Benefits of Restructure
+1. **Maintainability**: Each module has focused responsibility
+2. **Testability**: Isolated components easier to test
+3. **Readability**: Clear separation of concerns
+4. **Extensibility**: Easy to add new commands/features
+5. **Code Quality**: Reduced complexity, better organization
+
+#### Bug Fixes During Testing
+- **Case-sensitive extensions**: Fixed `.TTL` vs `.ttl` handling in filename processing
+- **Message formats**: Updated test assertions to match new format-specific success messages
+- **Import paths**: Updated all imports for modular structure
+
+### 🧪 Testing Results
+- **All 60 tests passing** after restructure and fixes
+- **Test categories maintained**:
+  - CLI functionality (status, list commands, get-network)
+  - URL parsing (34 tests for various formats)
+  - Download operations (bulk downloads, error handling)
+  - Merge operations (TTL file consolidation)
+  - Format handling (TTL vs JSON modes)
+
+### 📝 Development Workflow Improvements
+
+#### AI Coding Guidance
+- **Test-first development**: Always implement tests before features
+- **Change tracking**: Update agentic-sessions.md after each feature
+- **API specification usage**: Reference context/openapi.json for endpoints
+- **Error handling patterns**: Consistent error messaging and exit codes
+
+#### Project Standards
+- **Python 3.13+**: Modern language features with uv package manager
+- **Click framework**: Professional CLI interface
+- **httpx**: Robust HTTP client with timeout handling
+- **RDFLib**: Industry-standard RDF/TTL processing
+- **pytest**: Comprehensive test coverage
+
+### ✅ Validation Complete
+- **Codebase Quality**: Clean modular architecture with focused modules
+- **Functionality Preserved**: All original features working correctly
+- **Test Coverage**: Comprehensive test suite with 60 passing tests
+- **Documentation**: Complete AI coding guidance and development workflows
+- **Future Development**: Well-structured foundation for continued enhancement
+
+---
+
+## Session 6: Current Development Status
+**Date**: July 18, 2025  
+**Status**: ✅ **All Major Objectives Complete**
+
+### 🎯 Project State Summary
+
+**Graph Hopper CLI** is now a fully-featured, well-structured command-line tool for BACnet network graph management:
+
+#### Core Features (6 Commands)
+1. **status** - API health checking
+2. **list-graphs** - TTL network file listings  
+3. **list-compares** - TTL comparison file listings
+4. **get-network** - Single file retrieval (TTL default, --json option)
+5. **download-recent** - Bulk recent file downloads (TTL default, --json option)
+6. **merge-graphs** - Local TTL file consolidation (no API required)
+
+#### Technical Excellence
+- **Modular Architecture**: Clean separation of concerns across focused modules
+- **Comprehensive Testing**: 60 tests covering all functionality and edge cases
+- **Format Flexibility**: TTL-first approach with JSON option for processed data
+- **URL Handling**: Supports all common host formats (localhost, IPs, URLs, IPv6)
+- **Error Handling**: Proper HTTP error handling and user-friendly messages
+- **Documentation**: Complete AI coding guidance and usage examples
+
+#### Dependencies & Environment
+- **Python 3.13+** with uv package manager
+- **Click** for professional CLI interface
+- **httpx** for robust HTTP API interactions  
+- **RDFLib 7.1.4** for TTL/RDF graph processing
+- **pytest** for comprehensive testing
+
+### 🚀 Next Development Opportunities
+
+The codebase is now well-positioned for future enhancements:
+
+1. **Advanced Features**: Filtering, authentication, batch processing
+2. **Performance**: Async operations, caching, parallel downloads
+3. **Integration**: CI/CD, Docker packaging, API rate limiting
+4. **User Experience**: Progress bars, configuration files, shell completions
+
+---
+
 *This document will be updated with each development session to track progress and maintain project context.*

@@ -17,7 +17,8 @@ from .commands import (
     list_compares, 
     get_network,
     download_recent,
-    merge_graphs
+    merge_graphs,
+    check_graph
 )
 
 
@@ -51,6 +52,7 @@ cli.add_command(list_compares)
 cli.add_command(get_network)
 cli.add_command(download_recent)
 cli.add_command(merge_graphs)
+cli.add_command(check_graph)
 
 
 def main() -> None:
