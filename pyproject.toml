@@ -22,7 +22,11 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "graph-hopper",
     "pyrefly>=0.24.2",
     "pytest>=8.4.1",
     "ruff>=0.12.3",
 ]
+
+[tool.uv.sources]
+graph-hopper = { workspace = true }
