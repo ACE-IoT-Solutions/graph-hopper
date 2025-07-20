@@ -1,0 +1,42 @@
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Clean network - each device has unique ID across all networks
+<bacnet://100> a ns1:Device ;
+    rdfs:label "bacnet://100" ;
+    ns1:address "19103:7" ;
+    ns1:device-instance 100 ;
+    ns1:device-on-network <bacnet://network/19103> ;
+    ns1:vendor-id <bacnet://vendor/5> .
+
+<bacnet://200> a ns1:Device ;
+    rdfs:label "bacnet://200" ;
+    ns1:address "9103:200" ;
+    ns1:device-instance 200 ;
+    ns1:device-on-network <bacnet://network/9103> ;
+    ns1:vendor-id <bacnet://vendor/127> .
+
+<bacnet://300> a ns1:Device ;
+    rdfs:label "bacnet://300" ;
+    ns1:address "10.21.86.22" ;
+    ns1:device-instance 300 ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.86.0/24> ;
+    ns1:vendor-id <bacnet://vendor/306> .
+
+# Router serving unique networks
+<bacnet://router1> a ns1:Router ;
+    rdfs:label "Router 1" ;
+    ns1:address "192.168.1.10" ;
+    ns1:device-instance 1001 ;
+    ns1:device-on-subnet <bacnet://subnet/192.168.1.0/24> ;
+    ns1:serves-network <bacnet://network/5000> ;
+    ns1:vendor-id <bacnet://vendor/15> .
+
+<bacnet://router2> a ns1:Router ;
+    rdfs:label "Router 2" ;
+    ns1:address "192.168.2.10" ;
+    ns1:device-instance 1002 ;
+    ns1:device-on-subnet <bacnet://subnet/192.168.2.0/24> ;
+    ns1:serves-network <bacnet://network/5001> ;
+    ns1:vendor-id <bacnet://vendor/15> .

@@ -1,0 +1,50 @@
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+
+# Test data for duplicate BBMD detection
+
+# Scenario 1: Warning - Multiple BBMDs on same subnet, only one has BDT entries
+<bacnet://9001> a ns1:BBMD ;
+    ns1:address "10.21.1.10" ;
+    ns1:bbmd-broadcast-domain <bacnet://subnet/10.21.1.0/24> ;
+    ns1:bdt-entry <bacnet://9001> ;
+    ns1:device-instance 9001 .
+
+<bacnet://9002> a ns1:BBMD ;
+    ns1:address "10.21.1.20" ;
+    ns1:bbmd-broadcast-domain <bacnet://subnet/10.21.1.0/24> ;
+    ns1:device-instance 9002 .
+
+# Scenario 2: Error - Multiple BBMDs on same subnet, both have BDT entries
+<bacnet://9101> a ns1:BBMD ;
+    ns1:address "10.21.2.10" ;
+    ns1:bbmd-broadcast-domain <bacnet://subnet/10.21.2.0/24> ;
+    ns1:bdt-entry <bacnet://9101>,
+        <bacnet://9102> ;
+    ns1:device-instance 9101 .
+
+<bacnet://9102> a ns1:BBMD ;
+    ns1:address "10.21.2.20" ;
+    ns1:bbmd-broadcast-domain <bacnet://subnet/10.21.2.0/24> ;
+    ns1:bdt-entry <bacnet://9101>,
+        <bacnet://9102> ;
+    ns1:device-instance 9102 .
+
+# Scenario 3: Good case - Single BBMD on subnet (no issues)
+<bacnet://9201> a ns1:BBMD ;
+    ns1:address "10.21.3.10" ;
+    ns1:bbmd-broadcast-domain <bacnet://subnet/10.21.3.0/24> ;
+    ns1:bdt-entry <bacnet://9201> ;
+    ns1:device-instance 9201 .
+
+# Scenario 4: Good case - Multiple BBMDs on different subnets (no issues)
+<bacnet://9301> a ns1:BBMD ;
+    ns1:address "10.21.4.10" ;
+    ns1:bbmd-broadcast-domain <bacnet://subnet/10.21.4.0/24> ;
+    ns1:bdt-entry <bacnet://9301> ;
+    ns1:device-instance 9301 .
+
+<bacnet://9401> a ns1:BBMD ;
+    ns1:address "10.21.5.10" ;
+    ns1:bbmd-broadcast-domain <bacnet://subnet/10.21.5.0/24> ;
+    ns1:bdt-entry <bacnet://9401> ;
+    ns1:device-instance 9401 .

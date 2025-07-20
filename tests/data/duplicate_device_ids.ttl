@@ -1,0 +1,43 @@
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Device with ID 123 on network 19103
+<bacnet://123> a ns1:Device ;
+    rdfs:label "bacnet://123" ;
+    ns1:address "19103:7" ;
+    ns1:device-instance 123 ;
+    ns1:device-on-network <bacnet://network/19103> ;
+    ns1:vendor-id <bacnet://vendor/5> .
+
+# Same device ID 123 on different network 9103 (duplicate device ID!)
+<bacnet://123-duplicate> a ns1:Device ;
+    rdfs:label "bacnet://123-duplicate" ;
+    ns1:address "9103:123" ;
+    ns1:device-instance 123 ;
+    ns1:device-on-network <bacnet://network/9103> ;
+    ns1:vendor-id <bacnet://vendor/127> .
+
+# Device with ID 456 on subnet
+<bacnet://456> a ns1:Device ;
+    rdfs:label "bacnet://456" ;
+    ns1:address "10.21.86.22" ;
+    ns1:device-instance 456 ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.86.0/24> ;
+    ns1:vendor-id <bacnet://vendor/306> .
+
+# Same device ID 456 on different network (duplicate device ID!)
+<bacnet://456-dup> a ns1:Device ;
+    rdfs:label "bacnet://456-dup" ;
+    ns1:address "19229:19" ;
+    ns1:device-instance 456 ;
+    ns1:device-on-network <bacnet://network/19229> ;
+    ns1:vendor-id <bacnet://vendor/133> .
+
+# Valid device (ID 789, only on one network)
+<bacnet://789> a ns1:Device ;
+    rdfs:label "bacnet://789" ;
+    ns1:address "19103:1" ;
+    ns1:device-instance 789 ;
+    ns1:device-on-network <bacnet://network/19103> ;
+    ns1:vendor-id <bacnet://vendor/10> .

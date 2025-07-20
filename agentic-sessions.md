@@ -537,3 +537,92 @@ The codebase is now well-positioned for future enhancements:
 ---
 
 *This document will be updated with each development session to track progress and maintain project context.*
+
+---
+
+## Session 6: BBMD Duplicate Detection Implementation
+**Date**: July 19, 2025  
+**Goal**: Implement BACnet BBMD (Broadcast Management Device) duplicate detection for network topology analysis
+
+### 🎯 Objectives Completed
+
+1. ✅ **BBMD Data Structure Analysis**
+   - Analyzed real BACnet data to understand BBMD representation
+   - Identified BBMDs using `ns1:BBMD` type with `ns1:bbmd-broadcast-domain` and `ns1:bdt-entry` properties
+   - Discovered actual BBMD configuration issues in production data
+
+2. ✅ **Duplicate BBMD Detection Logic**
+   - **Warning Level**: Multiple BBMDs on same subnet where not all have BDT entries
+   - **Error Level**: Multiple BBMDs with BDT entries on same subnet (configuration conflict)
+   - Implemented severity classification based on BDT entry analysis
+
+3. ✅ **Enhanced Check-Graph Command**
+   - Added `duplicate-bbmd-warning` and `duplicate-bbmd-error` issue types
+   - Extended CLI options to support individual or combined BBMD checking
+   - Updated human-readable output with warning (⚠) and error (❌) indicators
+
+4. ✅ **Real Data Validation**
+   - Discovered 2 actual BBMD configuration errors in production data:
+     - Subnet `10.21.3.0/24`: BBMDs `9164` and `9101` both with BDT entries
+     - Subnet `10.21.19.0/24`: BBMDs `9134` and `9116` both with BDT entries
+
+### 🛠️ Technical Implementation Details
+
+#### New Functionality Added
+- **`check_duplicate_bbmds()`** - Analyzes BBMDs for subnet conflicts
+- **Enhanced output formatting** - Severity-aware icons and descriptions
+- **Test data creation** - `duplicate_bbmds.ttl` with warning/error scenarios
+- **Comprehensive testing** - 3 new test cases for BBMD functionality
+
+#### CLI Enhancement
+```bash
+# New usage patterns
+uv run graph-hopper check-graph data.ttl --issue duplicate-bbmd-warning
+uv run graph-hopper check-graph data.ttl --issue duplicate-bbmd-error
+uv run graph-hopper check-graph data.ttl --issue all  # Includes BBMD checks
+```
+
+#### JSON Output Structure
+```json
+{
+  "duplicate-bbmd-warning": [...],
+  "duplicate-bbmd-error": [
+    {
+      "issue_type": "duplicate-bbmd-error",
+      "severity": "error",
+      "subnet": "bacnet://subnet/10.21.2.0/24",
+      "bbmd_count": 2,
+      "bbmds_with_bdt_count": 2,
+      "bbmds": [
+        {
+          "bbmd": "bacnet://9101",
+          "bdt_entries": ["bacnet://9101", "bacnet://9102"],
+          "has_bdt": true
+        }
+      ]
+    }
+  ]
+}
+```
+
+### 📊 Test Results
+
+**All 15 check-graph tests passing** including:
+- 3 new BBMD-specific tests
+- Full integration with existing duplicate device ID and network detection
+- JSON output validation for BBMD issues
+
+### 🔍 BACnet Network Analysis Results
+
+The BBMD detection identified real configuration issues:
+- **Production Impact**: Multiple BBMDs with BDT entries can cause broadcast storms
+- **Network Health**: Found 2 subnets with problematic BBMD configurations
+- **Preventive Value**: Tool now detects configuration conflicts before network issues
+
+### 🎯 Session Summary
+
+Successfully extended the check-graph command with sophisticated BBMD analysis capabilities. The implementation not only detects theoretical issues but discovered actual configuration problems in production BACnet data, demonstrating immediate practical value for network administrators.
+
+**Command Count**: Still 7 commands (enhanced check-graph functionality)  
+**Test Count**: 75 total tests (15 check-graph tests)  
+**Issue Detection Types**: 5 total (device IDs, networks, routers, BBMD warnings, BBMD errors)

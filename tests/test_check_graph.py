@@ -236,6 +236,235 @@ class TestCheckGraphCommand:
         assert result.exit_code == 2  # CLI framework returns 2 for missing files
         assert "not found" in result.output or "does not exist" in result.output
 
+    def test_check_graph_duplicate_networks_detection(self):
+        """Test detection of duplicate networks across routers"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            self.create_test_ttl_with_duplicate_networks(temp_path)
+            
+            result = self.runner.invoke(cli, [
+                'check-graph',
+                str(temp_path / "test_duplicate_networks.ttl"),
+                '--issue', 'duplicate-network'
+            ])
+            
+            assert result.exit_code == 1  # Issues found
+            assert "duplicate network" in result.output
+            assert "Network bacnet://network/19202" in result.output
+            assert "routers in different subnets" in result.output
+
+    def test_check_graph_duplicate_routers_detection(self):
+        """Test detection of duplicate routers in same subnet"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            self.create_test_ttl_with_duplicate_networks(temp_path)
+            
+            result = self.runner.invoke(cli, [
+                'check-graph',
+                str(temp_path / "test_duplicate_networks.ttl"),
+                '--issue', 'duplicate-router'
+            ])
+            
+            assert result.exit_code == 1  # Issues found
+            assert "duplicate router" in result.output
+            assert "Network bacnet://network/19101" in result.output
+            assert "routers in the same subnet" in result.output
+
+    def test_check_graph_all_issues_detection(self):
+        """Test detection of all issue types together"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            self.create_test_ttl_with_all_issues(temp_path)
+            
+            result = self.runner.invoke(cli, [
+                'check-graph', 
+                str(temp_path / "test_all_issues.ttl"),
+                '--issue', 'all'
+            ])
+            
+            assert result.exit_code == 1  # Issues found
+            assert "duplicate device id" in result.output
+            assert "duplicate network" in result.output
+            assert "duplicate router" in result.output
+
+    def test_check_graph_json_output(self):
+        """Test JSON output format for duplicate issues"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            self.create_test_ttl_with_duplicate_networks(temp_path)
+            
+            result = self.runner.invoke(cli, [
+                'check-graph',
+                str(temp_path / "test_duplicate_networks.ttl"),
+                '--issue', 'all',
+                '--json'
+            ])
+            
+            assert result.exit_code == 1  # Issues found
+            
+            # Check JSON structure
+            import json
+            output_json = json.loads(result.output)
+            assert "duplicate-device-id" in output_json
+            assert "duplicate-network" in output_json
+            assert "duplicate-router" in output_json
+            assert len(output_json["duplicate-network"]) > 0
+            assert len(output_json["duplicate-router"]) > 0
+
+    def create_test_ttl_with_duplicate_networks(self, directory: Path):
+        """Create test TTL file with duplicate network issues"""
+        file1 = directory / "test_duplicate_networks.ttl"
+        file1.write_text("""@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+
+# Duplicate router scenario - same network on multiple routers in same subnet
+<bacnet://router/10.21.1.10> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/19101> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.1.0/24> .
+
+<bacnet://router/10.21.1.11> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/19101> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.1.0/24> .
+
+# Duplicate network scenario - same network on routers in different subnets
+<bacnet://router/10.21.2.20> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/19202> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.2.0/24> .
+
+<bacnet://router/10.21.3.30> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/19202> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.3.0/24> .
+""")
+
+    def create_test_ttl_with_all_issues(self, directory: Path):
+        """Create test TTL file with all types of issues"""
+        file1 = directory / "test_all_issues.ttl"
+        file1.write_text("""@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+
+# Duplicate device ID
+<bacnet://device1> a ns1:Device ;
+    ns1:device-instance 123 ;
+    ns1:device-on-network <bacnet://network/19101> .
+
+<bacnet://device2> a ns1:Device ;
+    ns1:device-instance 123 ;
+    ns1:device-on-network <bacnet://network/19102> .
+
+# Duplicate router
+<bacnet://router/10.21.1.10> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/19201> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.1.0/24> .
+
+<bacnet://router/10.21.1.11> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/19201> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.1.0/24> .
+
+# Duplicate network  
+<bacnet://router/10.21.2.20> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/19301> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.2.0/24> .
+
+<bacnet://router/10.21.3.30> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/19301> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.3.0/24> .
+""")
+
+    def test_check_graph_duplicate_bbmd_warning(self):
+        """Test detection of multiple BBMDs on same subnet (warning)"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            self.create_test_ttl_with_duplicate_bbmds(temp_path)
+            
+            result = self.runner.invoke(cli, [
+                'check-graph',
+                str(temp_path / "test_duplicate_bbmds.ttl"),
+                '--issue', 'duplicate-bbmd-warning'
+            ])
+            
+            assert result.exit_code == 1  # Issues found
+            assert "duplicate bbmd warning" in result.output
+            assert "Multiple BBMDs on the same subnet" in result.output
+            assert "BBMDs with BDT entries: 1/2" in result.output
+
+    def test_check_graph_duplicate_bbmd_error(self):
+        """Test detection of multiple BBMDs with BDT entries (error)"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            self.create_test_ttl_with_duplicate_bbmds(temp_path)
+            
+            result = self.runner.invoke(cli, [
+                'check-graph',
+                str(temp_path / "test_duplicate_bbmds.ttl"),
+                '--issue', 'duplicate-bbmd-error'
+            ])
+            
+            assert result.exit_code == 1  # Issues found
+            assert "duplicate bbmd error" in result.output
+            assert "Multiple BBMDs with BDT entries on the same subnet" in result.output
+            assert "BBMDs with BDT entries: 2/2" in result.output
+
+    def test_check_graph_bbmd_json_output(self):
+        """Test JSON output format for BBMD issues"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            self.create_test_ttl_with_duplicate_bbmds(temp_path)
+            
+            result = self.runner.invoke(cli, [
+                'check-graph',
+                str(temp_path / "test_duplicate_bbmds.ttl"),
+                '--issue', 'all',
+                '--json'
+            ])
+            
+            assert result.exit_code == 1  # Issues found
+            
+            # Check JSON structure
+            import json
+            output_json = json.loads(result.output)
+            assert "duplicate-bbmd-warning" in output_json
+            assert "duplicate-bbmd-error" in output_json
+            assert len(output_json["duplicate-bbmd-warning"]) > 0
+            assert len(output_json["duplicate-bbmd-error"]) > 0
+            
+            # Check specific fields
+            warning_issue = output_json["duplicate-bbmd-warning"][0]
+            assert warning_issue["severity"] == "warning"
+            assert warning_issue["bbmds_with_bdt_count"] == 1
+            
+            error_issue = output_json["duplicate-bbmd-error"][0]
+            assert error_issue["severity"] == "error"
+            assert error_issue["bbmds_with_bdt_count"] == 2
+
+    def create_test_ttl_with_duplicate_bbmds(self, directory: Path):
+        """Create test TTL file with duplicate BBMD scenarios"""
+        file1 = directory / "test_duplicate_bbmds.ttl"
+        file1.write_text("""@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+
+# Warning scenario - Multiple BBMDs on same subnet, only one has BDT entries
+<bacnet://9001> a ns1:BBMD ;
+    ns1:address "10.21.1.10" ;
+    ns1:bbmd-broadcast-domain <bacnet://subnet/10.21.1.0/24> ;
+    ns1:bdt-entry <bacnet://9001> ;
+    ns1:device-instance 9001 .
+
+<bacnet://9002> a ns1:BBMD ;
+    ns1:address "10.21.1.20" ;
+    ns1:bbmd-broadcast-domain <bacnet://subnet/10.21.1.0/24> ;
+    ns1:device-instance 9002 .
+
+# Error scenario - Multiple BBMDs on same subnet, both have BDT entries
+<bacnet://9101> a ns1:BBMD ;
+    ns1:address "10.21.2.10" ;
+    ns1:bbmd-broadcast-domain <bacnet://subnet/10.21.2.0/24> ;
+    ns1:bdt-entry <bacnet://9101> ;
+    ns1:device-instance 9101 .
+
+<bacnet://9102> a ns1:BBMD ;
+    ns1:address "10.21.2.20" ;
+    ns1:bbmd-broadcast-domain <bacnet://subnet/10.21.2.0/24> ;
+    ns1:bdt-entry <bacnet://9102> ;
+    ns1:device-instance 9102 .
+""")
+
 
 if __name__ == "__main__":
     # Run the tests

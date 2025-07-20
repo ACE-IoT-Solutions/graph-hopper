@@ -1,0 +1,46 @@
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+
+# Test data for duplicate network detection
+# Scenario 1: Duplicate Router - Same network on multiple routers in same subnet (likely issue)
+# Network 19101 appears on two different routers in the same subnet
+
+<bacnet://router/10.21.1.10> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/19101>,
+        <bacnet://network/9101> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.1.0/24> .
+
+<bacnet://router/10.21.1.11> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/19101>,
+        <bacnet://network/9102> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.1.0/24> .
+
+# Scenario 2: Duplicate Network - Same network on routers in different subnets (likely issue)  
+# Network 19202 appears on routers in different subnets
+
+<bacnet://router/10.21.2.20> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/19202>,
+        <bacnet://network/9202> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.2.0/24> .
+
+<bacnet://router/10.21.3.30> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/19202>,
+        <bacnet://network/9303> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.3.0/24> .
+
+# Scenario 3: Good case - Unique networks on each router (no issues)
+
+<bacnet://router/10.21.4.40> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/19404>,
+        <bacnet://network/9404> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.4.0/24> .
+
+# Some devices on these networks to make it more realistic
+<bacnet://device/10.21.1.100> a ns1:Device ;
+    ns1:device-instance 100 ;
+    ns1:device-on-network <bacnet://network/19101> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.1.0/24> .
+
+<bacnet://device/10.21.2.200> a ns1:Device ;
+    ns1:device-instance 200 ;  
+    ns1:device-on-network <bacnet://network/19202> ;
+    ns1:device-on-subnet <bacnet://subnet/10.21.2.0/24> .
