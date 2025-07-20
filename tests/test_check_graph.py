@@ -4,6 +4,7 @@ Tests for the check-graph command
 """
 import pytest
 import tempfile
+import json
 from pathlib import Path
 from click.testing import CliRunner
 from graph_hopper import cli
@@ -586,6 +587,334 @@ class TestCheckGraphCommand:
             
             assert result.exit_code == 0  # No issues found
             assert "No orphaned devices issues found" in result.output
+
+    def test_check_graph_invalid_device_ranges_detection(self):
+        """Test detection of devices with invalid instance ID ranges"""
+        test_file = Path(__file__).parent / "data" / "invalid_device_ranges.ttl"
+        
+        result = self.runner.invoke(cli, [
+            'check-graph',
+            str(test_file),
+            '--issue', 'invalid-device-ranges'
+        ])
+        
+        assert result.exit_code == 1  # Should exit with error when issues found
+        assert "Invalid device range" in result.output
+        assert "Negative Instance Device" in result.output  # Device with -1 instance ID
+        assert "Over Range Device" in result.output  # Device with 4194304 instance ID  
+        assert "Non-Numeric Device" in result.output  # Device with "invalid_id" instance ID
+
+    def test_check_graph_invalid_device_ranges_json_output(self):
+        """Test JSON output format for invalid device ranges"""
+        test_file = Path(__file__).parent / "data" / "invalid_device_ranges.ttl"
+        
+        result = self.runner.invoke(cli, [
+            'check-graph', 
+            str(test_file),
+            '--issue', 'invalid-device-ranges',
+            '--json'
+        ])
+        
+        assert result.exit_code == 1
+        
+        # Parse JSON output
+        output = json.loads(result.output)
+        assert "invalid-device-ranges" in output
+        
+        issues = output["invalid-device-ranges"]
+        assert len(issues) >= 3  # At least negative, over-range, and non-numeric
+        
+        # Check for different types of invalid ranges
+        issue_types = []
+        for issue in issues:
+            if "not a valid number" in issue['description']:
+                issue_types.append('non-numeric')
+            elif "outside valid BACnet range" in issue['description']:
+                issue_types.append('out-of-range')
+                
+        assert 'non-numeric' in issue_types
+        assert 'out-of-range' in issue_types
+
+    def test_check_graph_invalid_device_ranges_verbose(self):
+        """Test verbose output for invalid device ranges"""
+        test_file = Path(__file__).parent / "data" / "invalid_device_ranges.ttl"
+        
+        result = self.runner.invoke(cli, [
+            'check-graph',
+            str(test_file), 
+            '--issue', 'invalid-device-ranges',
+            '--verbose'
+        ])
+        
+        assert result.exit_code == 1
+        assert "Invalid device range" in result.output
+        assert "Details:" in result.output  # Verbose should include detailed descriptions
+        assert "BACnet device instances must be" in result.output
+
+    def test_check_graph_no_invalid_device_ranges_clean_network(self):
+        """Test that clean network with valid device ranges returns no issues"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            
+            # Create TTL content with only valid device ranges
+            clean_ttl_content = """
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://example.org/device/1> rdf:type ns1:Device ;
+    rdfs:label "Device 1" ;
+    ns1:device-instance 100 ;
+    ns1:address "192.168.1.100" .
+
+<http://example.org/device/2> rdf:type ns1:Device ;
+    rdfs:label "Device 2" ;  
+    ns1:device-instance 0 ;
+    ns1:address "192.168.1.101" .
+
+<http://example.org/device/3> rdf:type ns1:Device ;
+    rdfs:label "Device 3" ;
+    ns1:device-instance 4194303 ;
+    ns1:address "192.168.1.102" .
+
+<http://example.org/network/1> rdf:type ns1:Network ;
+    ns1:network-number 1 .
+"""
+            ttl_file = temp_path / "clean_device_ranges.ttl"
+            ttl_file.write_text(clean_ttl_content)
+            
+            result = self.runner.invoke(cli, [
+                'check-graph',
+                str(ttl_file),
+                '--issue', 'invalid-device-ranges'
+            ])
+            
+            assert result.exit_code == 0  # No issues found
+            assert "No invalid device ranges issues found" in result.output
+
+    def test_check_graph_device_address_conflicts_detection(self):
+        """Test detection of devices with conflicting addresses on same network/subnet"""
+        test_file = Path(__file__).parent / "data" / "device_address_conflicts.ttl"
+        
+        result = self.runner.invoke(cli, [
+            'check-graph',
+            str(test_file),
+            '--issue', 'device-address-conflicts'
+        ])
+        
+        assert result.exit_code == 1  # Should exit with error when issues found
+        assert "Address conflict" in result.output
+        assert "192.168.1.100" in result.output  # Conflicting address on main network
+        assert "10.0.0.50" in result.output  # Conflicting address on office subnet
+        assert "192.168.1.200" in result.output  # Triple conflict on main network
+
+    def test_check_graph_device_address_conflicts_json_output(self):
+        """Test JSON output format for device address conflicts"""
+        test_file = Path(__file__).parent / "data" / "device_address_conflicts.ttl"
+        
+        result = self.runner.invoke(cli, [
+            'check-graph', 
+            str(test_file),
+            '--issue', 'device-address-conflicts',
+            '--json'
+        ])
+        
+        assert result.exit_code == 1
+        
+        # Parse JSON output
+        output = json.loads(result.output)
+        assert "device-address-conflicts" in output
+        
+        issues = output["device-address-conflicts"]
+        assert len(issues) >= 3  # At least network conflict, subnet conflict, and triple conflict
+        
+        # Check for different conflict types
+        networks_with_conflicts = set()
+        addresses_with_conflicts = set()
+        
+        for issue in issues:
+            networks_with_conflicts.add(issue['network'])
+            addresses_with_conflicts.add(issue['address'])
+            assert issue['device_count'] >= 2  # All conflicts should have at least 2 devices
+            assert 'devices' in issue  # Should include device details
+                
+        assert len(networks_with_conflicts) >= 2  # Should have conflicts in multiple networks/subnets
+        assert len(addresses_with_conflicts) >= 3  # Should have at least 3 different conflicting addresses
+
+    def test_check_graph_device_address_conflicts_verbose(self):
+        """Test verbose output for device address conflicts"""
+        test_file = Path(__file__).parent / "data" / "device_address_conflicts.ttl"
+        
+        result = self.runner.invoke(cli, [
+            'check-graph',
+            str(test_file), 
+            '--issue', 'device-address-conflicts',
+            '--verbose'
+        ])
+        
+        assert result.exit_code == 1
+        assert "Address conflict" in result.output
+        assert "Details:" in result.output  # Verbose should include detailed descriptions
+        assert "communication failures" in result.output  # Should explain impact
+
+    def test_check_graph_no_device_address_conflicts_clean_network(self):
+        """Test that network with unique device addresses returns no issues"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            
+            # Create TTL content with devices having unique addresses
+            clean_ttl_content = """
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://example.org/network/1> rdf:type ns1:Network ;
+    ns1:network-number 1 .
+
+<http://example.org/device/1> rdf:type ns1:Device ;
+    rdfs:label "Device 1" ;
+    ns1:device-instance 100 ;
+    ns1:address "192.168.1.100" ;
+    ns1:device-on-network <http://example.org/network/1> .
+
+<http://example.org/device/2> rdf:type ns1:Device ;
+    rdfs:label "Device 2" ;  
+    ns1:device-instance 200 ;
+    ns1:address "192.168.1.101" ;
+    ns1:device-on-network <http://example.org/network/1> .
+
+<http://example.org/device/3> rdf:type ns1:Device ;
+    rdfs:label "Device 3" ;
+    ns1:device-instance 300 ;
+    ns1:address "192.168.1.102" ;
+    ns1:device-on-network <http://example.org/network/1> .
+"""
+            ttl_file = temp_path / "clean_address_conflicts.ttl"
+            ttl_file.write_text(clean_ttl_content)
+            
+            result = self.runner.invoke(cli, [
+                'check-graph',
+                str(ttl_file),
+                '--issue', 'device-address-conflicts'
+            ])
+            
+            assert result.exit_code == 0  # No issues found
+            assert "No device address conflicts issues found" in result.output
+
+    def test_check_graph_missing_vendor_ids_detection(self):
+        """Test detection of devices with missing or invalid vendor IDs"""
+        test_file = Path(__file__).parent / "data" / "missing_vendor_ids.ttl"
+        
+        result = self.runner.invoke(cli, [
+            'check-graph',
+            str(test_file),
+            '--issue', 'missing-vendor-ids'
+        ])
+        
+        assert result.exit_code == 1  # Should exit with error when issues found
+        assert "Missing/Invalid vendor ID" in result.output
+        assert "Missing Vendor ID Device" in result.output  # Device without vendor-id
+        assert "Non-Numeric Vendor Device" in result.output  # Device with "invalid_vendor"
+        assert "Negative Vendor Device" in result.output  # Device with -1
+        assert "Zero Vendor Device" in result.output  # Device with 0 (reserved)
+
+    def test_check_graph_missing_vendor_ids_json_output(self):
+        """Test JSON output format for missing vendor IDs"""
+        test_file = Path(__file__).parent / "data" / "missing_vendor_ids.ttl"
+        
+        result = self.runner.invoke(cli, [
+            'check-graph', 
+            str(test_file),
+            '--issue', 'missing-vendor-ids',
+            '--json'
+        ])
+        
+        assert result.exit_code == 1
+        
+        # Parse JSON output
+        output = json.loads(result.output)
+        assert "missing-vendor-ids" in output
+        
+        issues = output["missing-vendor-ids"]
+        assert len(issues) >= 5  # At least missing, non-numeric, negative, zero, float
+        
+        # Check for different types of vendor ID issues
+        issue_types = []
+        for issue in issues:
+            if issue['vendor_id'] is None:
+                issue_types.append('missing')
+            elif "not be numeric" in issue['description'] or "invalid" in issue['description'].lower():
+                issue_types.append('invalid-format')
+            elif "negative" in issue['description'] or "must be positive" in issue['description']:
+                issue_types.append('negative')
+            elif "reserved value" in issue['description'] or "vendor-id: 0" in issue.get('description', ''):
+                issue_types.append('reserved')
+                
+        assert 'missing' in issue_types
+        assert 'invalid-format' in issue_types or 'negative' in issue_types
+
+    def test_check_graph_missing_vendor_ids_verbose(self):
+        """Test verbose output for missing vendor IDs"""
+        test_file = Path(__file__).parent / "data" / "missing_vendor_ids.ttl"
+        
+        result = self.runner.invoke(cli, [
+            'check-graph',
+            str(test_file), 
+            '--issue', 'missing-vendor-ids',
+            '--verbose'
+        ])
+        
+        assert result.exit_code == 1
+        assert "Missing/Invalid vendor ID" in result.output
+        assert "Details:" in result.output  # Verbose should include detailed descriptions
+        assert "ASHRAE" in result.output  # Should mention ASHRAE vendor registration
+
+    def test_check_graph_no_missing_vendor_ids_clean_network(self):
+        """Test that devices with valid vendor IDs return no issues"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            
+            # Create TTL content with devices having valid vendor IDs
+            clean_ttl_content = """
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://example.org/network/1> rdf:type ns1:Network ;
+    ns1:network-number 1 .
+
+<http://example.org/device/1> rdf:type ns1:Device ;
+    rdfs:label "Device 1" ;
+    ns1:device-instance 100 ;
+    ns1:address "192.168.1.100" ;
+    ns1:vendor-id "123" ;
+    ns1:device-on-network <http://example.org/network/1> .
+
+<http://example.org/device/2> rdf:type ns1:Device ;
+    rdfs:label "Device 2" ;  
+    ns1:device-instance 200 ;
+    ns1:address "192.168.1.101" ;
+    ns1:vendor-id "456" ;
+    ns1:device-on-network <http://example.org/network/1> .
+
+<http://example.org/device/3> rdf:type ns1:Device ;
+    rdfs:label "Device 3" ;
+    ns1:device-instance 300 ;
+    ns1:address "192.168.1.102" ;
+    ns1:vendor-id "789" ;
+    ns1:device-on-network <http://example.org/network/1> .
+"""
+            ttl_file = temp_path / "clean_vendor_ids.ttl"
+            ttl_file.write_text(clean_ttl_content)
+            
+            result = self.runner.invoke(cli, [
+                'check-graph',
+                str(ttl_file),
+                '--issue', 'missing-vendor-ids'
+            ])
+            
+            assert result.exit_code == 0  # No issues found
+            assert "No missing vendor ids issues found" in result.output
 
 
 if __name__ == "__main__":

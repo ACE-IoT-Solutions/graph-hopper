@@ -1,0 +1,73 @@
+# Test data for missing vendor IDs checking
+# Contains devices with missing, invalid, or properly formatted vendor IDs
+
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Network for test context
+<http://example.org/network/main> rdf:type ns1:Network ;
+    rdfs:label "Main Network" ;
+    ns1:network-number 1 .
+
+# Device 1 - Valid device with proper vendor ID
+<http://example.org/device/valid> rdf:type ns1:Device ;
+    rdfs:label "Valid Device" ;
+    ns1:device-instance 100 ;
+    ns1:address "192.168.1.100" ;
+    ns1:vendor-id "123" ;
+    ns1:device-on-network <http://example.org/network/main> .
+
+# Device 2 - Missing vendor ID (should be flagged)
+<http://example.org/device/missing> rdf:type ns1:Device ;
+    rdfs:label "Missing Vendor ID Device" ;
+    ns1:device-instance 200 ;
+    ns1:address "192.168.1.200" ;
+    ns1:device-on-network <http://example.org/network/main> .
+
+# Device 3 - Non-numeric vendor ID (should be flagged)
+<http://example.org/device/nonnumeric> rdf:type ns1:Device ;
+    rdfs:label "Non-Numeric Vendor Device" ;
+    ns1:device-instance 300 ;
+    ns1:address "192.168.1.201" ;
+    ns1:vendor-id "invalid_vendor" ;
+    ns1:device-on-network <http://example.org/network/main> .
+
+# Device 4 - Negative vendor ID (should be flagged)
+<http://example.org/device/negative> rdf:type ns1:Device ;
+    rdfs:label "Negative Vendor Device" ;
+    ns1:device-instance 400 ;
+    ns1:address "192.168.1.202" ;
+    ns1:vendor-id "-1" ;
+    ns1:device-on-network <http://example.org/network/main> .
+
+# Device 5 - Zero vendor ID (should be flagged - reserved)
+<http://example.org/device/zero> rdf:type ns1:Device ;
+    rdfs:label "Zero Vendor Device" ;
+    ns1:device-instance 500 ;
+    ns1:address "192.168.1.203" ;
+    ns1:vendor-id "0" ;
+    ns1:device-on-network <http://example.org/network/main> .
+
+# Device 6 - Valid vendor ID (should not be flagged)
+<http://example.org/device/valid2> rdf:type ns1:Device ;
+    rdfs:label "Another Valid Device" ;
+    ns1:device-instance 600 ;
+    ns1:address "192.168.1.204" ;
+    ns1:vendor-id "456" ;
+    ns1:device-on-network <http://example.org/network/main> .
+
+# Device 7 - Floating point vendor ID (should be flagged)
+<http://example.org/device/float> rdf:type ns1:Device ;
+    rdfs:label "Float Vendor Device" ;
+    ns1:device-instance 700 ;
+    ns1:address "192.168.1.205" ;
+    ns1:vendor-id "123.45" ;
+    ns1:device-on-network <http://example.org/network/main> .
+
+# Device 8 - Device without name (test default naming)
+<http://example.org/device/unnamed> rdf:type ns1:Device ;
+    ns1:device-instance 800 ;
+    ns1:address "192.168.1.206" ;
+    ns1:device-on-network <http://example.org/network/main> .
+    # Missing vendor-id and name - should be flagged with generated name

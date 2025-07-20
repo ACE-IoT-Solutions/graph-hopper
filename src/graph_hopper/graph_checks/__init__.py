@@ -7,6 +7,7 @@ from .duplicate_networks import check_duplicate_networks
 from .duplicate_bbmds import check_duplicate_bbmds
 from .orphaned_devices import check_orphaned_devices
 from .utils import format_human_readable, format_json_output, BACNET_NS
+from .registry import ISSUE_REGISTRY
 
 __all__ = [
     'check_duplicate_device_ids',
@@ -15,5 +16,6 @@ __all__ = [
     'check_orphaned_devices',
     'format_human_readable',
     'format_json_output',
-    'BACNET_NS'
+    'BACNET_NS',
+    'ISSUE_REGISTRY'
 ]

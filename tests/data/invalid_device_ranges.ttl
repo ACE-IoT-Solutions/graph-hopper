@@ -1,0 +1,54 @@
+# Test data for invalid device ranges checking
+# Contains devices with instance IDs outside the valid BACnet range (0-4194303)
+# and non-numeric device instances
+
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Valid device within range
+<http://example.org/device/valid> rdf:type ns1:Device ;
+    rdfs:label "Valid Device" ;
+    ns1:device-instance 100 ;
+    ns1:address "192.168.1.100" .
+
+# Device with negative instance ID (invalid)
+<http://example.org/device/negative> rdf:type ns1:Device ;
+    rdfs:label "Negative Instance Device" ;
+    ns1:device-instance -1 ;
+    ns1:address "192.168.1.200" .
+
+# Device with instance ID over the maximum (invalid)
+<http://example.org/device/overrange> rdf:type ns1:Device ;
+    rdfs:label "Over Range Device" ;
+    ns1:device-instance 4194304 ;
+    ns1:address "192.168.1.201" .
+
+# Device with non-numeric instance ID (invalid)
+<http://example.org/device/nonnumeric> rdf:type ns1:Device ;
+    rdfs:label "Non-Numeric Device" ;
+    ns1:device-instance "invalid_id" ;
+    ns1:address "10.0.0.100" .
+
+# Device with floating point instance ID (invalid)
+<http://example.org/device/float> rdf:type ns1:Device ;
+    rdfs:label "Float Device" ;
+    ns1:device-instance 123.45 ;
+    ns1:address "10.0.0.101" .
+
+# Device at maximum valid instance ID (valid)
+<http://example.org/device/maxvalid> rdf:type ns1:Device ;
+    rdfs:label "Max Valid Device" ;
+    ns1:device-instance 4194303 ;
+    ns1:address "192.168.1.250" .
+
+# Device at minimum valid instance ID (valid)
+<http://example.org/device/minvalid> rdf:type ns1:Device ;
+    rdfs:label "Min Valid Device" ;
+    ns1:device-instance 0 ;
+    ns1:address "192.168.1.251" .
+
+# Add a network to make it a valid graph structure
+<http://example.org/network/main> rdf:type ns1:Network ;
+    rdfs:label "Main Network" ;
+    ns1:network-number 1 .

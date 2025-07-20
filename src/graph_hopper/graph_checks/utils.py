@@ -63,6 +63,32 @@ def format_human_readable(issues: List[Dict[str, Any]], issue_type: str, verbose
             if verbose and 'verbose_description' in issue:
                 output.append(f"   Details: {issue['verbose_description']}")
             output.append("")
+        elif issue_type == 'invalid-device-ranges':
+            output.append(f"{i}. Invalid device range: {issue['label']} (instance {issue['device_instance']})")
+            output.append(f"   Device URI: {issue['device']}")
+            output.append(f"   Address: {issue['address']}")
+            output.append(f"   Problem: {issue['description']}")
+            if verbose and 'verbose_description' in issue:
+                output.append(f"   Details: {issue['verbose_description']}")
+            output.append("")
+        elif issue_type == 'device-address-conflicts':
+            network_type = issue.get('network_type', 'network')
+            output.append(f"{i}. Address conflict on {network_type} {issue['network']}: {issue['device_count']} devices share address {issue['address']}")
+            for device_info in issue['devices']:
+                output.append(f"   • {device_info['device_name']} (instance {device_info['device_instance']})")
+            output.append(f"   Problem: {issue['description']}")
+            if verbose and 'verbose_description' in issue:
+                output.append(f"   Details: {issue['verbose_description']}")
+            output.append("")
+        elif issue_type == 'missing-vendor-ids':
+            vendor_info = f" (vendor-id: {issue['vendor_id']})" if issue['vendor_id'] else " (no vendor-id)"
+            output.append(f"{i}. Missing/Invalid vendor ID: {issue['label']} (instance {issue['device_instance']}){vendor_info}")
+            output.append(f"   Device URI: {issue['device']}")
+            output.append(f"   Address: {issue['address']}")
+            output.append(f"   Problem: {issue['description']}")
+            if verbose and 'verbose_description' in issue:
+                output.append(f"   Details: {issue['verbose_description']}")
+            output.append("")
     
     return "\n".join(output)
 

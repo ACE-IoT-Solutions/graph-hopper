@@ -1,0 +1,82 @@
+# Test data for device address conflicts checking
+# Contains devices with conflicting addresses on the same network/subnet
+
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Network definition
+<http://example.org/network/main> rdf:type ns1:Network ;
+    rdfs:label "Main Network" ;
+    ns1:network-number 1 .
+
+# Subnet definition
+<http://example.org/subnet/office> rdf:type ns1:Subnet ;
+    rdfs:label "Office Subnet" ;
+    ns1:subnet-number 10 .
+
+# Another network for testing isolation
+<http://example.org/network/secondary> rdf:type ns1:Network ;
+    rdfs:label "Secondary Network" ;
+    ns1:network-number 2 .
+
+# Device 1 - on main network with address 192.168.1.100
+<http://example.org/device/1> rdf:type ns1:Device ;
+    rdfs:label "Device A" ;
+    ns1:device-instance 100 ;
+    ns1:address "192.168.1.100" ;
+    ns1:device-on-network <http://example.org/network/main> .
+
+# Device 2 - on main network with CONFLICTING address 192.168.1.100
+<http://example.org/device/2> rdf:type ns1:Device ;
+    rdfs:label "Device B" ;
+    ns1:device-instance 200 ;
+    ns1:address "192.168.1.100" ;
+    ns1:device-on-network <http://example.org/network/main> .
+
+# Device 3 - on main network with unique address (no conflict)
+<http://example.org/device/3> rdf:type ns1:Device ;
+    rdfs:label "Device C" ;
+    ns1:device-instance 300 ;
+    ns1:address "192.168.1.101" ;
+    ns1:device-on-network <http://example.org/network/main> .
+
+# Device 4 - on secondary network with same address 192.168.1.100 (no conflict - different network)
+<http://example.org/device/4> rdf:type ns1:Device ;
+    rdfs:label "Device D" ;
+    ns1:device-instance 400 ;
+    ns1:address "192.168.1.100" ;
+    ns1:device-on-network <http://example.org/network/secondary> .
+
+# Device 5 - on office subnet with address 10.0.0.50
+<http://example.org/device/5> rdf:type ns1:Device ;
+    rdfs:label "Subnet Device A" ;
+    ns1:device-instance 500 ;
+    ns1:address "10.0.0.50" ;
+    ns1:device-on-subnet <http://example.org/subnet/office> .
+
+# Device 6 - on office subnet with CONFLICTING address 10.0.0.50
+<http://example.org/device/6> rdf:type ns1:Device ;
+    rdfs:label "Subnet Device B" ;
+    ns1:device-instance 600 ;
+    ns1:address "10.0.0.50" ;
+    ns1:device-on-subnet <http://example.org/subnet/office> .
+
+# Device 7 - Triple conflict on main network with address 192.168.1.200
+<http://example.org/device/7> rdf:type ns1:Device ;
+    rdfs:label "Triple Device A" ;
+    ns1:device-instance 700 ;
+    ns1:address "192.168.1.200" ;
+    ns1:device-on-network <http://example.org/network/main> .
+
+<http://example.org/device/8> rdf:type ns1:Device ;
+    rdfs:label "Triple Device B" ;
+    ns1:device-instance 800 ;
+    ns1:address "192.168.1.200" ;
+    ns1:device-on-network <http://example.org/network/main> .
+
+<http://example.org/device/9> rdf:type ns1:Device ;
+    rdfs:label "Triple Device C" ;
+    ns1:device-instance 900 ;
+    ns1:address "192.168.1.200" ;
+    ns1:device-on-network <http://example.org/network/main> .
