@@ -8,6 +8,7 @@
 - `src/graph_hopper/__init__.py` - Single-file CLI implementation using Click framework
 - `context/openapi.json` - API specification (note: TTL endpoints support undocumented `text/turtle` Accept headers)
 - `agentic-sessions.md` - Development history and change tracking
+- Our shell is fish, ensure escaping is correct in code snippets
 
 ## Essential Development Workflows
 
