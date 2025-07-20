@@ -12,6 +12,9 @@ from graph_hopper import cli
 
 class TestDownloadRecentCommand:
     """Test cases for the download-recent command"""
+    
+    runner: CliRunner
+    mock_client: Mock
 
     @pytest.fixture(autouse=True)
     def setup_method(self):

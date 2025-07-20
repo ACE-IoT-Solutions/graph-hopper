@@ -2,7 +2,6 @@
 """
 Tests for the merge-graphs command
 """
-import pytest
 import tempfile
 from pathlib import Path
 from click.testing import CliRunner
@@ -12,6 +11,8 @@ from graph_hopper import cli
 
 class TestMergeGraphsCommand:
     """Test cases for the merge-graphs command"""
+    
+    runner: CliRunner
 
     def setup_method(self):
         """Set up test fixtures"""
@@ -226,8 +227,7 @@ ex:Device2 a ex:BACnetDevice .
             merged_graph.parse(output_file, format='turtle')
             
             # Count specific triples to ensure no duplicates
-            from rdflib import RDF
-            device_triples = list(merged_graph.triples((None, RDF.type, None)))
+            device_triples = list(merged_graph.triples((None, rdflib.URIRef("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), None)))
             assert len(device_triples) == 2  # Should have Device1 and Device2
 
     def test_merge_graphs_statistics(self):

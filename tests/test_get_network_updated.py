@@ -12,6 +12,8 @@ from graph_hopper import cli
 
 class TestGetNetworkUpdated:
     """Test cases for the updated get-network command"""
+    
+    runner: CliRunner
 
     @pytest.fixture(autouse=True)
     def setup_method(self):

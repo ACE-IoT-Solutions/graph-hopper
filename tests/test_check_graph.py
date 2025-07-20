@@ -11,6 +11,8 @@ from graph_hopper import cli
 
 class TestCheckGraphCommand:
     """Test cases for the check-graph command"""
+    
+    runner: CliRunner
 
     @pytest.fixture(autouse=True)
     def setup_method(self):
