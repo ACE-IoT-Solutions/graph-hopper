@@ -55,6 +55,14 @@ def format_human_readable(issues: List[Dict[str, Any]], issue_type: str, verbose
                 bdt_count = len(bbmd_info['bdt_entries'])
                 output.append(f"   • {bbmd_info['bbmd']} ({bdt_status}: {bdt_count} entries)")
             output.append("")
+        elif issue_type == 'orphaned-devices':
+            output.append(f"{i}. Orphaned device: {issue['label']} (instance {issue['device_instance']})")
+            output.append(f"   Device URI: {issue['device']}")
+            output.append(f"   Address: {issue['address']}")
+            output.append(f"   Problem: {issue['description']}")
+            if verbose and 'verbose_description' in issue:
+                output.append(f"   Details: {issue['verbose_description']}")
+            output.append("")
     
     return "\n".join(output)
 

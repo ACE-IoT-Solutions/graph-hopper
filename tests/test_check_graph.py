@@ -467,6 +467,126 @@ class TestCheckGraphCommand:
     ns1:device-instance 9102 .
 """)
 
+    def create_test_ttl_with_orphaned_devices(self, directory: Path):
+        """Create test TTL file with orphaned device issues"""
+        file1 = directory / "test_orphaned_devices.ttl"
+        file1.write_text("""@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Orphaned device - no network or subnet connection
+<bacnet://orphaned/100> a ns1:Device ;
+    rdfs:label "Orphaned Device 100" ;
+    ns1:address "192.168.1.100" ;
+    ns1:device-instance 100 ;
+    ns1:vendor-id <bacnet://vendor/15> .
+
+# Another orphaned device
+<bacnet://orphaned/200> a ns1:Device ;
+    rdfs:label "Orphaned Device 200" ;
+    ns1:address "10.0.0.200" ;
+    ns1:device-instance 200 ;
+    ns1:vendor-id <bacnet://vendor/10> .
+
+# Properly connected device (should not be flagged)
+<bacnet://connected/300> a ns1:Device ;
+    rdfs:label "Connected Device 300" ;
+    ns1:address "19103:7" ;
+    ns1:device-instance 300 ;
+    ns1:device-on-network <bacnet://network/19103> ;
+    ns1:vendor-id <bacnet://vendor/5> .
+
+# Router (should not be flagged)
+<bacnet://router/400> a ns1:Router ;
+    rdfs:label "Router 400" ;
+    ns1:address "192.168.1.1" ;
+    ns1:device-instance 400 ;
+    ns1:device-on-subnet <bacnet://subnet/192.168.1.0/24> ;
+    ns1:vendor-id <bacnet://vendor/15> .
+""")
+
+    def test_check_graph_orphaned_devices_detection(self):
+        """Test detection of orphaned devices"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            self.create_test_ttl_with_orphaned_devices(temp_path)
+            
+            result = self.runner.invoke(cli, [
+                'check-graph',
+                str(temp_path / "test_orphaned_devices.ttl"),
+                '--issue', 'orphaned-devices'
+            ])
+            
+            assert result.exit_code == 1  # Issues found
+            assert "orphaned device" in result.output.lower()
+            assert "Orphaned Device 100" in result.output
+            assert "Orphaned Device 200" in result.output
+            # Should NOT include the connected device or router
+            assert "Connected Device 300" not in result.output
+            assert "Router 400" not in result.output
+
+    def test_check_graph_orphaned_devices_json_output(self):
+        """Test JSON output for orphaned devices"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            self.create_test_ttl_with_orphaned_devices(temp_path)
+            
+            result = self.runner.invoke(cli, [
+                'check-graph',
+                str(temp_path / "test_orphaned_devices.ttl"),
+                '--issue', 'orphaned-devices',
+                '--json'
+            ])
+            
+            assert result.exit_code == 1  # Issues found
+            
+            import json
+            output_data = json.loads(result.output)
+            
+            # Check that orphaned devices are reported
+            assert 'orphaned-devices' in output_data
+            assert len(output_data['orphaned-devices']) == 2
+            
+            # Check that both orphaned devices are reported
+            orphaned_issues = output_data['orphaned-devices']
+            
+            # Verify issue details
+            device_instances = {issue['device_instance'] for issue in orphaned_issues}
+            assert device_instances == {"100", "200"}
+
+    def test_check_graph_orphaned_devices_verbose(self):
+        """Test verbose output for orphaned devices"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            self.create_test_ttl_with_orphaned_devices(temp_path)
+            
+            result = self.runner.invoke(cli, [
+                'check-graph',
+                str(temp_path / "test_orphaned_devices.ttl"),
+                '--issue', 'orphaned-devices',
+                '--verbose'
+            ])
+            
+            assert result.exit_code == 1  # Issues found
+            assert "orphaned device" in result.output.lower()
+            assert "cannot communicate with other devices" in result.output.lower()
+            # Verbose mode should show additional details
+            assert "properties" in result.output.lower() or "triples" in result.output.lower()
+
+    def test_check_graph_no_orphaned_devices_clean_network(self):
+        """Test that clean networks with no orphaned devices pass"""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = Path(temp_dir)
+            self.create_test_ttl_no_duplicates(temp_path)  # Use existing clean network
+            
+            result = self.runner.invoke(cli, [
+                'check-graph',
+                str(temp_path / "clean_network.ttl"),
+                '--issue', 'orphaned-devices'
+            ])
+            
+            assert result.exit_code == 0  # No issues found
+            assert "No orphaned devices issues found" in result.output
+
 
 if __name__ == "__main__":
     # Run the tests

@@ -21,6 +21,13 @@ from .commands import (
     check_graph
 )
 
+__all__ = [
+    "cli",
+    "main",
+    "GrasshopperClient",
+    "parse_host_url",
+]
+
 
 @click.group()
 @click.option('--host', '-h', 

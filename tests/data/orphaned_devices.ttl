@@ -1,0 +1,73 @@
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Test data for orphaned devices detection
+
+# Scenario 1: Orphaned device - no network or subnet connection
+<bacnet://orphaned/100> a ns1:Device ;
+    rdfs:label "Orphaned Device 100" ;
+    ns1:address "192.168.1.100" ;
+    ns1:device-instance 100 ;
+    ns1:vendor-id <bacnet://vendor/15> .
+
+# Scenario 2: Another orphaned device - has properties but no connectivity
+<bacnet://orphaned/200> a ns1:Device ;
+    rdfs:label "Orphaned Device 200" ;
+    ns1:address "10.0.0.200" ;
+    ns1:device-instance 200 ;
+    ns1:vendor-id <bacnet://vendor/10> .
+
+# Scenario 3: Properly connected device on network (good case)
+<bacnet://connected/300> a ns1:Device ;
+    rdfs:label "Connected Device 300" ;
+    ns1:address "19103:7" ;
+    ns1:device-instance 300 ;
+    ns1:device-on-network <bacnet://network/19103> ;
+    ns1:vendor-id <bacnet://vendor/5> .
+
+# Scenario 4: Properly connected device on subnet (good case)
+<bacnet://connected/400> a ns1:Device ;
+    rdfs:label "Connected Device 400" ;
+    ns1:address "192.168.1.50" ;
+    ns1:device-instance 400 ;
+    ns1:device-on-subnet <bacnet://subnet/192.168.1.0/24> ;
+    ns1:vendor-id <bacnet://vendor/20> .
+
+# Scenario 5: Device connected to both network and subnet (good case)
+<bacnet://connected/500> a ns1:Device ;
+    rdfs:label "Dual Connected Device 500" ;
+    ns1:address "19104:8" ;
+    ns1:device-instance 500 ;
+    ns1:device-on-network <bacnet://network/19104> ;
+    ns1:device-on-subnet <bacnet://subnet/192.168.2.0/24> ;
+    ns1:vendor-id <bacnet://vendor/15> .
+
+# Scenario 6: Router device (should not be flagged as orphaned)
+<bacnet://router/600> a ns1:Router ;
+    rdfs:label "Router 600" ;
+    ns1:address "192.168.1.1" ;
+    ns1:device-instance 600 ;
+    ns1:device-on-subnet <bacnet://subnet/192.168.1.0/24> ;
+    ns1:serves-network <bacnet://network/19103> ;
+    ns1:vendor-id <bacnet://vendor/15> .
+
+# Scenario 7: BBMD device (should not be flagged as orphaned)  
+<bacnet://bbmd/700> a ns1:BBMD ;
+    rdfs:label "BBMD 700" ;
+    ns1:address "192.168.1.10" ;
+    ns1:device-instance 700 ;
+    ns1:bbmd-broadcast-domain <bacnet://subnet/192.168.1.0/24> ;
+    ns1:vendor-id <bacnet://vendor/25> .
+
+# Define the networks and subnets referenced above
+<bacnet://network/19103> a ns1:Network ;
+    rdfs:label "BACnet Network 19103" .
+
+<bacnet://network/19104> a ns1:Network ;
+    rdfs:label "BACnet Network 19104" .
+
+<bacnet://subnet/192.168.1.0/24> a ns1:Subnet ;
+    rdfs:label "Subnet 192.168.1.0/24" .
+
+<bacnet://subnet/192.168.2.0/24> a ns1:Subnet ;
+    rdfs:label "Subnet 192.168.2.0/24" .

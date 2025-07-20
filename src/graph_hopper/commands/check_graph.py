@@ -11,6 +11,7 @@ from ..graph_checks import (
     check_duplicate_device_ids,
     check_duplicate_networks,
     check_duplicate_bbmds,
+    check_orphaned_devices,
     format_human_readable,
     format_json_output
 )
@@ -19,7 +20,7 @@ from ..graph_checks import (
 @click.command()
 @click.argument('ttl_file', type=click.Path(exists=True, path_type=Path))
 @click.option('--issue', '-i', 
-              type=click.Choice(['duplicate-device-id', 'duplicate-network', 'duplicate-router', 'duplicate-bbmd-warning', 'duplicate-bbmd-error', 'all']),
+              type=click.Choice(['duplicate-device-id', 'duplicate-network', 'duplicate-router', 'duplicate-bbmd-warning', 'duplicate-bbmd-error', 'orphaned-devices', 'all']),
               default='all',
               help='Specific issue to check for (default: all)')
 @click.option('--json', 'output_json', is_flag=True,
@@ -51,7 +52,7 @@ def check_graph(ttl_file: Path, issue: str, output_json: bool, verbose: bool):
     
     # Determine which issues to check
     if issue == 'all':
-        issues_to_check = ['duplicate-device-id', 'duplicate-network', 'duplicate-router', 'duplicate-bbmd-warning', 'duplicate-bbmd-error']
+        issues_to_check = ['duplicate-device-id', 'orphaned-devices', 'duplicate-network', 'duplicate-router', 'duplicate-bbmd-warning', 'duplicate-bbmd-error']
     elif issue in ['duplicate-network', 'duplicate-router']:
         issues_to_check = ['duplicate-network', 'duplicate-router']
     elif issue in ['duplicate-bbmd-warning', 'duplicate-bbmd-error']:
@@ -66,6 +67,10 @@ def check_graph(ttl_file: Path, issue: str, output_json: bool, verbose: bool):
     for issue_type in issues_to_check:
         if issue_type == 'duplicate-device-id':
             issues, affected_triples = check_duplicate_device_ids(graph, verbose)
+            all_issues[issue_type] = issues
+            all_affected_triples.extend(affected_triples)
+        elif issue_type == 'orphaned-devices':
+            issues, affected_triples = check_orphaned_devices(graph, verbose)
             all_issues[issue_type] = issues
             all_affected_triples.extend(affected_triples)
         elif issue_type in ['duplicate-network', 'duplicate-router']:
@@ -95,6 +100,8 @@ def check_graph(ttl_file: Path, issue: str, output_json: bool, verbose: bool):
         filtered_issues = {}
         if issue == 'all':
             filtered_issues = all_issues
+        elif issue == 'orphaned-devices':
+            filtered_issues = {'orphaned-devices': all_issues.get('orphaned-devices', [])}
         elif issue == 'duplicate-network':
             filtered_issues = {'duplicate-network': all_issues.get('duplicate-network', [])}
         elif issue == 'duplicate-router':
@@ -111,7 +118,7 @@ def check_graph(ttl_file: Path, issue: str, output_json: bool, verbose: bool):
         # Human-readable output
         output_issues = []
         if issue == 'all':
-            output_issues = ['duplicate-device-id', 'duplicate-network', 'duplicate-router', 'duplicate-bbmd-warning', 'duplicate-bbmd-error']
+            output_issues = ['duplicate-device-id', 'orphaned-devices', 'duplicate-network', 'duplicate-router', 'duplicate-bbmd-warning', 'duplicate-bbmd-error']
         elif issue in ['duplicate-network', 'duplicate-router']:
             output_issues = [issue] 
         elif issue in ['duplicate-bbmd-warning', 'duplicate-bbmd-error']:

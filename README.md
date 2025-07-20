@@ -2,6 +2,11 @@
 
 A command-line interface for retrieving graphs from the Grasshopper API, which manages BACnet device detection and TTL (Turtle) network files.
 
+## Documentation
+
+- **[Architecture & Roadmap](architecture.md)** - Project structure, development roadmap, and implementation guidelines
+- **[Development Sessions](agentic-sessions.md)** - Detailed change history and development notes
+
 ## Installation
 
 This project uses [uv](https://docs.astral.sh/uv/) for dependency management. Make sure you have `uv` installed.
