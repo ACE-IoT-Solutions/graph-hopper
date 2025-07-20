@@ -12,3 +12,6 @@ wheels/
 # Main data directory (but allow tests/data/)
 /data/
 !/tests/data/
+
+# Documentation files
+*.pdf
