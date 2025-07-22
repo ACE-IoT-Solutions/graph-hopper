@@ -1,0 +1,60 @@
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Test data for network loops detection
+
+# Simple 2-network loop: Router A <-> Router B creating circular routing
+<bacnet://router/1001> a ns1:Router ;
+    rdfs:label "Router A" ;
+    ns1:device-instance 1001 ;
+    ns1:device-on-network <bacnet://network/1000> ;
+    ns1:serves-network <bacnet://network/2000> .
+
+<bacnet://router/1002> a ns1:Router ;
+    rdfs:label "Router B" ;
+    ns1:device-instance 1002 ;
+    ns1:device-on-network <bacnet://network/2000> ;
+    ns1:serves-network <bacnet://network/1000> .
+
+<bacnet://network/1000> a ns1:BACnetNetwork ;
+    rdfs:label "Network 1000" .
+
+<bacnet://network/2000> a ns1:BACnetNetwork ;
+    rdfs:label "Network 2000" .
+
+# Complex 3-network loop: A -> B -> C -> A
+<bacnet://router/2001> a ns1:Router ;
+    rdfs:label "Router X" ;
+    ns1:device-instance 2001 ;
+    ns1:device-on-network <bacnet://network/3000> ;
+    ns1:serves-network <bacnet://network/4000> .
+
+<bacnet://router/2002> a ns1:Router ;
+    rdfs:label "Router Y" ;
+    ns1:device-instance 2002 ;
+    ns1:device-on-network <bacnet://network/4000> ;
+    ns1:serves-network <bacnet://network/5000> .
+
+<bacnet://router/2003> a ns1:Router ;
+    rdfs:label "Router Z" ;
+    ns1:device-instance 2003 ;
+    ns1:device-on-network <bacnet://network/5000> ;
+    ns1:serves-network <bacnet://network/3000> .
+
+<bacnet://network/3000> a ns1:BACnetNetwork ;
+    rdfs:label "Network 3000" .
+
+<bacnet://network/4000> a ns1:BACnetNetwork ;
+    rdfs:label "Network 4000" .
+
+<bacnet://network/5000> a ns1:BACnetNetwork ;
+    rdfs:label "Network 5000" .
+
+# Standalone network without loops for testing
+<bacnet://router/9001> a ns1:Router ;
+    rdfs:label "Isolated Router" ;
+    ns1:device-instance 9001 ;
+    ns1:device-on-network <bacnet://network/9000> .
+
+<bacnet://network/9000> a ns1:BACnetNetwork ;
+    rdfs:label "Network 9000" .

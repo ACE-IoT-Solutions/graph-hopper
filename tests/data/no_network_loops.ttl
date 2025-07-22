@@ -1,0 +1,33 @@
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Test data for networks without loops - proper tree topology
+
+# Linear routing: Network A -> Network B -> Network C (no loops)
+<bacnet://router/1001> a ns1:Router ;
+    rdfs:label "Router A" ;
+    ns1:device-instance 1001 ;
+    ns1:device-on-network <bacnet://network/1000> ;
+    ns1:serves-network <bacnet://network/2000> .
+
+<bacnet://router/1002> a ns1:Router ;
+    rdfs:label "Router B" ;
+    ns1:device-instance 1002 ;
+    ns1:device-on-network <bacnet://network/2000> ;
+    ns1:serves-network <bacnet://network/3000> .
+
+<bacnet://network/1000> a ns1:BACnetNetwork ;
+    rdfs:label "Network 1000" .
+
+<bacnet://network/2000> a ns1:BACnetNetwork ;
+    rdfs:label "Network 2000" .
+
+<bacnet://network/3000> a ns1:BACnetNetwork ;
+    rdfs:label "Network 3000" .
+
+# Isolated networks (no connections) - also no loops
+<bacnet://network/5000> a ns1:BACnetNetwork ;
+    rdfs:label "Network 5000" .
+
+<bacnet://network/6000> a ns1:BACnetNetwork ;
+    rdfs:label "Network 6000" .

@@ -115,6 +115,33 @@ def format_human_readable(issues: List[Dict[str, Any]], issue_type: str, verbose
             if verbose and 'verbose_details' in issue:
                 output.append(f"   Details: {issue['verbose_details']}")
             output.append("")
+        elif issue_type == 'network-loops':
+            loop_size = issue.get('loop_size', 0)
+            output.append(f"{i}. Network loop detected: {loop_size} networks in circular routing")
+            
+            # Show the loop path
+            loop_path = issue.get('loop_path', [])
+            if loop_path:
+                path_names = [path.split('/')[-1] if '/' in path else path for path in loop_path]
+                output.append(f"   Loop path: {' → '.join(path_names)}")
+            
+            # Show routers causing the loop
+            routers_info = issue.get('details', {}).get('routers_causing_loop', [])
+            if routers_info:
+                output.append("   Routers causing this loop:")
+                for router in routers_info:
+                    router_name = router.get('router_name', 'Unknown')
+                    connects_from = router.get('connects_from', 'Unknown')
+                    connects_to = router.get('connects_to', 'Unknown')
+                    output.append(f"     - Router {router_name}: connects network {connects_from} to network {connects_to}")
+            
+            output.append(f"   Problem: {issue['description']}")
+            output.append(f"   Risk: {issue.get('details', {}).get('broadcast_storm_risk', 'Unknown')} broadcast storm risk")
+            
+            recommendation = issue.get('details', {}).get('recommendation', '')
+            if recommendation:
+                output.append(f"   Recommendation: {recommendation}")
+            output.append("")
     
     return "\n".join(output)
 

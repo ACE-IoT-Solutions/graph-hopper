@@ -19,6 +19,8 @@ from .device_address_conflicts import check_device_address_conflicts
 from .missing_vendor_ids import check_missing_vendor_ids
 from .unreachable_networks import check_unreachable_networks
 from .missing_routers import check_missing_routers
+from .subnet_mismatches import check_subnet_mismatches
+from .network_loops import check_network_loops
 
 
 class CheckRegistry:
@@ -66,6 +68,18 @@ class CheckRegistry:
             'missing-routers': {
                 'function': check_missing_routers,
                 'description': 'Detect multi-network setups without proper routing infrastructure',
+                'category': 'network-topology',
+                'single_check': True  # Returns issues for one type only
+            },
+            'network-loops': {
+                'function': check_network_loops,
+                'description': 'Detect circular routing dependencies that can cause broadcast storms',
+                'category': 'network-topology',
+                'single_check': True  # Returns issues for one type only
+            },
+            'subnet-mismatches': {
+                'function': check_subnet_mismatches,
+                'description': 'Detect devices with IP addresses outside their configured subnet ranges',
                 'category': 'network-topology',
                 'single_check': True  # Returns issues for one type only
             },

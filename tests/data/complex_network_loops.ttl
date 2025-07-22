@@ -1,0 +1,18 @@
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+
+# 3-network loop: A -> B -> C -> A
+<bacnet://router/2001> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/3000> ;
+    ns1:serves-network <bacnet://network/4000> .
+
+<bacnet://router/2002> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/4000> ;
+    ns1:serves-network <bacnet://network/5000> .
+
+<bacnet://router/2003> a ns1:Router ;
+    ns1:device-on-network <bacnet://network/5000> ;
+    ns1:serves-network <bacnet://network/3000> .
+
+<bacnet://network/3000> a ns1:BACnetNetwork .
+<bacnet://network/4000> a ns1:BACnetNetwork .
+<bacnet://network/5000> a ns1:BACnetNetwork .
