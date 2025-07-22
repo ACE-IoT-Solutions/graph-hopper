@@ -17,6 +17,8 @@ from .orphaned_devices import check_orphaned_devices
 from .invalid_device_ranges import check_invalid_device_ranges
 from .device_address_conflicts import check_device_address_conflicts
 from .missing_vendor_ids import check_missing_vendor_ids
+from .unreachable_networks import check_unreachable_networks
+from .missing_routers import check_missing_routers
 
 
 class CheckRegistry:
@@ -53,6 +55,18 @@ class CheckRegistry:
                 'function': check_missing_vendor_ids,
                 'description': 'Detect devices without vendor identification or invalid vendor formats',
                 'category': 'device-validation',
+                'single_check': True  # Returns issues for one type only
+            },
+            'unreachable-networks': {
+                'function': check_unreachable_networks,
+                'description': 'Detect networks isolated without routing paths to other networks',
+                'category': 'network-topology',
+                'single_check': True  # Returns issues for one type only
+            },
+            'missing-routers': {
+                'function': check_missing_routers,
+                'description': 'Detect multi-network setups without proper routing infrastructure',
+                'category': 'network-topology',
                 'single_check': True  # Returns issues for one type only
             },
             'duplicate-network': {

@@ -89,6 +89,32 @@ def format_human_readable(issues: List[Dict[str, Any]], issue_type: str, verbose
             if verbose and 'verbose_description' in issue:
                 output.append(f"   Details: {issue['verbose_description']}")
             output.append("")
+        elif issue_type == 'unreachable-networks':
+            isolation_type = issue.get('isolation_type', 'unknown')
+            if isolation_type == 'isolated':
+                output.append(f"{i}. Isolated network: {issue['network_name']} (no routing connections)")
+            else:
+                reachable = issue.get('reachable_networks', 0)
+                total = issue.get('total_networks', 0)
+                unreachable = total - reachable - 1  # Exclude self
+                output.append(f"{i}. Partially isolated network: {issue['network_name']} (can reach {reachable}/{total-1} other networks)")
+                output.append(f"   Cannot reach: {unreachable} networks")
+            output.append(f"   Network URI: {issue['network']}")
+            output.append(f"   Problem: {issue['description']}")
+            if verbose and 'verbose_description' in issue:
+                output.append(f"   Details: {issue['verbose_description']}")
+            output.append("")
+        elif issue_type == 'missing-routers':
+            output.append(f"{i}. Missing routing infrastructure: {len(issue['isolated_networks'])} networks lack router connections")
+            output.append(f"   Total networks: {issue['total_networks']}")
+            output.append(f"   Networks with routing: {issue['routed_networks']}")
+            output.append("   Networks without routing:")
+            for network in issue['isolated_networks']:
+                output.append(f"     - {network['network_label']} ({network['network_uri']})")
+            output.append(f"   Problem: {issue['description']}")
+            if verbose and 'verbose_details' in issue:
+                output.append(f"   Details: {issue['verbose_details']}")
+            output.append("")
     
     return "\n".join(output)
 
