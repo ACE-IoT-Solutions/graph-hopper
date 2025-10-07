@@ -1,0 +1,313 @@
+@prefix bacnet: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# MSTP Network - Should trigger warning at 15+ devices
+<http://example.com/network/mstp-warning> a bacnet:BACnetNetwork ;
+    rdfs:label "MSTP Network Warning Test" .
+
+# Add 20 MSTP devices (exceeds warning threshold of 15)
+<http://example.com/device/mstp1> a bacnet:Device ;
+    bacnet:device-instance 1 ;
+    bacnet:address "1" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 1" .
+
+<http://example.com/device/mstp2> a bacnet:Device ;
+    bacnet:device-instance 2 ;
+    bacnet:address "2" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 2" .
+
+<http://example.com/device/mstp3> a bacnet:Device ;
+    bacnet:device-instance 3 ;
+    bacnet:address "3" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 3" .
+
+<http://example.com/device/mstp4> a bacnet:Device ;
+    bacnet:device-instance 4 ;
+    bacnet:address "4" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 4" .
+
+<http://example.com/device/mstp5> a bacnet:Device ;
+    bacnet:device-instance 5 ;
+    bacnet:address "5" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 5" .
+
+<http://example.com/device/mstp6> a bacnet:Device ;
+    bacnet:device-instance 6 ;
+    bacnet:address "6" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 6" .
+
+<http://example.com/device/mstp7> a bacnet:Device ;
+    bacnet:device-instance 7 ;
+    bacnet:address "7" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 7" .
+
+<http://example.com/device/mstp8> a bacnet:Device ;
+    bacnet:device-instance 8 ;
+    bacnet:address "8" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 8" .
+
+<http://example.com/device/mstp9> a bacnet:Device ;
+    bacnet:device-instance 9 ;
+    bacnet:address "9" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 9" .
+
+<http://example.com/device/mstp10> a bacnet:Device ;
+    bacnet:device-instance 10 ;
+    bacnet:address "10" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 10" .
+
+<http://example.com/device/mstp11> a bacnet:Device ;
+    bacnet:device-instance 11 ;
+    bacnet:address "11" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 11" .
+
+<http://example.com/device/mstp12> a bacnet:Device ;
+    bacnet:device-instance 12 ;
+    bacnet:address "12" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 12" .
+
+<http://example.com/device/mstp13> a bacnet:Device ;
+    bacnet:device-instance 13 ;
+    bacnet:address "13" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 13" .
+
+<http://example.com/device/mstp14> a bacnet:Device ;
+    bacnet:device-instance 14 ;
+    bacnet:address "14" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 14" .
+
+<http://example.com/device/mstp15> a bacnet:Device ;
+    bacnet:device-instance 15 ;
+    bacnet:address "15" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 15" .
+
+<http://example.com/device/mstp16> a bacnet:Device ;
+    bacnet:device-instance 16 ;
+    bacnet:address "16" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 16" .
+
+<http://example.com/device/mstp17> a bacnet:Device ;
+    bacnet:device-instance 17 ;
+    bacnet:address "17" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 17" .
+
+<http://example.com/device/mstp18> a bacnet:Device ;
+    bacnet:device-instance 18 ;
+    bacnet:address "18" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 18" .
+
+<http://example.com/device/mstp19> a bacnet:Device ;
+    bacnet:device-instance 19 ;
+    bacnet:address "19" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 19" .
+
+<http://example.com/device/mstp20> a bacnet:Device ;
+    bacnet:device-instance 20 ;
+    bacnet:address "20" ;
+    bacnet:device-on-network <http://example.com/network/mstp-warning> ;
+    rdfs:label "MSTP Device 20" .
+
+# MSTP Network - Critical level (35 devices, exceeds critical threshold of 30)
+<http://example.com/network/mstp-critical> a bacnet:BACnetNetwork ;
+    rdfs:label "MSTP Network Critical Test" .
+
+# Add 35 MSTP devices (exceeds critical threshold of 30)
+<http://example.com/device/mstp_c1> a bacnet:Device ;
+    bacnet:device-instance 101 ;
+    bacnet:address "1" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 1" .
+
+<http://example.com/device/mstp_c2> a bacnet:Device ;
+    bacnet:device-instance 102 ;
+    bacnet:address "2" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 2" .
+
+<http://example.com/device/mstp_c3> a bacnet:Device ;
+    bacnet:device-instance 103 ;
+    bacnet:address "3" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 3" .
+
+<http://example.com/device/mstp_c4> a bacnet:Device ;
+    bacnet:device-instance 104 ;
+    bacnet:address "4" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 4" .
+
+<http://example.com/device/mstp_c5> a bacnet:Device ;
+    bacnet:device-instance 105 ;
+    bacnet:address "5" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 5" .
+
+<http://example.com/device/mstp_c6> a bacnet:Device ;
+    bacnet:device-instance 106 ;
+    bacnet:address "6" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 6" .
+<http://example.com/device/mstp_c7> a bacnet:Device ;
+    bacnet:device-instance 107 ;
+    bacnet:address "7" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 7" .
+<http://example.com/device/mstp_c8> a bacnet:Device ;
+    bacnet:device-instance 108 ;
+    bacnet:address "8" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 8" .
+<http://example.com/device/mstp_c9> a bacnet:Device ;
+    bacnet:device-instance 109 ;
+    bacnet:address "9" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 9" .
+<http://example.com/device/mstp_c10> a bacnet:Device ;
+    bacnet:device-instance 110 ;
+    bacnet:address "10" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 10" .
+<http://example.com/device/mstp_c11> a bacnet:Device ;
+    bacnet:device-instance 111 ;
+    bacnet:address "11" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 11" .
+<http://example.com/device/mstp_c12> a bacnet:Device ;
+    bacnet:device-instance 112 ;
+    bacnet:address "12" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 12" .
+<http://example.com/device/mstp_c13> a bacnet:Device ;
+    bacnet:device-instance 113 ;
+    bacnet:address "13" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 13" .
+<http://example.com/device/mstp_c14> a bacnet:Device ;
+    bacnet:device-instance 114 ;
+    bacnet:address "14" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 14" .
+<http://example.com/device/mstp_c15> a bacnet:Device ;
+    bacnet:device-instance 115 ;
+    bacnet:address "15" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 15" .
+<http://example.com/device/mstp_c16> a bacnet:Device ;
+    bacnet:device-instance 116 ;
+    bacnet:address "16" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 16" .
+<http://example.com/device/mstp_c17> a bacnet:Device ;
+    bacnet:device-instance 117 ;
+    bacnet:address "17" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 17" .
+<http://example.com/device/mstp_c18> a bacnet:Device ;
+    bacnet:device-instance 118 ;
+    bacnet:address "18" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 18" .
+<http://example.com/device/mstp_c19> a bacnet:Device ;
+    bacnet:device-instance 119 ;
+    bacnet:address "19" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 19" .
+<http://example.com/device/mstp_c20> a bacnet:Device ;
+    bacnet:device-instance 120 ;
+    bacnet:address "20" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 20" .
+<http://example.com/device/mstp_c21> a bacnet:Device ;
+    bacnet:device-instance 121 ;
+    bacnet:address "21" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 21" .
+<http://example.com/device/mstp_c22> a bacnet:Device ;
+    bacnet:device-instance 122 ;
+    bacnet:address "22" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 22" .
+<http://example.com/device/mstp_c23> a bacnet:Device ;
+    bacnet:device-instance 123 ;
+    bacnet:address "23" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 23" .
+<http://example.com/device/mstp_c24> a bacnet:Device ;
+    bacnet:device-instance 124 ;
+    bacnet:address "24" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 24" .
+<http://example.com/device/mstp_c25> a bacnet:Device ;
+    bacnet:device-instance 125 ;
+    bacnet:address "25" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 25" .
+<http://example.com/device/mstp_c26> a bacnet:Device ;
+    bacnet:device-instance 126 ;
+    bacnet:address "26" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 26" .
+<http://example.com/device/mstp_c27> a bacnet:Device ;
+    bacnet:device-instance 127 ;
+    bacnet:address "27" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 27" .
+<http://example.com/device/mstp_c28> a bacnet:Device ;
+    bacnet:device-instance 128 ;
+    bacnet:address "28" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 28" .
+<http://example.com/device/mstp_c29> a bacnet:Device ;
+    bacnet:device-instance 129 ;
+    bacnet:address "29" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 29" .
+<http://example.com/device/mstp_c30> a bacnet:Device ;
+    bacnet:device-instance 130 ;
+    bacnet:address "30" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 30" .
+<http://example.com/device/mstp_c31> a bacnet:Device ;
+    bacnet:device-instance 131 ;
+    bacnet:address "31" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 31" .
+<http://example.com/device/mstp_c32> a bacnet:Device ;
+    bacnet:device-instance 132 ;
+    bacnet:address "32" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 32" .
+<http://example.com/device/mstp_c33> a bacnet:Device ;
+    bacnet:device-instance 133 ;
+    bacnet:address "33" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 33" .
+<http://example.com/device/mstp_c34> a bacnet:Device ;
+    bacnet:device-instance 134 ;
+    bacnet:address "34" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 34" .
+<http://example.com/device/mstp_c35> a bacnet:Device ;
+    bacnet:device-instance 135 ;
+    bacnet:address "35" ;
+    bacnet:device-on-network <http://example.com/network/mstp-critical> ;
+    rdfs:label "Critical MSTP Device 35" .

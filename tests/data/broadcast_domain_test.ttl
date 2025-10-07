@@ -1,0 +1,206 @@
+# Test data for broadcast domain analysis
+@prefix bacnet: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+# Large IP network with many subnets and devices (warning case)
+<Network_100> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "IP Network 100" .
+
+<Subnet_192.168.1.0> rdf:type bacnet:Subnet ;
+    rdfs:label "192.168.1.0/24" ;
+    bacnet:subnet-of-network <Network_100> .
+
+<Subnet_192.168.2.0> rdf:type bacnet:Subnet ;
+    rdfs:label "192.168.2.0/24" ;
+    bacnet:subnet-of-network <Network_100> .
+
+<Subnet_192.168.3.0> rdf:type bacnet:Subnet ;
+    rdfs:label "192.168.3.0/24" ;
+    bacnet:subnet-of-network <Network_100> .
+
+<Subnet_192.168.4.0> rdf:type bacnet:Subnet ;
+    rdfs:label "192.168.4.0/24" ;
+    bacnet:subnet-of-network <Network_100> .
+
+<Subnet_192.168.5.0> rdf:type bacnet:Subnet ;
+    rdfs:label "192.168.5.0/24" ;
+    bacnet:subnet-of-network <Network_100> .
+
+<Subnet_192.168.6.0> rdf:type bacnet:Subnet ;
+    rdfs:label "192.168.6.0/24" ;
+    bacnet:subnet-of-network <Network_100> .
+
+<Subnet_192.168.7.0> rdf:type bacnet:Subnet ;
+    rdfs:label "192.168.7.0/24" ;
+    bacnet:subnet-of-network <Network_100> .
+
+# Many devices on the IP network (250 devices - warning threshold)
+<Device_100_1> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Controller 1" ;
+    bacnet:device-on-network <Network_100> ;
+    bacnet:address "192.168.1.10:47808" .
+
+<Device_100_2> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Controller 2" ;
+    bacnet:device-on-network <Network_100> ;
+    bacnet:address "192.168.1.11:47808" .
+
+<Device_100_3> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Controller 3" ;
+    bacnet:device-on-network <Network_100> ;
+    bacnet:address "192.168.1.12:47808" .
+
+# Add many more devices to reach warning threshold...
+<Device_100_100> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Controller 100" ;
+    bacnet:device-on-network <Network_100> ;
+    bacnet:address "192.168.2.10:47808" .
+
+<Device_100_150> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Controller 150" ;
+    bacnet:device-on-network <Network_100> ;
+    bacnet:address "192.168.3.10:47808" .
+
+<Device_100_200> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Controller 200" ;
+    bacnet:device-on-network <Network_100> ;
+    bacnet:address "192.168.4.10:47808" .
+
+<Device_100_250> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Controller 250" ;
+    bacnet:device-on-network <Network_100> ;
+    bacnet:address "192.168.5.10:47808" .
+
+# Network without BBMD despite complex structure
+# Network 200: Critical case with too many subnets and devices
+<Network_200> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "IP Network 200 - Critical Size" .
+
+# 12 subnets (exceeds critical threshold of 10)
+<Subnet_10.0.1.0> rdf:type bacnet:Subnet ;
+    rdfs:label "10.0.1.0/24" ;
+    bacnet:subnet-of-network <Network_200> .
+
+<Subnet_10.0.2.0> rdf:type bacnet:Subnet ;
+    rdfs:label "10.0.2.0/24" ;
+    bacnet:subnet-of-network <Network_200> .
+
+<Subnet_10.0.3.0> rdf:type bacnet:Subnet ;
+    rdfs:label "10.0.3.0/24" ;
+    bacnet:subnet-of-network <Network_200> .
+
+<Subnet_10.0.4.0> rdf:type bacnet:Subnet ;
+    rdfs:label "10.0.4.0/24" ;
+    bacnet:subnet-of-network <Network_200> .
+
+<Subnet_10.0.5.0> rdf:type bacnet:Subnet ;
+    rdfs:label "10.0.5.0/24" ;
+    bacnet:subnet-of-network <Network_200> .
+
+<Subnet_10.0.6.0> rdf:type bacnet:Subnet ;
+    rdfs:label "10.0.6.0/24" ;
+    bacnet:subnet-of-network <Network_200> .
+
+<Subnet_10.0.7.0> rdf:type bacnet:Subnet ;
+    rdfs:label "10.0.7.0/24" ;
+    bacnet:subnet-of-network <Network_200> .
+
+<Subnet_10.0.8.0> rdf:type bacnet:Subnet ;
+    rdfs:label "10.0.8.0/24" ;
+    bacnet:subnet-of-network <Network_200> .
+
+<Subnet_10.0.9.0> rdf:type bacnet:Subnet ;
+    rdfs:label "10.0.9.0/24" ;
+    bacnet:subnet-of-network <Network_200> .
+
+<Subnet_10.0.10.0> rdf:type bacnet:Subnet ;
+    rdfs:label "10.0.10.0/24" ;
+    bacnet:subnet-of-network <Network_200> .
+
+<Subnet_10.0.11.0> rdf:type bacnet:Subnet ;
+    rdfs:label "10.0.11.0/24" ;
+    bacnet:subnet-of-network <Network_200> .
+
+<Subnet_10.0.12.0> rdf:type bacnet:Subnet ;
+    rdfs:label "10.0.12.0/24" ;
+    bacnet:subnet-of-network <Network_200> .
+
+# 600 devices (exceeds critical threshold of 500)
+<Device_200_1> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Critical Network Device 1" ;
+    bacnet:device-on-network <Network_200> ;
+    bacnet:address "10.0.1.10:47808" .
+
+<Device_200_300> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Critical Network Device 300" ;
+    bacnet:device-on-network <Network_200> ;
+    bacnet:address "10.0.6.10:47808" .
+
+<Device_200_600> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Critical Network Device 600" ;
+    bacnet:device-on-network <Network_200> ;
+    bacnet:address "10.0.12.10:47808" .
+
+# Network 300: Has BBMD properly configured (should not trigger missing BBMD warning)
+<Network_300> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "IP Network 300 - Properly Managed" .
+
+<Subnet_172.16.1.0> rdf:type bacnet:Subnet ;
+    rdfs:label "172.16.1.0/24" ;
+    bacnet:subnet-of-network <Network_300> .
+
+<Subnet_172.16.2.0> rdf:type bacnet:Subnet ;
+    rdfs:label "172.16.2.0/24" ;
+    bacnet:subnet-of-network <Network_300> .
+
+<Subnet_172.16.3.0> rdf:type bacnet:Subnet ;
+    rdfs:label "172.16.3.0/24" ;
+    bacnet:subnet-of-network <Network_300> .
+
+<BBMD_300_1> rdf:type bacnet:BBMD ;
+    rdfs:label "BBMD on 172.16.1.0" ;
+    bacnet:bbmd-on-subnet <Subnet_172.16.1.0> .
+
+# Moderate number of devices (120 - above threshold but with BBMD)
+<Device_300_1> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Managed Network Device 1" ;
+    bacnet:device-on-network <Network_300> ;
+    bacnet:address "172.16.1.10:47808" .
+
+<Device_300_60> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Managed Network Device 60" ;
+    bacnet:device-on-network <Network_300> ;
+    bacnet:address "172.16.2.10:47808" .
+
+<Device_300_120> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Managed Network Device 120" ;
+    bacnet:device-on-network <Network_300> ;
+    bacnet:address "172.16.3.10:47808" .
+
+# Network 400: Overlapping domain test
+<Network_400> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "IP Network 400 - Overlap Case" .
+
+<Subnet_192.168.1.0_dup> rdf:type bacnet:Subnet ;
+    rdfs:label "192.168.1.0/24 - Duplicate Range" ;
+    bacnet:subnet-of-network <Network_400> .
+
+<Device_400_1> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Overlapping Network Device" ;
+    bacnet:device-on-network <Network_400> ;
+    bacnet:address "192.168.1.20:47808" .
+
+# Small MSTP network (should not trigger any broadcast domain warnings)
+<Network_500> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "MSTP Network 500 - Local" .
+
+<Device_500_1> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "MSTP Device 1" ;
+    bacnet:device-on-network <Network_500> ;
+    bacnet:address "5" .
+
+<Device_500_2> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "MSTP Device 2" ;
+    bacnet:device-on-network <Network_500> ;
+    bacnet:address "6" .

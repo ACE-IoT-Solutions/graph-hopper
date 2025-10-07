@@ -1,4 +1,3 @@
-import pytest
 from rdflib import Graph
 from graph_hopper.graph_checks.unreachable_networks import check_unreachable_networks
 

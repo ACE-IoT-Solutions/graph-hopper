@@ -1,0 +1,1335 @@
+@prefix bacnet: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Network 1 - Normal size (5 devices)
+<http://example.com/network/mstp-1> a bacnet:BACnetNetwork ;
+    rdfs:label "MSTP Network 1" .
+
+<http://example.com/device/d1> a bacnet:Device ;
+    bacnet:device-instance 1 ;
+    bacnet:address "1" ;
+    bacnet:device-on-network <http://example.com/network/mstp-1> ;
+    rdfs:label "Device 1" .
+
+<http://example.com/device/d2> a bacnet:Device ;
+    bacnet:device-instance 2 ;
+    bacnet:address "2" ;
+    bacnet:device-on-network <http://example.com/network/mstp-1> ;
+    rdfs:label "Device 2" .
+
+<http://example.com/device/d3> a bacnet:Device ;
+    bacnet:device-instance 3 ;
+    bacnet:address "3" ;
+    bacnet:device-on-network <http://example.com/network/mstp-1> ;
+    rdfs:label "Device 3" .
+
+<http://example.com/device/d4> a bacnet:Device ;
+    bacnet:device-instance 4 ;
+    bacnet:address "4" ;
+    bacnet:device-on-network <http://example.com/network/mstp-1> ;
+    rdfs:label "Device 4" .
+
+<http://example.com/device/d5> a bacnet:Device ;
+    bacnet:device-instance 5 ;
+    bacnet:address "5" ;
+    bacnet:device-on-network <http://example.com/network/mstp-1> ;
+    rdfs:label "Device 5" .
+
+# Network 2 - Warning size (65 devices)
+<http://example.com/network/ip-2> a bacnet:BACnetNetwork ;
+    rdfs:label "IP Network 2" .
+
+<http://example.com/device/w1> a bacnet:Device ;
+    bacnet:device-instance 101 ;
+    bacnet:address "192.168.2.101" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 1" .
+
+<http://example.com/device/w2> a bacnet:Device ;
+    bacnet:device-instance 102 ;
+    bacnet:address "192.168.2.102" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 2" .
+
+<http://example.com/device/w3> a bacnet:Device ;
+    bacnet:device-instance 103 ;
+    bacnet:address "192.168.2.103" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 3" .
+
+<http://example.com/device/w4> a bacnet:Device ;
+    bacnet:device-instance 104 ;
+    bacnet:address "192.168.2.104" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 4" .
+
+<http://example.com/device/w5> a bacnet:Device ;
+    bacnet:device-instance 105 ;
+    bacnet:address "192.168.2.105" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 5" .
+
+<http://example.com/device/w6> a bacnet:Device ;
+    bacnet:device-instance 106 ;
+    bacnet:address "192.168.2.106" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 6" .
+
+<http://example.com/device/w7> a bacnet:Device ;
+    bacnet:device-instance 107 ;
+    bacnet:address "192.168.2.107" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 7" .
+
+<http://example.com/device/w8> a bacnet:Device ;
+    bacnet:device-instance 108 ;
+    bacnet:address "192.168.2.108" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 8" .
+
+<http://example.com/device/w9> a bacnet:Device ;
+    bacnet:device-instance 109 ;
+    bacnet:address "192.168.2.109" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 9" .
+
+<http://example.com/device/w10> a bacnet:Device ;
+    bacnet:device-instance 110 ;
+    bacnet:address "192.168.2.110" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 10" .
+
+<http://example.com/device/w11> a bacnet:Device ;
+    bacnet:device-instance 111 ;
+    bacnet:address "192.168.2.111" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 11" .
+
+<http://example.com/device/w12> a bacnet:Device ;
+    bacnet:device-instance 112 ;
+    bacnet:address "192.168.2.112" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 12" .
+
+<http://example.com/device/w13> a bacnet:Device ;
+    bacnet:device-instance 113 ;
+    bacnet:address "192.168.2.113" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 13" .
+
+<http://example.com/device/w14> a bacnet:Device ;
+    bacnet:device-instance 114 ;
+    bacnet:address "192.168.2.114" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 14" .
+
+<http://example.com/device/w15> a bacnet:Device ;
+    bacnet:device-instance 115 ;
+    bacnet:address "192.168.2.115" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 15" .
+
+<http://example.com/device/w16> a bacnet:Device ;
+    bacnet:device-instance 116 ;
+    bacnet:address "192.168.2.116" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 16" .
+
+<http://example.com/device/w17> a bacnet:Device ;
+    bacnet:device-instance 117 ;
+    bacnet:address "192.168.2.117" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 17" .
+
+<http://example.com/device/w18> a bacnet:Device ;
+    bacnet:device-instance 118 ;
+    bacnet:address "192.168.2.118" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 18" .
+
+<http://example.com/device/w19> a bacnet:Device ;
+    bacnet:device-instance 119 ;
+    bacnet:address "192.168.2.119" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 19" .
+
+<http://example.com/device/w20> a bacnet:Device ;
+    bacnet:device-instance 120 ;
+    bacnet:address "192.168.2.120" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 20" .
+
+<http://example.com/device/w21> a bacnet:Device ;
+    bacnet:device-instance 121 ;
+    bacnet:address "192.168.2.121" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 21" .
+
+<http://example.com/device/w22> a bacnet:Device ;
+    bacnet:device-instance 122 ;
+    bacnet:address "192.168.2.122" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 22" .
+
+<http://example.com/device/w23> a bacnet:Device ;
+    bacnet:device-instance 123 ;
+    bacnet:address "192.168.2.123" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 23" .
+
+<http://example.com/device/w24> a bacnet:Device ;
+    bacnet:device-instance 124 ;
+    bacnet:address "192.168.2.124" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 24" .
+
+<http://example.com/device/w25> a bacnet:Device ;
+    bacnet:device-instance 125 ;
+    bacnet:address "192.168.2.125" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 25" .
+
+<http://example.com/device/w26> a bacnet:Device ;
+    bacnet:device-instance 126 ;
+    bacnet:address "192.168.2.126" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 26" .
+
+<http://example.com/device/w27> a bacnet:Device ;
+    bacnet:device-instance 127 ;
+    bacnet:address "192.168.2.127" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 27" .
+
+<http://example.com/device/w28> a bacnet:Device ;
+    bacnet:device-instance 128 ;
+    bacnet:address "192.168.2.128" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 28" .
+
+<http://example.com/device/w29> a bacnet:Device ;
+    bacnet:device-instance 129 ;
+    bacnet:address "192.168.2.129" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 29" .
+
+<http://example.com/device/w30> a bacnet:Device ;
+    bacnet:device-instance 130 ;
+    bacnet:address "192.168.2.130" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 30" .
+
+<http://example.com/device/w31> a bacnet:Device ;
+    bacnet:device-instance 131 ;
+    bacnet:address "192.168.2.131" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 31" .
+
+<http://example.com/device/w32> a bacnet:Device ;
+    bacnet:device-instance 132 ;
+    bacnet:address "192.168.2.132" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 32" .
+
+<http://example.com/device/w33> a bacnet:Device ;
+    bacnet:device-instance 133 ;
+    bacnet:address "192.168.2.133" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 33" .
+
+<http://example.com/device/w34> a bacnet:Device ;
+    bacnet:device-instance 134 ;
+    bacnet:address "192.168.2.134" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 34" .
+
+<http://example.com/device/w35> a bacnet:Device ;
+    bacnet:device-instance 135 ;
+    bacnet:address "192.168.2.135" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 35" .
+
+<http://example.com/device/w36> a bacnet:Device ;
+    bacnet:device-instance 136 ;
+    bacnet:address "192.168.2.136" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 36" .
+
+<http://example.com/device/w37> a bacnet:Device ;
+    bacnet:device-instance 137 ;
+    bacnet:address "192.168.2.137" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 37" .
+
+<http://example.com/device/w38> a bacnet:Device ;
+    bacnet:device-instance 138 ;
+    bacnet:address "192.168.2.138" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 38" .
+
+<http://example.com/device/w39> a bacnet:Device ;
+    bacnet:device-instance 139 ;
+    bacnet:address "192.168.2.139" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 39" .
+
+<http://example.com/device/w40> a bacnet:Device ;
+    bacnet:device-instance 140 ;
+    bacnet:address "192.168.2.140" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 40" .
+
+<http://example.com/device/w41> a bacnet:Device ;
+    bacnet:device-instance 141 ;
+    bacnet:address "192.168.2.141" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 41" .
+
+<http://example.com/device/w42> a bacnet:Device ;
+    bacnet:device-instance 142 ;
+    bacnet:address "192.168.2.142" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 42" .
+
+<http://example.com/device/w43> a bacnet:Device ;
+    bacnet:device-instance 143 ;
+    bacnet:address "192.168.2.143" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 43" .
+
+<http://example.com/device/w44> a bacnet:Device ;
+    bacnet:device-instance 144 ;
+    bacnet:address "192.168.2.144" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 44" .
+
+<http://example.com/device/w45> a bacnet:Device ;
+    bacnet:device-instance 145 ;
+    bacnet:address "192.168.2.145" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 45" .
+
+<http://example.com/device/w46> a bacnet:Device ;
+    bacnet:device-instance 146 ;
+    bacnet:address "192.168.2.146" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 46" .
+
+<http://example.com/device/w47> a bacnet:Device ;
+    bacnet:device-instance 147 ;
+    bacnet:address "192.168.2.147" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 47" .
+
+<http://example.com/device/w48> a bacnet:Device ;
+    bacnet:device-instance 148 ;
+    bacnet:address "192.168.2.148" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 48" .
+
+<http://example.com/device/w49> a bacnet:Device ;
+    bacnet:device-instance 149 ;
+    bacnet:address "192.168.2.149" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 49" .
+
+<http://example.com/device/w50> a bacnet:Device ;
+    bacnet:device-instance 150 ;
+    bacnet:address "192.168.2.150" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 50" .
+
+<http://example.com/device/w51> a bacnet:Device ;
+    bacnet:device-instance 151 ;
+    bacnet:address "192.168.2.151" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 51" .
+
+<http://example.com/device/w52> a bacnet:Device ;
+    bacnet:device-instance 152 ;
+    bacnet:address "192.168.2.152" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 52" .
+
+<http://example.com/device/w53> a bacnet:Device ;
+    bacnet:device-instance 153 ;
+    bacnet:address "192.168.2.153" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 53" .
+
+<http://example.com/device/w54> a bacnet:Device ;
+    bacnet:device-instance 154 ;
+    bacnet:address "192.168.2.154" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 54" .
+
+<http://example.com/device/w55> a bacnet:Device ;
+    bacnet:device-instance 155 ;
+    bacnet:address "192.168.2.155" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 55" .
+
+<http://example.com/device/w56> a bacnet:Device ;
+    bacnet:device-instance 156 ;
+    bacnet:address "192.168.2.156" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 56" .
+
+<http://example.com/device/w57> a bacnet:Device ;
+    bacnet:device-instance 157 ;
+    bacnet:address "192.168.2.157" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 57" .
+
+<http://example.com/device/w58> a bacnet:Device ;
+    bacnet:device-instance 158 ;
+    bacnet:address "192.168.2.158" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 58" .
+
+<http://example.com/device/w59> a bacnet:Device ;
+    bacnet:device-instance 159 ;
+    bacnet:address "192.168.2.159" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 59" .
+
+<http://example.com/device/w60> a bacnet:Device ;
+    bacnet:device-instance 160 ;
+    bacnet:address "192.168.2.160" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 60" .
+
+<http://example.com/device/w61> a bacnet:Device ;
+    bacnet:device-instance 161 ;
+    bacnet:address "192.168.2.161" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 61" .
+
+<http://example.com/device/w62> a bacnet:Device ;
+    bacnet:device-instance 162 ;
+    bacnet:address "192.168.2.162" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 62" .
+
+<http://example.com/device/w63> a bacnet:Device ;
+    bacnet:device-instance 163 ;
+    bacnet:address "192.168.2.163" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 63" .
+
+<http://example.com/device/w64> a bacnet:Device ;
+    bacnet:device-instance 164 ;
+    bacnet:address "192.168.2.164" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 64" .
+
+<http://example.com/device/w65> a bacnet:Device ;
+    bacnet:device-instance 165 ;
+    bacnet:address "192.168.2.165" ;
+    bacnet:device-on-network <http://example.com/network/ip-2> ;
+    rdfs:label "Warning Device 65" .
+
+# Network 3 - Critical size (150 devices)
+<http://example.com/network/ip-3> a bacnet:BACnetNetwork ;
+    rdfs:label "IP Network 3" .
+
+<http://example.com/device/c1> a bacnet:Device ;
+    bacnet:device-instance 201 ;
+    bacnet:address "192.168.3.201" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 1" .
+
+<http://example.com/device/c2> a bacnet:Device ;
+    bacnet:device-instance 202 ;
+    bacnet:address "192.168.3.202" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 2" .
+
+<http://example.com/device/c3> a bacnet:Device ;
+    bacnet:device-instance 203 ;
+    bacnet:address "192.168.3.203" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 3" .
+
+<http://example.com/device/c4> a bacnet:Device ;
+    bacnet:device-instance 204 ;
+    bacnet:address "192.168.3.204" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 4" .
+
+<http://example.com/device/c5> a bacnet:Device ;
+    bacnet:device-instance 205 ;
+    bacnet:address "192.168.3.205" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 5" .
+
+<http://example.com/device/c6> a bacnet:Device ;
+    bacnet:device-instance 206 ;
+    bacnet:address "192.168.3.206" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 6" .
+
+<http://example.com/device/c7> a bacnet:Device ;
+    bacnet:device-instance 207 ;
+    bacnet:address "192.168.3.207" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 7" .
+
+<http://example.com/device/c8> a bacnet:Device ;
+    bacnet:device-instance 208 ;
+    bacnet:address "192.168.3.208" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 8" .
+
+<http://example.com/device/c9> a bacnet:Device ;
+    bacnet:device-instance 209 ;
+    bacnet:address "192.168.3.209" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 9" .
+
+<http://example.com/device/c10> a bacnet:Device ;
+    bacnet:device-instance 210 ;
+    bacnet:address "192.168.3.210" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 10" .
+
+<http://example.com/device/c11> a bacnet:Device ;
+    bacnet:device-instance 211 ;
+    bacnet:address "192.168.3.211" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 11" .
+
+<http://example.com/device/c12> a bacnet:Device ;
+    bacnet:device-instance 212 ;
+    bacnet:address "192.168.3.212" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 12" .
+
+<http://example.com/device/c13> a bacnet:Device ;
+    bacnet:device-instance 213 ;
+    bacnet:address "192.168.3.213" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 13" .
+
+<http://example.com/device/c14> a bacnet:Device ;
+    bacnet:device-instance 214 ;
+    bacnet:address "192.168.3.214" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 14" .
+
+<http://example.com/device/c15> a bacnet:Device ;
+    bacnet:device-instance 215 ;
+    bacnet:address "192.168.3.215" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 15" .
+
+<http://example.com/device/c16> a bacnet:Device ;
+    bacnet:device-instance 216 ;
+    bacnet:address "192.168.3.216" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 16" .
+
+<http://example.com/device/c17> a bacnet:Device ;
+    bacnet:device-instance 217 ;
+    bacnet:address "192.168.3.217" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 17" .
+
+<http://example.com/device/c18> a bacnet:Device ;
+    bacnet:device-instance 218 ;
+    bacnet:address "192.168.3.218" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 18" .
+
+<http://example.com/device/c19> a bacnet:Device ;
+    bacnet:device-instance 219 ;
+    bacnet:address "192.168.3.219" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 19" .
+
+<http://example.com/device/c20> a bacnet:Device ;
+    bacnet:device-instance 220 ;
+    bacnet:address "192.168.3.220" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 20" .
+
+<http://example.com/device/c21> a bacnet:Device ;
+    bacnet:device-instance 221 ;
+    bacnet:address "192.168.3.221" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 21" .
+
+<http://example.com/device/c22> a bacnet:Device ;
+    bacnet:device-instance 222 ;
+    bacnet:address "192.168.3.222" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 22" .
+
+<http://example.com/device/c23> a bacnet:Device ;
+    bacnet:device-instance 223 ;
+    bacnet:address "192.168.3.223" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 23" .
+
+<http://example.com/device/c24> a bacnet:Device ;
+    bacnet:device-instance 224 ;
+    bacnet:address "192.168.3.224" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 24" .
+
+<http://example.com/device/c25> a bacnet:Device ;
+    bacnet:device-instance 225 ;
+    bacnet:address "192.168.3.225" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 25" .
+
+<http://example.com/device/c26> a bacnet:Device ;
+    bacnet:device-instance 226 ;
+    bacnet:address "192.168.3.226" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 26" .
+
+<http://example.com/device/c27> a bacnet:Device ;
+    bacnet:device-instance 227 ;
+    bacnet:address "192.168.3.227" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 27" .
+
+<http://example.com/device/c28> a bacnet:Device ;
+    bacnet:device-instance 228 ;
+    bacnet:address "192.168.3.228" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 28" .
+
+<http://example.com/device/c29> a bacnet:Device ;
+    bacnet:device-instance 229 ;
+    bacnet:address "192.168.3.229" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 29" .
+
+<http://example.com/device/c30> a bacnet:Device ;
+    bacnet:device-instance 230 ;
+    bacnet:address "192.168.3.230" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 30" .
+
+<http://example.com/device/c31> a bacnet:Device ;
+    bacnet:device-instance 231 ;
+    bacnet:address "192.168.3.231" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 31" .
+
+<http://example.com/device/c32> a bacnet:Device ;
+    bacnet:device-instance 232 ;
+    bacnet:address "192.168.3.232" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 32" .
+
+<http://example.com/device/c33> a bacnet:Device ;
+    bacnet:device-instance 233 ;
+    bacnet:address "192.168.3.233" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 33" .
+
+<http://example.com/device/c34> a bacnet:Device ;
+    bacnet:device-instance 234 ;
+    bacnet:address "192.168.3.234" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 34" .
+
+<http://example.com/device/c35> a bacnet:Device ;
+    bacnet:device-instance 235 ;
+    bacnet:address "192.168.3.235" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 35" .
+
+<http://example.com/device/c36> a bacnet:Device ;
+    bacnet:device-instance 236 ;
+    bacnet:address "192.168.3.236" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 36" .
+
+<http://example.com/device/c37> a bacnet:Device ;
+    bacnet:device-instance 237 ;
+    bacnet:address "192.168.3.237" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 37" .
+
+<http://example.com/device/c38> a bacnet:Device ;
+    bacnet:device-instance 238 ;
+    bacnet:address "192.168.3.238" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 38" .
+
+<http://example.com/device/c39> a bacnet:Device ;
+    bacnet:device-instance 239 ;
+    bacnet:address "192.168.3.239" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 39" .
+
+<http://example.com/device/c40> a bacnet:Device ;
+    bacnet:device-instance 240 ;
+    bacnet:address "192.168.3.240" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 40" .
+
+<http://example.com/device/c41> a bacnet:Device ;
+    bacnet:device-instance 241 ;
+    bacnet:address "192.168.3.241" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 41" .
+
+<http://example.com/device/c42> a bacnet:Device ;
+    bacnet:device-instance 242 ;
+    bacnet:address "192.168.3.242" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 42" .
+
+<http://example.com/device/c43> a bacnet:Device ;
+    bacnet:device-instance 243 ;
+    bacnet:address "192.168.3.243" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 43" .
+
+<http://example.com/device/c44> a bacnet:Device ;
+    bacnet:device-instance 244 ;
+    bacnet:address "192.168.3.244" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 44" .
+
+<http://example.com/device/c45> a bacnet:Device ;
+    bacnet:device-instance 245 ;
+    bacnet:address "192.168.3.245" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 45" .
+
+<http://example.com/device/c46> a bacnet:Device ;
+    bacnet:device-instance 246 ;
+    bacnet:address "192.168.3.246" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 46" .
+
+<http://example.com/device/c47> a bacnet:Device ;
+    bacnet:device-instance 247 ;
+    bacnet:address "192.168.3.247" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 47" .
+
+<http://example.com/device/c48> a bacnet:Device ;
+    bacnet:device-instance 248 ;
+    bacnet:address "192.168.3.248" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 48" .
+
+<http://example.com/device/c49> a bacnet:Device ;
+    bacnet:device-instance 249 ;
+    bacnet:address "192.168.3.249" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 49" .
+
+<http://example.com/device/c50> a bacnet:Device ;
+    bacnet:device-instance 250 ;
+    bacnet:address "192.168.3.250" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 50" .
+
+<http://example.com/device/c51> a bacnet:Device ;
+    bacnet:device-instance 251 ;
+    bacnet:address "192.168.3.251" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 51" .
+
+<http://example.com/device/c52> a bacnet:Device ;
+    bacnet:device-instance 252 ;
+    bacnet:address "192.168.3.252" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 52" .
+
+<http://example.com/device/c53> a bacnet:Device ;
+    bacnet:device-instance 253 ;
+    bacnet:address "192.168.3.253" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 53" .
+
+<http://example.com/device/c54> a bacnet:Device ;
+    bacnet:device-instance 254 ;
+    bacnet:address "192.168.3.254" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 54" .
+
+<http://example.com/device/c55> a bacnet:Device ;
+    bacnet:device-instance 255 ;
+    bacnet:address "192.168.3.255" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 55" .
+
+<http://example.com/device/c56> a bacnet:Device ;
+    bacnet:device-instance 256 ;
+    bacnet:address "192.168.3.256" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 56" .
+
+<http://example.com/device/c57> a bacnet:Device ;
+    bacnet:device-instance 257 ;
+    bacnet:address "192.168.3.257" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 57" .
+
+<http://example.com/device/c58> a bacnet:Device ;
+    bacnet:device-instance 258 ;
+    bacnet:address "192.168.3.258" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 58" .
+
+<http://example.com/device/c59> a bacnet:Device ;
+    bacnet:device-instance 259 ;
+    bacnet:address "192.168.3.259" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 59" .
+
+<http://example.com/device/c60> a bacnet:Device ;
+    bacnet:device-instance 260 ;
+    bacnet:address "192.168.3.260" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 60" .
+
+<http://example.com/device/c61> a bacnet:Device ;
+    bacnet:device-instance 261 ;
+    bacnet:address "192.168.3.261" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 61" .
+
+<http://example.com/device/c62> a bacnet:Device ;
+    bacnet:device-instance 262 ;
+    bacnet:address "192.168.3.262" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 62" .
+
+<http://example.com/device/c63> a bacnet:Device ;
+    bacnet:device-instance 263 ;
+    bacnet:address "192.168.3.263" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 63" .
+
+<http://example.com/device/c64> a bacnet:Device ;
+    bacnet:device-instance 264 ;
+    bacnet:address "192.168.3.264" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 64" .
+
+<http://example.com/device/c65> a bacnet:Device ;
+    bacnet:device-instance 265 ;
+    bacnet:address "192.168.3.265" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 65" .
+
+<http://example.com/device/c66> a bacnet:Device ;
+    bacnet:device-instance 266 ;
+    bacnet:address "192.168.3.266" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 66" .
+
+<http://example.com/device/c67> a bacnet:Device ;
+    bacnet:device-instance 267 ;
+    bacnet:address "192.168.3.267" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 67" .
+
+<http://example.com/device/c68> a bacnet:Device ;
+    bacnet:device-instance 268 ;
+    bacnet:address "192.168.3.268" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 68" .
+
+<http://example.com/device/c69> a bacnet:Device ;
+    bacnet:device-instance 269 ;
+    bacnet:address "192.168.3.269" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 69" .
+
+<http://example.com/device/c70> a bacnet:Device ;
+    bacnet:device-instance 270 ;
+    bacnet:address "192.168.3.270" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 70" .
+
+<http://example.com/device/c71> a bacnet:Device ;
+    bacnet:device-instance 271 ;
+    bacnet:address "192.168.3.271" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 71" .
+
+<http://example.com/device/c72> a bacnet:Device ;
+    bacnet:device-instance 272 ;
+    bacnet:address "192.168.3.272" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 72" .
+
+<http://example.com/device/c73> a bacnet:Device ;
+    bacnet:device-instance 273 ;
+    bacnet:address "192.168.3.273" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 73" .
+
+<http://example.com/device/c74> a bacnet:Device ;
+    bacnet:device-instance 274 ;
+    bacnet:address "192.168.3.274" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 74" .
+
+<http://example.com/device/c75> a bacnet:Device ;
+    bacnet:device-instance 275 ;
+    bacnet:address "192.168.3.275" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 75" .
+
+<http://example.com/device/c76> a bacnet:Device ;
+    bacnet:device-instance 276 ;
+    bacnet:address "192.168.3.276" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 76" .
+
+<http://example.com/device/c77> a bacnet:Device ;
+    bacnet:device-instance 277 ;
+    bacnet:address "192.168.3.277" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 77" .
+
+<http://example.com/device/c78> a bacnet:Device ;
+    bacnet:device-instance 278 ;
+    bacnet:address "192.168.3.278" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 78" .
+
+<http://example.com/device/c79> a bacnet:Device ;
+    bacnet:device-instance 279 ;
+    bacnet:address "192.168.3.279" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 79" .
+
+<http://example.com/device/c80> a bacnet:Device ;
+    bacnet:device-instance 280 ;
+    bacnet:address "192.168.3.280" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 80" .
+
+<http://example.com/device/c81> a bacnet:Device ;
+    bacnet:device-instance 281 ;
+    bacnet:address "192.168.3.281" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 81" .
+
+<http://example.com/device/c82> a bacnet:Device ;
+    bacnet:device-instance 282 ;
+    bacnet:address "192.168.3.282" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 82" .
+
+<http://example.com/device/c83> a bacnet:Device ;
+    bacnet:device-instance 283 ;
+    bacnet:address "192.168.3.283" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 83" .
+
+<http://example.com/device/c84> a bacnet:Device ;
+    bacnet:device-instance 284 ;
+    bacnet:address "192.168.3.284" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 84" .
+
+<http://example.com/device/c85> a bacnet:Device ;
+    bacnet:device-instance 285 ;
+    bacnet:address "192.168.3.285" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 85" .
+
+<http://example.com/device/c86> a bacnet:Device ;
+    bacnet:device-instance 286 ;
+    bacnet:address "192.168.3.286" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 86" .
+
+<http://example.com/device/c87> a bacnet:Device ;
+    bacnet:device-instance 287 ;
+    bacnet:address "192.168.3.287" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 87" .
+
+<http://example.com/device/c88> a bacnet:Device ;
+    bacnet:device-instance 288 ;
+    bacnet:address "192.168.3.288" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 88" .
+
+<http://example.com/device/c89> a bacnet:Device ;
+    bacnet:device-instance 289 ;
+    bacnet:address "192.168.3.289" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 89" .
+
+<http://example.com/device/c90> a bacnet:Device ;
+    bacnet:device-instance 290 ;
+    bacnet:address "192.168.3.290" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 90" .
+
+<http://example.com/device/c91> a bacnet:Device ;
+    bacnet:device-instance 291 ;
+    bacnet:address "192.168.3.291" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 91" .
+
+<http://example.com/device/c92> a bacnet:Device ;
+    bacnet:device-instance 292 ;
+    bacnet:address "192.168.3.292" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 92" .
+
+<http://example.com/device/c93> a bacnet:Device ;
+    bacnet:device-instance 293 ;
+    bacnet:address "192.168.3.293" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 93" .
+
+<http://example.com/device/c94> a bacnet:Device ;
+    bacnet:device-instance 294 ;
+    bacnet:address "192.168.3.294" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 94" .
+
+<http://example.com/device/c95> a bacnet:Device ;
+    bacnet:device-instance 295 ;
+    bacnet:address "192.168.3.295" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 95" .
+
+<http://example.com/device/c96> a bacnet:Device ;
+    bacnet:device-instance 296 ;
+    bacnet:address "192.168.3.296" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 96" .
+
+<http://example.com/device/c97> a bacnet:Device ;
+    bacnet:device-instance 297 ;
+    bacnet:address "192.168.3.297" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 97" .
+
+<http://example.com/device/c98> a bacnet:Device ;
+    bacnet:device-instance 298 ;
+    bacnet:address "192.168.3.298" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 98" .
+
+<http://example.com/device/c99> a bacnet:Device ;
+    bacnet:device-instance 299 ;
+    bacnet:address "192.168.3.299" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 99" .
+
+<http://example.com/device/c100> a bacnet:Device ;
+    bacnet:device-instance 300 ;
+    bacnet:address "192.168.3.300" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 100" .
+
+<http://example.com/device/c101> a bacnet:Device ;
+    bacnet:device-instance 301 ;
+    bacnet:address "192.168.3.301" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 101" .
+
+<http://example.com/device/c102> a bacnet:Device ;
+    bacnet:device-instance 302 ;
+    bacnet:address "192.168.3.302" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 102" .
+
+<http://example.com/device/c103> a bacnet:Device ;
+    bacnet:device-instance 303 ;
+    bacnet:address "192.168.3.303" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 103" .
+
+<http://example.com/device/c104> a bacnet:Device ;
+    bacnet:device-instance 304 ;
+    bacnet:address "192.168.3.304" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 104" .
+
+<http://example.com/device/c105> a bacnet:Device ;
+    bacnet:device-instance 305 ;
+    bacnet:address "192.168.3.305" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 105" .
+
+<http://example.com/device/c106> a bacnet:Device ;
+    bacnet:device-instance 306 ;
+    bacnet:address "192.168.3.306" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 106" .
+
+<http://example.com/device/c107> a bacnet:Device ;
+    bacnet:device-instance 307 ;
+    bacnet:address "192.168.3.307" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 107" .
+
+<http://example.com/device/c108> a bacnet:Device ;
+    bacnet:device-instance 308 ;
+    bacnet:address "192.168.3.308" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 108" .
+
+<http://example.com/device/c109> a bacnet:Device ;
+    bacnet:device-instance 309 ;
+    bacnet:address "192.168.3.309" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 109" .
+
+<http://example.com/device/c110> a bacnet:Device ;
+    bacnet:device-instance 310 ;
+    bacnet:address "192.168.3.310" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 110" .
+
+<http://example.com/device/c111> a bacnet:Device ;
+    bacnet:device-instance 311 ;
+    bacnet:address "192.168.3.311" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 111" .
+
+<http://example.com/device/c112> a bacnet:Device ;
+    bacnet:device-instance 312 ;
+    bacnet:address "192.168.3.312" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 112" .
+
+<http://example.com/device/c113> a bacnet:Device ;
+    bacnet:device-instance 313 ;
+    bacnet:address "192.168.3.313" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 113" .
+
+<http://example.com/device/c114> a bacnet:Device ;
+    bacnet:device-instance 314 ;
+    bacnet:address "192.168.3.314" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 114" .
+
+<http://example.com/device/c115> a bacnet:Device ;
+    bacnet:device-instance 315 ;
+    bacnet:address "192.168.3.315" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 115" .
+
+<http://example.com/device/c116> a bacnet:Device ;
+    bacnet:device-instance 316 ;
+    bacnet:address "192.168.3.316" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 116" .
+
+<http://example.com/device/c117> a bacnet:Device ;
+    bacnet:device-instance 317 ;
+    bacnet:address "192.168.3.317" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 117" .
+
+<http://example.com/device/c118> a bacnet:Device ;
+    bacnet:device-instance 318 ;
+    bacnet:address "192.168.3.318" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 118" .
+
+<http://example.com/device/c119> a bacnet:Device ;
+    bacnet:device-instance 319 ;
+    bacnet:address "192.168.3.319" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 119" .
+
+<http://example.com/device/c120> a bacnet:Device ;
+    bacnet:device-instance 320 ;
+    bacnet:address "192.168.3.320" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 120" .
+
+<http://example.com/device/c121> a bacnet:Device ;
+    bacnet:device-instance 321 ;
+    bacnet:address "192.168.3.321" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 121" .
+
+<http://example.com/device/c122> a bacnet:Device ;
+    bacnet:device-instance 322 ;
+    bacnet:address "192.168.3.322" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 122" .
+
+<http://example.com/device/c123> a bacnet:Device ;
+    bacnet:device-instance 323 ;
+    bacnet:address "192.168.3.323" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 123" .
+
+<http://example.com/device/c124> a bacnet:Device ;
+    bacnet:device-instance 324 ;
+    bacnet:address "192.168.3.324" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 124" .
+
+<http://example.com/device/c125> a bacnet:Device ;
+    bacnet:device-instance 325 ;
+    bacnet:address "192.168.3.325" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 125" .
+
+<http://example.com/device/c126> a bacnet:Device ;
+    bacnet:device-instance 326 ;
+    bacnet:address "192.168.3.326" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 126" .
+
+<http://example.com/device/c127> a bacnet:Device ;
+    bacnet:device-instance 327 ;
+    bacnet:address "192.168.3.327" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 127" .
+
+<http://example.com/device/c128> a bacnet:Device ;
+    bacnet:device-instance 328 ;
+    bacnet:address "192.168.3.328" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 128" .
+
+<http://example.com/device/c129> a bacnet:Device ;
+    bacnet:device-instance 329 ;
+    bacnet:address "192.168.3.329" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 129" .
+
+<http://example.com/device/c130> a bacnet:Device ;
+    bacnet:device-instance 330 ;
+    bacnet:address "192.168.3.330" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 130" .
+
+<http://example.com/device/c131> a bacnet:Device ;
+    bacnet:device-instance 331 ;
+    bacnet:address "192.168.3.331" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 131" .
+
+<http://example.com/device/c132> a bacnet:Device ;
+    bacnet:device-instance 332 ;
+    bacnet:address "192.168.3.332" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 132" .
+
+<http://example.com/device/c133> a bacnet:Device ;
+    bacnet:device-instance 333 ;
+    bacnet:address "192.168.3.333" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 133" .
+
+<http://example.com/device/c134> a bacnet:Device ;
+    bacnet:device-instance 334 ;
+    bacnet:address "192.168.3.334" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 134" .
+
+<http://example.com/device/c135> a bacnet:Device ;
+    bacnet:device-instance 335 ;
+    bacnet:address "192.168.3.335" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 135" .
+
+<http://example.com/device/c136> a bacnet:Device ;
+    bacnet:device-instance 336 ;
+    bacnet:address "192.168.3.336" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 136" .
+
+<http://example.com/device/c137> a bacnet:Device ;
+    bacnet:device-instance 337 ;
+    bacnet:address "192.168.3.337" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 137" .
+
+<http://example.com/device/c138> a bacnet:Device ;
+    bacnet:device-instance 338 ;
+    bacnet:address "192.168.3.338" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 138" .
+
+<http://example.com/device/c139> a bacnet:Device ;
+    bacnet:device-instance 339 ;
+    bacnet:address "192.168.3.339" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 139" .
+
+<http://example.com/device/c140> a bacnet:Device ;
+    bacnet:device-instance 340 ;
+    bacnet:address "192.168.3.340" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 140" .
+
+<http://example.com/device/c141> a bacnet:Device ;
+    bacnet:device-instance 341 ;
+    bacnet:address "192.168.3.341" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 141" .
+
+<http://example.com/device/c142> a bacnet:Device ;
+    bacnet:device-instance 342 ;
+    bacnet:address "192.168.3.342" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 142" .
+
+<http://example.com/device/c143> a bacnet:Device ;
+    bacnet:device-instance 343 ;
+    bacnet:address "192.168.3.343" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 143" .
+
+<http://example.com/device/c144> a bacnet:Device ;
+    bacnet:device-instance 344 ;
+    bacnet:address "192.168.3.344" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 144" .
+
+<http://example.com/device/c145> a bacnet:Device ;
+    bacnet:device-instance 345 ;
+    bacnet:address "192.168.3.345" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 145" .
+
+<http://example.com/device/c146> a bacnet:Device ;
+    bacnet:device-instance 346 ;
+    bacnet:address "192.168.3.346" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 146" .
+
+<http://example.com/device/c147> a bacnet:Device ;
+    bacnet:device-instance 347 ;
+    bacnet:address "192.168.3.347" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 147" .
+
+<http://example.com/device/c148> a bacnet:Device ;
+    bacnet:device-instance 348 ;
+    bacnet:address "192.168.3.348" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 148" .
+
+<http://example.com/device/c149> a bacnet:Device ;
+    bacnet:device-instance 349 ;
+    bacnet:address "192.168.3.349" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 149" .
+
+<http://example.com/device/c150> a bacnet:Device ;
+    bacnet:device-instance 350 ;
+    bacnet:address "192.168.3.350" ;
+    bacnet:device-on-network <http://example.com/network/ip-3> ;
+    rdfs:label "Critical Device 150" .
+

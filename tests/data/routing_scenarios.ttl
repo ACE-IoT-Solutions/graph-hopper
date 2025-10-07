@@ -1,0 +1,132 @@
+# Test data for comprehensive routing inefficiencies analysis
+@prefix bacnet: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+# Scenario 1: Long routing path (suboptimal routing)
+<Network_1000> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 1000 - Start" .
+
+<Network_1001> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 1001 - Hop 1" .
+
+<Network_1002> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 1002 - Hop 2" .
+
+<Network_1003> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 1003 - Hop 3" .
+
+<Network_1004> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 1004 - Hop 4" .
+
+<Network_1005> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 1005 - End (5 hops)" .
+
+# Chain of routers creating long path
+<Router_1001> rdf:type bacnet:Router ;
+    rdfs:label "Router 1001" ;
+    bacnet:device-on-network <Network_1000> ;
+    bacnet:serves-network <Network_1001> .
+
+<Router_1002> rdf:type bacnet:Router ;
+    rdfs:label "Router 1002" ;
+    bacnet:device-on-network <Network_1001> ;
+    bacnet:serves-network <Network_1002> .
+
+<Router_1003> rdf:type bacnet:Router ;
+    rdfs:label "Router 1003" ;
+    bacnet:device-on-network <Network_1002> ;
+    bacnet:serves-network <Network_1003> .
+
+<Router_1004> rdf:type bacnet:Router ;
+    rdfs:label "Router 1004" ;
+    bacnet:device-on-network <Network_1003> ;
+    bacnet:serves-network <Network_1004> .
+
+<Router_1005> rdf:type bacnet:Router ;
+    rdfs:label "Router 1005" ;
+    bacnet:device-on-network <Network_1004> ;
+    bacnet:serves-network <Network_1005> .
+
+# Scenario 2: Asymmetric routing (A can reach B but B cannot reach A)
+<Network_2000> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 2000 - Source" .
+
+<Network_2001> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 2001 - Target" .
+
+# One-way routing only
+<Router_2001> rdf:type bacnet:Router ;
+    rdfs:label "Router 2001 - One Way" ;
+    bacnet:device-on-network <Network_2000> ;
+    bacnet:serves-network <Network_2001> .
+    # Note: No reverse router from 2001 to 2000
+
+# Scenario 3: Critical network with no redundancy (articulation point)
+<Network_3000> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 3000 - Branch A" .
+
+<Network_3001> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 3001 - Critical Hub" .
+
+<Network_3002> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 3002 - Branch B" .
+
+<Network_3003> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 3003 - Branch C" .
+
+# Star topology with 3001 as critical center point
+<Router_3001> rdf:type bacnet:Router ;
+    rdfs:label "Router 3001 - Hub Router A" ;
+    bacnet:device-on-network <Network_3000> ;
+    bacnet:serves-network <Network_3001> .
+
+<Router_3002> rdf:type bacnet:Router ;
+    rdfs:label "Router 3002 - Hub Router B" ;
+    bacnet:device-on-network <Network_3001> ;
+    bacnet:serves-network <Network_3002> .
+
+<Router_3003> rdf:type bacnet:Router ;
+    rdfs:label "Router 3003 - Hub Router C" ;
+    bacnet:device-on-network <Network_3001> ;
+    bacnet:serves-network <Network_3003> .
+
+# Scenario 4: Well-designed redundant topology (should not trigger warnings)
+<Network_4000> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 4000 - Redundant A" .
+
+<Network_4001> rdf:type bacnet:BACnetNetwork ;
+    rdfs:label "Network 4001 - Redundant B" .
+
+# Multiple routers providing redundancy
+<Router_4001> rdf:type bacnet:Router ;
+    rdfs:label "Router 4001 - Primary" ;
+    bacnet:device-on-network <Network_4000> ;
+    bacnet:serves-network <Network_4001> .
+
+<Router_4002> rdf:type bacnet:Router ;
+    rdfs:label "Router 4002 - Backup" ;
+    bacnet:device-on-network <Network_4000> ;
+    bacnet:serves-network <Network_4001> .
+
+<Router_4003> rdf:type bacnet:Router ;
+    rdfs:label "Router 4003 - Secondary Primary" ;
+    bacnet:device-on-network <Network_4001> ;
+    bacnet:serves-network <Network_4000> .
+
+# Add some devices to make the networks more realistic
+<Device_1000_1> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Device on Network 1000" ;
+    bacnet:device-on-network <Network_1000> .
+
+<Device_2000_1> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Device on Network 2000" ;
+    bacnet:device-on-network <Network_2000> .
+
+<Device_3000_1> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Device on Network 3000" ;
+    bacnet:device-on-network <Network_3000> .
+
+<Device_4000_1> rdf:type bacnet:BACnetDevice ;
+    rdfs:label "Device on Network 4000" ;
+    bacnet:device-on-network <Network_4000> .

@@ -21,6 +21,9 @@ from .unreachable_networks import check_unreachable_networks
 from .missing_routers import check_missing_routers
 from .subnet_mismatches import check_subnet_mismatches
 from .network_loops import check_network_loops
+from .oversized_networks import check_oversized_networks
+from .broadcast_domains import check_broadcast_domains
+from .routing_inefficiencies import check_routing_inefficiencies
 
 
 class CheckRegistry:
@@ -83,6 +86,27 @@ class CheckRegistry:
                 'category': 'network-topology',
                 'single_check': True  # Returns issues for one type only
             },
+            'oversized-networks': {
+                'function': check_oversized_networks,
+                'description': 'Detect networks with too many devices that can impact performance',
+                'category': 'network-performance',
+                'single_check': False,  # Returns multiple types (warning and critical)
+                'related_types': ['oversized-networks-warning', 'oversized-networks-critical']
+            },
+            'oversized-networks-warning': {
+                'function': check_oversized_networks,
+                'description': 'Detect networks with moderately high device counts (performance warning)',
+                'category': 'network-performance',
+                'single_check': False,
+                'related_types': ['oversized-networks', 'oversized-networks-critical']
+            },
+            'oversized-networks-critical': {
+                'function': check_oversized_networks,
+                'description': 'Detect networks with critically high device counts (severe performance impact)',
+                'category': 'network-performance', 
+                'single_check': False,
+                'related_types': ['oversized-networks', 'oversized-networks-warning']
+            },
             'duplicate-network': {
                 'function': check_duplicate_networks,
                 'description': 'Detect network numbers on routers in different subnets',
@@ -110,6 +134,69 @@ class CheckRegistry:
                 'category': 'bbmd-configuration',
                 'single_check': False,
                 'related_types': ['duplicate-bbmd-warning']
+            },
+            'broadcast-domain-warning': {
+                'function': check_broadcast_domains,
+                'description': 'Detect large broadcast domains that may impact performance',
+                'category': 'network-performance',
+                'single_check': False,
+                'related_types': ['broadcast-domain-critical', 'missing-bbmd-coverage', 'broadcast-domain-overlap']
+            },
+            'broadcast-domain-critical': {
+                'function': check_broadcast_domains,
+                'description': 'Detect critically large broadcast domains causing severe performance impact',
+                'category': 'network-performance',
+                'single_check': False,
+                'related_types': ['broadcast-domain-warning', 'missing-bbmd-coverage', 'broadcast-domain-overlap']
+            },
+            'missing-bbmd-coverage': {
+                'function': check_broadcast_domains,
+                'description': 'Detect complex broadcast domains lacking BBMD management',
+                'category': 'bbmd-configuration',
+                'single_check': False,
+                'related_types': ['broadcast-domain-warning', 'broadcast-domain-critical', 'broadcast-domain-overlap']
+            },
+            'broadcast-domain-overlap': {
+                'function': check_broadcast_domains,
+                'description': 'Detect overlapping broadcast domains that may cause conflicts',
+                'category': 'network-topology',
+                'single_check': False,
+                'related_types': ['broadcast-domain-warning', 'broadcast-domain-critical', 'missing-bbmd-coverage']
+            },
+            'routing-loop': {
+                'function': check_routing_inefficiencies,
+                'description': 'Detect routing loops that cause packet circulation and instability',
+                'category': 'routing-topology',
+                'single_check': False,
+                'related_types': ['suboptimal-routing-path', 'router-single-point-failure', 'asymmetric-routing', 'missing-redundancy']
+            },
+            'suboptimal-routing-path': {
+                'function': check_routing_inefficiencies,
+                'description': 'Detect inefficient routing paths with excessive hops',
+                'category': 'routing-performance',
+                'single_check': False,
+                'related_types': ['routing-loop', 'router-single-point-failure', 'asymmetric-routing', 'missing-redundancy']
+            },
+            'router-single-point-failure': {
+                'function': check_routing_inefficiencies,
+                'description': 'Detect routers that represent single points of failure',
+                'category': 'routing-reliability',
+                'single_check': False,
+                'related_types': ['routing-loop', 'suboptimal-routing-path', 'asymmetric-routing', 'missing-redundancy']
+            },
+            'asymmetric-routing': {
+                'function': check_routing_inefficiencies,
+                'description': 'Detect asymmetric routing configurations causing connectivity issues',
+                'category': 'routing-topology',
+                'single_check': False,
+                'related_types': ['routing-loop', 'suboptimal-routing-path', 'router-single-point-failure', 'missing-redundancy']
+            },
+            'missing-redundancy': {
+                'function': check_routing_inefficiencies,
+                'description': 'Detect networks lacking redundant routing paths',
+                'category': 'routing-reliability',
+                'single_check': False,
+                'related_types': ['routing-loop', 'suboptimal-routing-path', 'router-single-point-failure', 'asymmetric-routing']
             }
         }
     

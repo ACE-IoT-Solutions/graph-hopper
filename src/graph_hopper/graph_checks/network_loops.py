@@ -278,6 +278,9 @@ def _get_network_name(network_uri: str) -> str:
     if '/' in network_uri:
         return network_uri.split('/')[-1]
     return network_uri
+
+
+def _build_network_graph(graph: Graph) -> Dict[str, List[str]]:
     """
     Build adjacency list representation of network connectivity from RDF graph.
     
@@ -314,4 +317,4 @@ def _get_network_name(network_uri: str) -> str:
                 if source_str not in network_graph[target_str]:
                     network_graph[target_str].append(source_str)
     
-    return network_uri
+    return dict(network_graph)

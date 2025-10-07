@@ -142,6 +142,32 @@ def format_human_readable(issues: List[Dict[str, Any]], issue_type: str, verbose
             if recommendation:
                 output.append(f"   Recommendation: {recommendation}")
             output.append("")
+        elif issue_type in ['oversized-networks-warning', 'oversized-networks-critical']:
+            network_name = issue.get('network_name', 'Unknown')
+            device_count = issue.get('device_count', 0)
+            severity = issue.get('severity', 'unknown')
+            threshold = issue.get('threshold', 0)
+            
+            output.append(f"{i}. {severity.title()} oversized network: {network_name} ({device_count} devices)")
+            output.append(f"   Network URI: {issue['network']}")
+            output.append(f"   Device threshold: {threshold}")
+            output.append(f"   Performance impact: {issue['details']['performance_impact']}")
+            
+            # Show device breakdown if available
+            details = issue.get('details', {})
+            if 'device_breakdown' in details and details['device_breakdown'] is not None:
+                breakdown = details['device_breakdown']
+                output.append("   Device breakdown:")
+                output.append(f"     - Subnet devices: {breakdown.get('subnet_devices', 0)}")
+                output.append(f"     - Network devices: {breakdown.get('network_devices', 0)}")
+                output.append(f"     - Total devices: {breakdown.get('total_devices', device_count)}")
+            
+            output.append(f"   Problem: {issue['description']}")
+            
+            recommendation = details.get('recommendation', '')
+            if recommendation:
+                output.append(f"   Recommendation: {recommendation}")
+            output.append("")
     
     return "\n".join(output)
 
