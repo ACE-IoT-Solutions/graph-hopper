@@ -96,7 +96,7 @@ def check_missing_vendor_ids(graph: Graph, verbose: bool = False) -> Tuple[List[
             # Check for invalid vendor ID values
             if vendor_id_int < 0:
                 issue = {
-                    'type': 'missing-vendor-ids',
+                    'issue_type': 'missing-vendor-ids',
                     'severity': 'medium',
                     'device': str(device),
                     'label': final_device_name,
@@ -117,7 +117,7 @@ def check_missing_vendor_ids(graph: Graph, verbose: bool = False) -> Tuple[List[
                 affected_nodes.append(device)
             elif vendor_id_int == 0:
                 issue = {
-                    'type': 'missing-vendor-ids',
+                    'issue_type': 'missing-vendor-ids',
                     'severity': 'medium',
                     'device': str(device),
                     'label': final_device_name,
@@ -142,7 +142,7 @@ def check_missing_vendor_ids(graph: Graph, verbose: bool = False) -> Tuple[List[
         except (ValueError, TypeError):
             # Non-numeric vendor ID
             issue = {
-                'type': 'missing-vendor-ids',
+                'issue_type': 'missing-vendor-ids',
                 'severity': 'medium',
                 'device': str(device),
                 'label': final_device_name,

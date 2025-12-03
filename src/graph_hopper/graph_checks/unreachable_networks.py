@@ -118,7 +118,7 @@ def check_unreachable_networks(graph: Graph, verbose: bool = False) -> Tuple[Lis
                 network_name = _get_network_name(graph, network)
                 
                 issue = {
-                    'type': 'unreachable-networks',
+                    'issue_type': 'unreachable-networks',
                     'severity': 'high',
                     'network': str(network),
                     'network_name': network_name,
@@ -149,7 +149,7 @@ def check_unreachable_networks(graph: Graph, verbose: bool = False) -> Tuple[Lis
                     unreachable_count = len(networks) - len(island)
                     
                     issue = {
-                        'type': 'unreachable-networks',
+                        'issue_type': 'unreachable-networks',
                         'severity': 'high',
                         'network': str(network),
                         'network_name': network_name,

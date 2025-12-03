@@ -72,7 +72,7 @@ def check_invalid_device_ranges(graph: Graph, verbose: bool = False) -> Tuple[Li
         except (ValueError, TypeError):
             # Non-numeric device instance
             issue = {
-                'type': 'invalid-device-ranges',
+                'issue_type': 'invalid-device-ranges',
                 'severity': 'critical',
                 'device': str(device),
                 'label': device_name,
@@ -96,7 +96,7 @@ def check_invalid_device_ranges(graph: Graph, verbose: bool = False) -> Tuple[Li
         # Check if device instance is within valid range
         if instance_id < MIN_DEVICE_ID or instance_id > MAX_DEVICE_ID:
             issue = {
-                'type': 'invalid-device-ranges',
+                'issue_type': 'invalid-device-ranges',
                 'severity': 'critical',
                 'device': str(device),
                 'label': device_name,

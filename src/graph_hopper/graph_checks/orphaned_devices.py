@@ -69,7 +69,7 @@ def check_orphaned_devices(graph: Graph, verbose: bool = False) -> Tuple[List[Di
         # Device is orphaned if it has neither network nor subnet connection
         if not has_network and not has_subnet:
             issue: Dict[str, Any] = {
-                'type': 'orphaned-device',
+                'issue_type': 'orphaned-device',
                 'severity': 'critical',
                 'device': str(device),
                 'label': label,

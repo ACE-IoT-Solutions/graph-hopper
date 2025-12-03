@@ -102,7 +102,7 @@ def check_device_address_conflicts(graph: Graph, verbose: bool = False) -> Tuple
         for address, conflicting_devices in address_map.items():
             if len(conflicting_devices) > 1:
                 issue = {
-                    'type': 'device-address-conflicts',
+                    'issue_type': 'device-address-conflicts',
                     'severity': 'critical',
                     'network': network,
                     'network_type': 'network',
@@ -139,7 +139,7 @@ def check_device_address_conflicts(graph: Graph, verbose: bool = False) -> Tuple
         for address, conflicting_devices in address_map.items():
             if len(conflicting_devices) > 1:
                 issue = {
-                    'type': 'device-address-conflicts',
+                    'issue_type': 'device-address-conflicts',
                     'severity': 'critical',
                     'network': subnet,
                     'network_type': 'subnet',
