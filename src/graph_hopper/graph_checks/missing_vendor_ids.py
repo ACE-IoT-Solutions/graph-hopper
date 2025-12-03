@@ -67,7 +67,7 @@ def check_missing_vendor_ids(graph: Graph, verbose: bool = False) -> Tuple[List[
         # Check if vendor ID is missing
         if not vendor_id:
             issue = {
-                'type': 'missing-vendor-ids',
+                'issue_type': 'missing-vendor-ids',
                 'severity': 'medium',
                 'device': str(device),
                 'label': final_device_name,
