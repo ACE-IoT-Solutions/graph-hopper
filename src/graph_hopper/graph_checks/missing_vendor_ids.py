@@ -23,10 +23,11 @@ def check_missing_vendor_ids(graph: Graph, verbose: bool = False) -> Tuple[List[
         verbose: Whether to include detailed information
     
     Returns:
-        Tuple of (issues_list, affected_nodes)
+        Tuple of (issues_list, affected_triples, affected_nodes)
     """
     issues = []
     affected_nodes = []
+    affected_triples = []
     
     # Find all devices and check for vendor IDs
     device_type = BACNET_NS['Device']
@@ -55,8 +56,24 @@ def check_missing_vendor_ids(graph: Graph, verbose: bool = False) -> Tuple[List[
             break
         
         # Extract vendor ID
+        vendor_id = None
+        vendor_id_numeric = None
         for _, _, vendor_value in graph.triples((device, BACNET_NS['vendor-id'], None)):
             vendor_id = str(vendor_value)
+            
+            # Extract numeric vendor ID from various formats
+            if vendor_id.startswith('bacnet://vendor/'):
+                # Handle URI format: bacnet://vendor/123
+                try:
+                    vendor_id_numeric = int(vendor_id.split('/')[-1])
+                except (ValueError, IndexError):
+                    vendor_id_numeric = None
+            else:
+                # Handle simple numeric format: "123"
+                try:
+                    vendor_id_numeric = int(vendor_id)
+                except (ValueError, TypeError):
+                    vendor_id_numeric = None
             break
             
         # Use defaults if not found
@@ -89,58 +106,9 @@ def check_missing_vendor_ids(graph: Graph, verbose: bool = False) -> Tuple[List[
             affected_nodes.append(device)
             continue
         
-        # Validate vendor ID format
-        try:
-            vendor_id_int = int(vendor_id)
-            
-            # Check for invalid vendor ID values
-            if vendor_id_int < 0:
-                issue = {
-                    'issue_type': 'missing-vendor-ids',
-                    'severity': 'medium',
-                    'device': str(device),
-                    'label': final_device_name,
-                    'device_instance': final_device_instance,
-                    'address': final_device_address,
-                    'vendor_id': vendor_id,
-                    'description': f'Device {final_device_name} (instance {final_device_instance}) has invalid vendor-id: {vendor_id} (must be positive)'
-                }
-                
-                if verbose:
-                    issue['verbose_description'] = (
-                        f'Device {final_device_name} (instance {final_device_instance}) at address {final_device_address} '
-                        f'has an invalid vendor-id value "{vendor_id}". BACnet vendor IDs must be positive integers '
-                        f'registered with ASHRAE. Negative values are not valid vendor identifiers.'
-                    )
-                
-                issues.append(issue)
-                affected_nodes.append(device)
-            elif vendor_id_int == 0:
-                issue = {
-                    'issue_type': 'missing-vendor-ids',
-                    'severity': 'medium',
-                    'device': str(device),
-                    'label': final_device_name,
-                    'device_instance': final_device_instance,
-                    'address': final_device_address,
-                    'vendor_id': vendor_id,
-                    'description': f'Device {final_device_name} (instance {final_device_instance}) has invalid vendor-id: 0 (reserved value)'
-                }
-                
-                if verbose:
-                    issue['verbose_description'] = (
-                        f'Device {final_device_name} (instance {final_device_instance}) at address {final_device_address} '
-                        f'has vendor-id "0" which is a reserved value. BACnet vendor IDs should be positive integers '
-                        f'registered with ASHRAE. Vendor ID 0 is not assigned to any manufacturer.'
-                    )
-                
-                issues.append(issue)
-                affected_nodes.append(device)
-            # Note: We could add checks for known vendor ID ranges here if needed
-            # For now, we accept any positive integer as potentially valid
-                
-        except (ValueError, TypeError):
-            # Non-numeric vendor ID
+        # Validate vendor ID format and value
+        if vendor_id_numeric is None:
+            # Could not parse a numeric vendor ID
             issue = {
                 'issue_type': 'missing-vendor-ids',
                 'severity': 'medium',
@@ -149,17 +117,64 @@ def check_missing_vendor_ids(graph: Graph, verbose: bool = False) -> Tuple[List[
                 'device_instance': final_device_instance,
                 'address': final_device_address,
                 'vendor_id': vendor_id,
-                'description': f'Device {final_device_name} (instance {final_device_instance}) has invalid vendor-id format: "{vendor_id}" (must be numeric)'
+                'description': f'Device {final_device_name} (instance {final_device_instance}) has invalid vendor-id format: "{vendor_id}" (must be numeric or bacnet://vendor/N format)'
             }
             
             if verbose:
                 issue['verbose_description'] = (
                     f'Device {final_device_name} (instance {final_device_instance}) at address {final_device_address} '
-                    f'has a non-numeric vendor-id "{vendor_id}". BACnet vendor IDs must be positive integers '
-                    f'registered with ASHRAE. String values are not valid vendor identifiers.'
+                    f'has an invalid vendor-id "{vendor_id}". BACnet vendor IDs must be positive integers '
+                    f'registered with ASHRAE, either as simple numbers like "123" or URI format like "bacnet://vendor/123".'
                 )
             
             issues.append(issue)
             affected_nodes.append(device)
+            continue
+            
+        # Check for invalid vendor ID values
+        if vendor_id_numeric < 0:
+            issue = {
+                'issue_type': 'missing-vendor-ids',
+                'severity': 'medium',
+                'device': str(device),
+                'label': final_device_name,
+                'device_instance': final_device_instance,
+                'address': final_device_address,
+                'vendor_id': vendor_id,
+                'description': f'Device {final_device_name} (instance {final_device_instance}) has invalid vendor-id: {vendor_id_numeric} (must be positive)'
+            }
+            
+            if verbose:
+                issue['verbose_description'] = (
+                    f'Device {final_device_name} (instance {final_device_instance}) at address {final_device_address} '
+                    f'has an invalid vendor-id value "{vendor_id_numeric}". BACnet vendor IDs must be positive integers '
+                    f'registered with ASHRAE. Negative values are not valid vendor identifiers.'
+                )
+            
+            issues.append(issue)
+            affected_nodes.append(device)
+        elif vendor_id_numeric == 0:
+            issue = {
+                'issue_type': 'missing-vendor-ids',
+                'severity': 'medium',
+                'device': str(device),
+                'label': final_device_name,
+                'device_instance': final_device_instance,
+                'address': final_device_address,
+                'vendor_id': vendor_id,
+                'description': f'Device {final_device_name} (instance {final_device_instance}) has invalid vendor-id: 0 (reserved value)'
+            }
+            
+            if verbose:
+                issue['verbose_description'] = (
+                    f'Device {final_device_name} (instance {final_device_instance}) at address {final_device_address} '
+                    f'has vendor-id "0" which is a reserved value. BACnet vendor IDs should be positive integers '
+                    f'registered with ASHRAE. Vendor ID 0 is not assigned to any manufacturer.'
+                )
+            
+            issues.append(issue)
+            affected_nodes.append(device)
+        # Note: We could add checks for known vendor ID ranges here if needed
+        # For now, we accept any positive integer as potentially valid
     
-    return issues, affected_nodes
+    return issues, affected_triples, affected_nodes
