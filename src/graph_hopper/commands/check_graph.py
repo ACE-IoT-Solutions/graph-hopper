@@ -51,7 +51,7 @@ def check_graph(ttl_file: Path, issue: str, output_json: bool, verbose: bool):
     issues_to_check = ISSUE_REGISTRY.resolve_issues_to_check(issue)
     
     # Execute all checks using the registry
-    all_issues, all_affected_triples = ISSUE_REGISTRY.execute_checks(issues_to_check, graph, verbose)
+    all_issues, all_affected_triples, all_affected_nodes = ISSUE_REGISTRY.execute_checks(issues_to_check, graph, verbose)
     
     # Output results
     if output_json:
@@ -81,6 +81,13 @@ def check_graph(ttl_file: Path, issue: str, output_json: bool, verbose: bool):
                 click.echo(f"  {str(triple)}")
             if len(all_affected_triples) > 20:
                 click.echo(f"  ... and {len(all_affected_triples) - 20} more triples")
+        
+        if verbose and all_affected_nodes:
+            click.echo("Affected nodes:")
+            for i, node in enumerate(all_affected_nodes[:20]):  # Limit to first 20 to avoid overwhelming output
+                click.echo(f"  {str(node)}")
+            if len(all_affected_nodes) > 20:
+                click.echo(f"  ... and {len(all_affected_nodes) - 20} more nodes")
     
     # Exit with error code if issues were found (for scripting)
     total_issues = sum(len(issues) for issues in all_issues.values())

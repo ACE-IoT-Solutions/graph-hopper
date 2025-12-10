@@ -250,6 +250,7 @@ class CheckRegistry:
         """
         all_issues: Dict[str, List[Dict[str, Any]]] = {}
         all_affected_triples = []
+        all_affected_nodes = []
         executed_functions = set()  # Track which functions we've already called
         
         for issue_type in issues_to_check:
@@ -262,14 +263,15 @@ class CheckRegistry:
             if check_info['single_check']:
                 # Single-type check - execute directly
                 if function_id not in executed_functions:
-                    issues, affected_triples = check_info['function'](graph, verbose)
+                    issues, affected_triples, affected_nodes = check_info['function'](graph, verbose)
                     all_issues[issue_type] = issues
                     all_affected_triples.extend(affected_triples)
+                    all_affected_nodes.extend(affected_nodes if isinstance(affected_nodes, list) else list(affected_nodes))
                     executed_functions.add(function_id)
             else:
                 # Multi-type check - execute once and separate results
                 if function_id not in executed_functions:
-                    issues, affected_triples = check_info['function'](graph, verbose)
+                    issues, affected_triples, affected_nodes = check_info['function'](graph, verbose)
                     
                     # Separate issues by type for multi-type functions
                     related_types = [issue_type] + check_info.get('related_types', [])
@@ -278,9 +280,10 @@ class CheckRegistry:
                         all_issues[related_type] = type_issues
                     
                     all_affected_triples.extend(affected_triples)
+                    all_affected_nodes.extend(affected_nodes if isinstance(affected_nodes, list) else list(affected_nodes))
                     executed_functions.add(function_id)
         
-        return all_issues, all_affected_triples
+        return all_issues, all_affected_triples, list(set(all_affected_nodes))
     
     def get_issues_by_category(self, category: str) -> List[str]:
         """Get all issue types in a specific category."""
