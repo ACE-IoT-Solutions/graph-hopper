@@ -912,3 +912,79 @@ The dynamic registry system and established patterns make Phase 2 implementation
 - 3.3 Routing Inefficiencies Detection
 
 **Phase 2 represents a complete, production-ready BACnet network topology validation system.** 🚀
+
+---
+
+## Session 9: Standardize Check Function Return Format
+**Date**: December 10, 2025  
+**Goal**: Standardize all check functions to return consistent format with affected_nodes support
+
+### 🎯 Objectives Completed
+
+1. ✅ **Standardized Return Format**
+   - Updated ALL check functions to return `(issues, affected_triples, affected_nodes)`
+   - Previously inconsistent: some returned `(issues, affected_nodes)`, others `(issues, affected_triples)`
+   - Now all functions have the same 3-tuple return signature
+
+2. ✅ **Enhanced Verbose Output**
+   - CLI now shows both affected triples AND affected nodes in verbose mode
+   - Provides comprehensive debugging information for graph issues
+   - Deduplicates affected nodes to avoid repetition
+
+3. ✅ **Registry System Updates**
+   - Updated `CheckRegistry.execute_checks()` to handle new return format
+   - Added affected_nodes collection and deduplication
+   - Maintains backward compatibility for all CLI functionality
+
+4. ✅ **Comprehensive Test Updates**
+   - Automatically updated all test files to expect 3-tuple returns
+   - Fixed 85+ test cases that were expecting old 2-tuple format
+   - Created and ran automated fix script to update test expectations
+
+### 🛠️ Technical Implementation Details
+
+#### Updated Function Signatures
+**Before (inconsistent):**
+```python
+# Some functions returned 2 values
+def check_missing_vendor_ids(graph, verbose=False):
+    return issues, affected_nodes
+
+# Others returned different 2 values  
+def check_duplicate_devices(graph, verbose=False):
+    return issues, affected_triples
+    
+# One returned 3 values inconsistently
+def check_duplicate_bbmds(graph, verbose=False):
+    return issues, affected_triples, affected_nodes
+```
+
+**After (consistent):**
+```python
+# ALL functions now return 3 values consistently
+def check_*_*(graph, verbose=False):
+    return issues, affected_triples, affected_nodes
+```
+
+#### Enhanced CLI Output
+- **Before**: Only showed affected triples in verbose mode
+- **After**: Shows both affected triples AND affected nodes in verbose mode
+- **Deduplication**: Registry automatically removes duplicate affected nodes
+
+#### Files Modified
+- **Check Functions**: 14 files in `src/graph_hopper/graph_checks/`
+- **Registry System**: `src/graph_hopper/graph_checks/registry.py`
+- **CLI Command**: `src/graph_hopper/commands/check_graph.py`  
+- **Test Files**: 11 test files automatically updated via script
+
+### 🧪 Testing Results
+- **All 190 tests passing** ✅
+- **Backward compatibility maintained** ✅
+- **CLI functionality enhanced** ✅
+
+### 🚀 Impact
+This standardization provides:
+1. **Consistent API**: All check functions have identical signatures
+2. **Better Debugging**: Both triple-level and node-level affected entity information
+3. **Future-Proof**: Easy to extend with additional return information
+4. **Maintainability**: Uniform codebase structure across all checks
