@@ -28,10 +28,11 @@ def check_broadcast_domains(graph: Graph, verbose: bool = False) -> Tuple[List[D
         verbose: Whether to include detailed information
     
     Returns:
-        Tuple of (issues_list, affected_nodes)
+        Tuple of (issues_list, affected_triples, affected_nodes)
     """
     issues = []
     affected_nodes = set()
+    affected_triples = []
     
     # Build broadcast domain mapping
     bacnet_ns = URIRef("http://data.ashrae.org/bacnet/2020#")
@@ -73,7 +74,7 @@ def check_broadcast_domains(graph: Graph, verbose: bool = False) -> Tuple[List[D
         if 'affected_networks' in issue.get('details', {}):
             affected_nodes.update(issue['details']['affected_networks'])
     
-    return issues, affected_nodes
+    return issues, affected_triples, affected_nodes
 
 
 def _analyze_broadcast_domains(graph: Graph, networks: Set, subnets: Set, bbmds: Set) -> Dict[str, Dict[str, Any]]:

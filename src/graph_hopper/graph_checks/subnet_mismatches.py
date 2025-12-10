@@ -25,10 +25,11 @@ def check_subnet_mismatches(graph: Graph, verbose: bool = False) -> Tuple[List[D
         verbose: Whether to include detailed information
     
     Returns:
-        Tuple of (issues_list, affected_nodes)
+        Tuple of (issues_list, affected_triples, affected_nodes)
     """
     issues = []
     affected_nodes = []
+    affected_triples = []
     
     device_type = BACNET_NS['Device']
     subnet_type = BACNET_NS['Subnet']
@@ -117,7 +118,7 @@ def check_subnet_mismatches(graph: Graph, verbose: bool = False) -> Tuple[List[D
                 issues.append(issue)
                 affected_nodes.append(device)
     
-    return issues, affected_nodes
+    return issues, affected_triples, affected_nodes
 
 
 def _is_ip_in_subnet(ip_address: str, subnet_cidr: str) -> bool:

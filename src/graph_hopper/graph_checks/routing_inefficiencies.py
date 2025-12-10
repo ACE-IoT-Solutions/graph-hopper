@@ -26,10 +26,11 @@ def check_routing_inefficiencies(graph: Graph, verbose: bool = False) -> Tuple[L
         verbose: Whether to include detailed information
     
     Returns:
-        Tuple of (issues_list, affected_nodes)
+        Tuple of (issues_list, affected_triples, affected_nodes)
     """
     issues = []
     affected_nodes = set()
+    affected_triples = []
     
     # Build routing topology
     bacnet_ns = URIRef("http://data.ashrae.org/bacnet/2020#")
@@ -71,7 +72,7 @@ def check_routing_inefficiencies(graph: Graph, verbose: bool = False) -> Tuple[L
         if 'loop_routers' in issue.get('details', {}):
             affected_nodes.update(issue['details']['loop_routers'])
     
-    return issues, affected_nodes
+    return issues, affected_triples, affected_nodes
 
 
 def _build_routing_graph(graph: Graph, routers: Set, networks: Set) -> Dict[str, Any]:

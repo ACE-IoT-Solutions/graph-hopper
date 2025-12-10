@@ -24,10 +24,11 @@ def check_missing_routers(graph: Graph, verbose: bool = False) -> Tuple[List[Dic
         verbose: Whether to include detailed information
     
     Returns:
-        Tuple of (issues_list, affected_nodes)
+        Tuple of (issues_list, affected_triples, affected_nodes)
     """
     issues = []
     affected_nodes = []
+    affected_triples = []
     
     # Build network topology from the graph
     networks_with_devices = set()
@@ -66,7 +67,7 @@ def check_missing_routers(graph: Graph, verbose: bool = False) -> Tuple[List[Dic
     
     # If there are fewer than 2 networks with devices, no routing is needed
     if len(networks_with_devices) < 2:
-        return issues, affected_nodes
+        return issues, affected_triples, affected_nodes
     
     # Identify networks with devices but no routing capability
     isolated_networks = networks_with_devices - networks_with_routers
@@ -107,4 +108,4 @@ def check_missing_routers(graph: Graph, verbose: bool = False) -> Tuple[List[Dic
         issues.append(issue)
         affected_nodes.extend(isolated_networks)
     
-    return issues, affected_nodes
+    return issues, affected_triples, affected_nodes

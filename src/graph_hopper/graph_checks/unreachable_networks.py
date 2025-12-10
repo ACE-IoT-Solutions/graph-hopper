@@ -24,10 +24,11 @@ def check_unreachable_networks(graph: Graph, verbose: bool = False) -> Tuple[Lis
         verbose: Whether to include detailed information
     
     Returns:
-        Tuple of (issues_list, affected_nodes)
+        Tuple of (issues_list, affected_triples, affected_nodes)
     """
     issues = []
     affected_nodes = []
+    affected_triples = []
     
     # Build network topology from the graph
     networks = set()
@@ -46,7 +47,7 @@ def check_unreachable_networks(graph: Graph, verbose: bool = False) -> Tuple[Lis
     
     # If there are fewer than 2 networks, no isolation is possible
     if len(networks) < 2:
-        return issues, affected_nodes
+        return issues, affected_triples, affected_nodes
 
     # Build router connectivity map: network -> set of networks reachable via routers
     network_connections: defaultdict[rdflib.term.Node, Set[rdflib.term.Node]] = defaultdict(set)
@@ -175,7 +176,7 @@ def check_unreachable_networks(graph: Graph, verbose: bool = False) -> Tuple[Lis
                     issues.append(issue)
                     affected_nodes.append(network)
     
-    return issues, affected_nodes
+    return issues, affected_triples, affected_nodes
 
 
 def _get_network_name(graph: Graph, network: rdflib.term.Node) -> str:

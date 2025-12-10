@@ -25,12 +25,14 @@ def check_orphaned_devices(graph: Graph, verbose: bool = False) -> Tuple[List[Di
         verbose: If True, include detailed information about affected triples
         
     Returns:
-        Tuple of (issues_list, affected_nodes) where:
+        Tuple of (issues_list, affected_triples, affected_nodes) where:
         - issues_list: List of dictionaries describing each orphaned device
+        - affected_triples: List of RDF triples for verbose output
         - affected_nodes: List of RDF nodes representing the orphaned devices
     """
     issues: List[Dict[str, Any]] = []
     affected_nodes: List[rdflib.term.Node] = []
+    affected_triples = []
     
     # Find all devices (specifically ns1:Device type, not routers or BBMDs)
     device_type = BACNET_NS['Device']
@@ -99,4 +101,4 @@ def check_orphaned_devices(graph: Graph, verbose: bool = False) -> Tuple[List[Di
             issues.append(issue)
             affected_nodes.append(device)
     
-    return issues, affected_nodes
+    return issues, affected_triples, affected_nodes

@@ -27,10 +27,11 @@ def check_oversized_networks(graph: Graph, verbose: bool = False) -> Tuple[List[
         verbose: Whether to include detailed information
     
     Returns:
-        Tuple of (issues_list, affected_nodes)
+        Tuple of (issues_list, affected_triples, affected_nodes)
     """
     issues = []
     affected_nodes = set()
+    affected_triples = []
     
     # Build network device count mapping
     bacnet_ns = URIRef("http://data.ashrae.org/bacnet/2020#")
@@ -46,7 +47,7 @@ def check_oversized_networks(graph: Graph, verbose: bool = False) -> Tuple[List[
         networks.add(network)
     
     if not networks:
-        return issues, affected_nodes
+        return issues, affected_triples, affected_nodes
     
     # Count devices per network
     network_device_counts = defaultdict(set)  # Use set to avoid double-counting
@@ -118,7 +119,7 @@ def check_oversized_networks(graph: Graph, verbose: bool = False) -> Tuple[List[
         issues.append(issue)
         affected_nodes.add(str(network))
     
-    return issues, affected_nodes
+    return issues, affected_triples, affected_nodes
 
 
 def _get_network_name(graph: Graph, network) -> str:

@@ -23,10 +23,11 @@ def check_duplicate_networks(graph: Graph, verbose: bool = False) -> Tuple[List[
         verbose: Whether to include detailed triple information
         
     Returns:
-        Tuple of (issues_list, affected_triples)
+        Tuple of (issues_list, affected_triples, affected_nodes)
     """
     issues = []
     affected_triples = []
+    affected_nodes = []
     
     try:
         # Find all routers and their networks/subnets
@@ -91,6 +92,7 @@ def check_duplicate_networks(graph: Graph, verbose: bool = False) -> Tuple[List[
                     'description': description
                 }
                 issues.append(issue)
+                affected_nodes.append(network)
                 
                 if verbose:
                     # Collect affected triples for all routers involved
@@ -101,6 +103,6 @@ def check_duplicate_networks(graph: Graph, verbose: bool = False) -> Tuple[List[
     
     except Exception as e:
         click.echo(f"Error analyzing graph for duplicate networks: {e}", err=True)
-        return [], []
+        return [], [], []
     
-    return issues, affected_triples
+    return issues, affected_triples, affected_nodes

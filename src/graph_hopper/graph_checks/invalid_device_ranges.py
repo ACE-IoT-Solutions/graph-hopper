@@ -22,10 +22,11 @@ def check_invalid_device_ranges(graph: Graph, verbose: bool = False) -> Tuple[Li
         verbose: Whether to include detailed information
     
     Returns:
-        Tuple of (issues_list, affected_nodes)
+        Tuple of (issues_list, affected_triples, affected_nodes)
     """
     issues = []
     affected_nodes = []
+    affected_triples = []
     
     # BACnet device instance range: 0 to 4,194,303 (0x3FFFFF)
     MIN_DEVICE_ID = 0
@@ -116,4 +117,4 @@ def check_invalid_device_ranges(graph: Graph, verbose: bool = False) -> Tuple[Li
             issues.append(issue)
             affected_nodes.append(device)
     
-    return issues, affected_nodes
+    return issues, affected_triples, affected_nodes

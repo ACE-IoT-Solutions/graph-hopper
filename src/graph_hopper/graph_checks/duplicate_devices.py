@@ -19,10 +19,11 @@ def check_duplicate_device_ids(graph: Graph, verbose: bool = False) -> Tuple[Lis
         verbose: Whether to include detailed triple information
         
     Returns:
-        Tuple of (issues_list, affected_triples)
+        Tuple of (issues_list, affected_triples, affected_nodes)
     """
     issues = []
     affected_triples = []
+    affected_nodes = []
     
     try:
         # Find all devices and their device instances
@@ -93,6 +94,7 @@ def check_duplicate_device_ids(graph: Graph, verbose: bool = False) -> Tuple[Lis
                         'networks': list(unique_networks)
                     }
                     issues.append(issue)
+                    affected_nodes.extend(devices)
                     
                     if verbose:
                         # Collect affected triples
@@ -103,6 +105,6 @@ def check_duplicate_device_ids(graph: Graph, verbose: bool = False) -> Tuple[Lis
     
     except Exception as e:
         click.echo(f"Error analyzing graph for duplicate device IDs: {e}", err=True)
-        return [], []
+        return [], [], []
     
-    return issues, affected_triples
+    return issues, affected_triples, affected_nodes

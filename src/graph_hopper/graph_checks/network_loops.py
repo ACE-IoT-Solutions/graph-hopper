@@ -26,13 +26,14 @@ def check_network_loops(graph: Graph, verbose: bool = False) -> Tuple[List[Dict[
     """
     issues = []
     affected_nodes = set()
+    affected_triples = []
     
     # Build network adjacency graph from routers
     network_graph, router_connections = _build_network_graph_with_routers(graph)
     
     if not network_graph or len(network_graph) < 2:
         # Need at least 2 networks to have a loop
-        return issues, affected_nodes
+        return issues, affected_triples, affected_nodes
     
     # Special case: check for 2-network loops (mutual routing)
     if len(network_graph) == 2:
@@ -62,7 +63,7 @@ def check_network_loops(graph: Graph, verbose: bool = False) -> Tuple[List[Dict[
             issues.append(issue)
             affected_nodes.update([net1, net2])
         
-        return issues, affected_nodes
+        return issues, affected_triples, affected_nodes
     
     # Use Union-Find to detect cycles in the network connectivity
     cycles = _find_cycles_union_find(network_graph)
@@ -88,7 +89,7 @@ def check_network_loops(graph: Graph, verbose: bool = False) -> Tuple[List[Dict[
             issues.append(issue)
             affected_nodes.update(cycle)
     
-    return issues, affected_nodes
+    return issues, affected_triples, affected_nodes
 
 
 def _find_cycles_union_find(graph: Dict[str, List[str]]) -> List[List[str]]:

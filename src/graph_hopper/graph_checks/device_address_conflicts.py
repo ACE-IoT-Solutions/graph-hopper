@@ -24,10 +24,11 @@ def check_device_address_conflicts(graph: Graph, verbose: bool = False) -> Tuple
         verbose: Whether to include detailed information
     
     Returns:
-        Tuple of (issues_list, affected_nodes)
+        Tuple of (issues_list, affected_triples, affected_nodes)
     """
     issues = []
     affected_nodes = []
+    affected_triples = []
     
     # Find all devices and group them by network/subnet
     device_type = BACNET_NS['Device']
@@ -164,4 +165,4 @@ def check_device_address_conflicts(graph: Graph, verbose: bool = False) -> Tuple
                 for device_info in conflicting_devices:
                     affected_nodes.append(device_info['device'])
     
-    return issues, affected_nodes
+    return issues, affected_triples, affected_nodes

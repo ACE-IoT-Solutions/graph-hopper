@@ -23,10 +23,11 @@ def check_duplicate_bbmds(graph: Graph, verbose: bool = False) -> Tuple[List[Dic
         verbose: Whether to include detailed triple information
         
     Returns:
-        Tuple of (issues_list, affected_triples)
+        Tuple of (issues_list, affected_triples, affected_nodes)
     """
     issues = []
     affected_triples = []
+    affected_nodes = []
     
     try:
         # Find all BBMDs and their subnets/BDT entries
@@ -94,16 +95,20 @@ def check_duplicate_bbmds(graph: Graph, verbose: bool = False) -> Tuple[List[Dic
                     'description': description
                 }
                 issues.append(issue)
+                affected_nodes.extend([rdflib.URIRef(bbmd_info['bbmd']) for bbmd_info in bbmd_list])
+                affected_nodes.append(subnet)
                 
                 if verbose:
                     # Collect affected triples for all BBMDs involved
                     for bbmd_info in bbmd_list:
                         bbmd_uri = rdflib.URIRef(bbmd_info['bbmd'])
+                        affected_nodes.append(bbmd_uri)
                         for triple in graph.triples((bbmd_uri, None, None)):
                             affected_triples.append(triple)
+
     
     except Exception as e:
         click.echo(f"Error analyzing graph for duplicate BBMDs: {e}", err=True)
         return [], []
     
-    return issues, affected_triples
+    return issues, affected_triples, affected_nodes
