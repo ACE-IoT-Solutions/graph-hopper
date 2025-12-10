@@ -20,7 +20,7 @@ class TestBroadcastDomains:
     def test_large_broadcast_domain_warning(self):
         """Test detection of broadcast domains that trigger warnings."""
         graph = load_test_graph("broadcast_domain_test.ttl")
-        issues, affected_nodes = check_broadcast_domains(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_broadcast_domains(graph, verbose=False)
         
         # Should detect warning for Network 100 (7 subnets > 5 warning threshold)
         warning_issues = [i for i in issues if i['issue_type'] == 'broadcast-domain-warning']
@@ -36,7 +36,7 @@ class TestBroadcastDomains:
     def test_critical_broadcast_domain(self):
         """Test detection of critically large broadcast domains."""
         graph = load_test_graph("broadcast_domain_test.ttl")
-        issues, affected_nodes = check_broadcast_domains(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_broadcast_domains(graph, verbose=False)
         
         # Should detect critical issue for Network 200 (12 subnets > 10 critical threshold)
         critical_issues = [i for i in issues if i['issue_type'] == 'broadcast-domain-critical']
@@ -52,7 +52,7 @@ class TestBroadcastDomains:
     def test_missing_bbmd_coverage(self):
         """Test detection of domains needing BBMD coverage."""
         graph = load_test_graph("broadcast_domain_test.ttl")
-        issues, affected_nodes = check_broadcast_domains(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_broadcast_domains(graph, verbose=False)
         
         # Should detect missing BBMD for Networks 100 and 200 (complex domains without BBMD)
         bbmd_issues = [i for i in issues if i['issue_type'] == 'missing-bbmd-coverage']
@@ -70,7 +70,7 @@ class TestBroadcastDomains:
     def test_no_bbmd_warning_when_present(self):
         """Test that networks with BBMD don't trigger missing BBMD warnings."""
         graph = load_test_graph("broadcast_domain_test.ttl")
-        issues, affected_nodes = check_broadcast_domains(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_broadcast_domains(graph, verbose=False)
         
         # Network 300 has BBMD, so should not trigger missing BBMD warning
         bbmd_issues = [i for i in issues if i['issue_type'] == 'missing-bbmd-coverage']
@@ -80,7 +80,7 @@ class TestBroadcastDomains:
     def test_broadcast_domain_overlap(self):
         """Test detection of overlapping broadcast domains."""
         graph = load_test_graph("broadcast_domain_test.ttl")
-        issues, affected_nodes = check_broadcast_domains(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_broadcast_domains(graph, verbose=False)
         
         # Should detect overlap between Network 100 and Network 400 (both use 192.168.1.0)
         overlap_issues = [i for i in issues if i['issue_type'] == 'broadcast-domain-overlap']
@@ -96,7 +96,7 @@ class TestBroadcastDomains:
     def test_small_networks_not_flagged(self):
         """Test that small networks don't trigger broadcast domain warnings."""
         graph = load_test_graph("broadcast_domain_test.ttl")
-        issues, affected_nodes = check_broadcast_domains(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_broadcast_domains(graph, verbose=False)
         
         # Network 500 (MSTP with 2 devices) should not trigger any warnings
         network_500_issues = [i for i in issues if 'Network_500' in i.get('network', '')]
@@ -105,7 +105,7 @@ class TestBroadcastDomains:
     def test_verbose_output(self):
         """Test that verbose mode provides additional details."""
         graph = load_test_graph("broadcast_domain_test.ttl") 
-        issues, affected_nodes = check_broadcast_domains(graph, verbose=True)
+        issues, affected_triples, affected_nodes = check_broadcast_domains(graph, verbose=True)
         
         # Find a warning issue and check for verbose description
         warning_issues = [i for i in issues if i['issue_type'] == 'broadcast-domain-warning']
@@ -119,7 +119,7 @@ class TestBroadcastDomains:
     def test_affected_nodes_populated(self):
         """Test that affected nodes are properly identified."""
         graph = load_test_graph("broadcast_domain_test.ttl")
-        issues, affected_nodes = check_broadcast_domains(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_broadcast_domains(graph, verbose=False)
         
         # Should have affected nodes for the networks with issues
         assert len(affected_nodes) >= 2
@@ -132,7 +132,7 @@ class TestBroadcastDomains:
     def test_ip_range_detection(self):
         """Test IP range detection and classification."""
         graph = load_test_graph("broadcast_domain_test.ttl")
-        issues, affected_nodes = check_broadcast_domains(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_broadcast_domains(graph, verbose=False)
         
         # Find an issue with IP range details
         domain_issues = [i for i in issues if i['issue_type'] in ['broadcast-domain-warning', 'broadcast-domain-critical']]

@@ -11,7 +11,7 @@ from graph_hopper.graph_checks.subnet_mismatches import check_subnet_mismatches
 def test_empty_graph():
     """Test empty graph returns no issues."""
     graph = Graph()
-    issues, affected_nodes = check_subnet_mismatches(graph)
+    issues, affected_triples, affected_nodes = check_subnet_mismatches(graph)
     assert len(issues) == 0
     assert len(affected_nodes) == 0
 
@@ -55,7 +55,7 @@ def test_no_subnet_mismatches_ttl():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_subnet_mismatches(graph)
+    issues, affected_triples, affected_nodes = check_subnet_mismatches(graph)
     
     # Should find no issues - all devices are in correct subnet ranges
     assert len(issues) == 0
@@ -102,7 +102,7 @@ def test_subnet_mismatch_detection_ttl():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_subnet_mismatches(graph)
+    issues, affected_triples, affected_nodes = check_subnet_mismatches(graph)
     
     # Should find 2 mismatched devices
     assert len(issues) == 2
@@ -156,7 +156,7 @@ def test_multiple_subnets_mixed_issues_ttl():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_subnet_mismatches(graph)
+    issues, affected_triples, affected_nodes = check_subnet_mismatches(graph)
     
     # Should find 1 mismatched device (Device 200)
     assert len(issues) == 1
@@ -206,7 +206,7 @@ def test_invalid_ip_addresses_ttl():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_subnet_mismatches(graph)
+    issues, affected_triples, affected_nodes = check_subnet_mismatches(graph)
     
     # Should skip invalid IP addresses and only check valid ones
     # Device 100 is correct, devices 200 and 300 should be skipped due to invalid/non-IP addresses

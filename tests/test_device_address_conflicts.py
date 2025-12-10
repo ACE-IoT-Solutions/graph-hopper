@@ -19,7 +19,7 @@ class TestDeviceAddressConflicts:
     def test_empty_graph(self):
         """Test with empty graph - should return no issues."""
         graph = Graph()
-        issues, affected_nodes = check_device_address_conflicts(graph)
+        issues, affected_triples, affected_nodes = check_device_address_conflicts(graph)
         
         assert issues == []
         assert affected_nodes == []
@@ -43,7 +43,7 @@ class TestDeviceAddressConflicts:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_device_address_conflicts(graph)
+        issues, affected_triples, affected_nodes = check_device_address_conflicts(graph)
         
         assert issues == []
         assert affected_nodes == []
@@ -73,7 +73,7 @@ class TestDeviceAddressConflicts:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_device_address_conflicts(graph)
+        issues, affected_triples, affected_nodes = check_device_address_conflicts(graph)
         
         assert issues == []
         assert affected_nodes == []
@@ -103,12 +103,12 @@ class TestDeviceAddressConflicts:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_device_address_conflicts(graph)
+        issues, affected_triples, affected_nodes = check_device_address_conflicts(graph)
         
         assert len(issues) == 1
         issue = issues[0]
         
-        assert issue['type'] == 'device-address-conflicts'
+        assert issue['issue_type'] == 'device-address-conflicts'
         assert issue['severity'] == 'critical'
         assert issue['network_type'] == 'network'
         assert issue['address'] == '192.168.1.10'
@@ -148,12 +148,12 @@ class TestDeviceAddressConflicts:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_device_address_conflicts(graph)
+        issues, affected_triples, affected_nodes = check_device_address_conflicts(graph)
         
         assert len(issues) == 1
         issue = issues[0]
         
-        assert issue['type'] == 'device-address-conflicts'
+        assert issue['issue_type'] == 'device-address-conflicts'
         assert issue['severity'] == 'critical'
         assert issue['network_type'] == 'subnet'
         assert issue['address'] == '192.168.1.10'
@@ -188,7 +188,7 @@ class TestDeviceAddressConflicts:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_device_address_conflicts(graph)
+        issues, affected_triples, affected_nodes = check_device_address_conflicts(graph)
         
         # Should be no conflicts since devices are on different networks
         assert issues == []
@@ -225,7 +225,7 @@ class TestDeviceAddressConflicts:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_device_address_conflicts(graph)
+        issues, affected_triples, affected_nodes = check_device_address_conflicts(graph)
         
         assert len(issues) == 1
         issue = issues[0]
@@ -259,7 +259,7 @@ class TestDeviceAddressConflicts:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_device_address_conflicts(graph, verbose=True)
+        issues, affected_triples, affected_nodes = check_device_address_conflicts(graph, verbose=True)
         
         assert len(issues) == 1
         issue = issues[0]
@@ -295,7 +295,7 @@ class TestDeviceAddressConflicts:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_device_address_conflicts(graph)
+        issues, affected_triples, affected_nodes = check_device_address_conflicts(graph)
         
         # No conflicts because Device1 has no address
         assert issues == []
@@ -341,7 +341,7 @@ class TestDeviceAddressConflicts:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_device_address_conflicts(graph)
+        issues, affected_triples, affected_nodes = check_device_address_conflicts(graph)
         
         # Should detect both conflicts
         assert len(issues) == 2
@@ -386,13 +386,13 @@ def test_device_address_conflicts_integration():
     graph = Graph()
     graph.parse(data=ttl_content, format="turtle")
     
-    issues, affected_nodes = check_device_address_conflicts(graph, verbose=True)
+    issues, affected_triples, affected_nodes = check_device_address_conflicts(graph, verbose=True)
     
     # Should find exactly one conflict
     assert len(issues) == 1
     issue = issues[0]
     
-    assert issue['type'] == 'device-address-conflicts'
+    assert issue['issue_type'] == 'device-address-conflicts'
     assert issue['severity'] == 'critical'
     assert issue['address'] == '10.0.1.100'
     assert issue['device_count'] == 2

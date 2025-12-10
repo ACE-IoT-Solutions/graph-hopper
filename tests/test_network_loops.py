@@ -11,7 +11,7 @@ from graph_hopper.graph_checks.network_loops import check_network_loops
 def test_empty_graph():
     """Test empty graph returns no issues."""
     graph = Graph()
-    issues, affected_nodes = check_network_loops(graph)
+    issues, affected_triples, affected_nodes = check_network_loops(graph)
     assert len(issues) == 0
     assert len(affected_nodes) == 0
 
@@ -44,7 +44,7 @@ def test_detects_simple_loop():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_network_loops(graph)
+    issues, affected_triples, affected_nodes = check_network_loops(graph)
     
     # Should detect one loop
     assert len(issues) == 1
@@ -80,7 +80,7 @@ def test_detects_complex_loop():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_network_loops(graph)
+    issues, affected_triples, affected_nodes = check_network_loops(graph)
     
     # Should detect complex loop
     assert len(issues) == 1
@@ -113,7 +113,7 @@ def test_no_loops_clean_network():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_network_loops(graph)
+    issues, affected_triples, affected_nodes = check_network_loops(graph)
     
     # Should find no loops
     assert len(issues) == 0
@@ -133,7 +133,7 @@ def test_isolated_networks_no_loops():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_network_loops(graph)
+    issues, affected_triples, affected_nodes = check_network_loops(graph)
     
     # Should find no loops
     assert len(issues) == 0
@@ -151,7 +151,7 @@ def test_complex_loop_from_file():
     graph = Graph()
     graph.parse(str(test_file), format='turtle')
     
-    issues, affected_nodes = check_network_loops(graph)
+    issues, affected_triples, affected_nodes = check_network_loops(graph)
     
     # Should detect complex loop
     assert len(issues) == 1
@@ -197,7 +197,7 @@ def test_router_information_included():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_network_loops(graph)
+    issues, affected_triples, affected_nodes = check_network_loops(graph)
     
     # Should detect one loop with router information
     assert len(issues) == 1
@@ -235,7 +235,7 @@ def test_router_information_in_output():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_network_loops(graph)
+    issues, affected_triples, affected_nodes = check_network_loops(graph)
     
     # Should detect one loop
     assert len(issues) == 1

@@ -19,7 +19,7 @@ class TestMissingVendorIds:
     def test_empty_graph(self):
         """Test with empty graph - should return no issues."""
         graph = Graph()
-        issues, affected_nodes = check_missing_vendor_ids(graph)
+        issues, affected_triples, affected_nodes = check_missing_vendor_ids(graph)
         
         assert issues == []
         assert affected_nodes == []
@@ -47,7 +47,7 @@ class TestMissingVendorIds:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_missing_vendor_ids(graph)
+        issues, affected_triples, affected_nodes = check_missing_vendor_ids(graph)
         
         assert issues == []
         assert affected_nodes == []
@@ -68,12 +68,12 @@ class TestMissingVendorIds:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_missing_vendor_ids(graph)
+        issues, affected_triples, affected_nodes = check_missing_vendor_ids(graph)
         
         assert len(issues) == 1
         issue = issues[0]
         
-        assert issue['type'] == 'missing-vendor-ids'
+        assert issue['issue_type'] == 'missing-vendor-ids'
         assert issue['severity'] == 'medium'  # Changed from 'warning'
         assert 'missing vendor-id property' in issue['description']
         
@@ -96,12 +96,12 @@ class TestMissingVendorIds:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_missing_vendor_ids(graph)
+        issues, affected_triples, affected_nodes = check_missing_vendor_ids(graph)
         
         assert len(issues) == 1
         issue = issues[0]
         
-        assert issue['type'] == 'missing-vendor-ids'
+        assert issue['issue_type'] == 'missing-vendor-ids'
         assert issue['severity'] == 'medium'  # Changed from 'warning'
         assert 'invalid vendor-id format' in issue['description']
         
@@ -135,7 +135,7 @@ class TestMissingVendorIds:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_missing_vendor_ids(graph)
+        issues, affected_triples, affected_nodes = check_missing_vendor_ids(graph)
         
         # Should detect 2 issues (missing and invalid)
         assert len(issues) == 2
@@ -165,7 +165,7 @@ class TestMissingVendorIds:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_missing_vendor_ids(graph)
+        issues, affected_triples, affected_nodes = check_missing_vendor_ids(graph)
         
         # Vendor ID 0 should be invalid per the implementation (reserved value)
         assert len(issues) == 1
@@ -188,7 +188,7 @@ class TestMissingVendorIds:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_missing_vendor_ids(graph)
+        issues, affected_triples, affected_nodes = check_missing_vendor_ids(graph)
         
         assert issues == []
         assert affected_nodes == []
@@ -209,7 +209,7 @@ class TestMissingVendorIds:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_missing_vendor_ids(graph, verbose=True)
+        issues, affected_triples, affected_nodes = check_missing_vendor_ids(graph, verbose=True)
         
         assert len(issues) == 1
         issue = issues[0]
@@ -236,7 +236,7 @@ class TestMissingVendorIds:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_missing_vendor_ids(graph, verbose=True)
+        issues, affected_triples, affected_nodes = check_missing_vendor_ids(graph, verbose=True)
         
         assert len(issues) == 1
         issue = issues[0]
@@ -263,7 +263,7 @@ class TestMissingVendorIds:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_missing_vendor_ids(graph)
+        issues, affected_triples, affected_nodes = check_missing_vendor_ids(graph)
         
         # Negative vendor IDs should be invalid
         assert len(issues) == 1
@@ -312,7 +312,7 @@ def test_missing_vendor_ids_integration():
     graph = Graph()
     graph.parse(data=ttl_content, format="turtle")
     
-    issues, affected_nodes = check_missing_vendor_ids(graph, verbose=True)
+    issues, affected_triples, affected_nodes = check_missing_vendor_ids(graph, verbose=True)
     
     # Should find exactly three vendor ID issues (missing, invalid format, and reserved 0)
     assert len(issues) == 3
@@ -330,3 +330,46 @@ def test_missing_vendor_ids_integration():
     # Verify verbose descriptions are present
     for issue in issues:
         assert 'verbose_description' in issue
+
+
+def test_uri_format_vendor_ids():
+    """Test devices with URI format vendor IDs."""
+    ttl_content = """
+    @prefix ex: <http://example.org/> .
+    @prefix bacnet: <http://data.ashrae.org/bacnet/2020#> .
+    @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+    ex:Device1 a bacnet:Device ;
+        rdfs:label "Device One" ;
+        bacnet:device-instance "1001" ;
+        bacnet:vendor-id <bacnet://vendor/123> ;
+        bacnet:address "192.168.1.10" .
+
+    ex:Device2 a bacnet:Device ;
+        rdfs:label "Device Two" ;
+        bacnet:device-instance "1002" ;
+        bacnet:vendor-id "bacnet://vendor/456" ;
+        bacnet:address "192.168.1.11" .
+        
+    ex:Device3 a bacnet:Device ;
+        rdfs:label "Device Three" ;
+        bacnet:device-instance "1003" ;
+        bacnet:vendor-id "bacnet://vendor/abc" ;
+        bacnet:address "192.168.1.12" .
+    """
+    
+    graph = Graph()
+    graph.parse(data=ttl_content, format="turtle")
+    
+    issues, affected_triples, affected_nodes = check_missing_vendor_ids(graph)
+    
+    # Should have one issue for the invalid vendor ID "abc"
+    assert len(issues) == 1
+    issue = issues[0]
+    
+    assert issue['issue_type'] == 'missing-vendor-ids'
+    assert issue['severity'] == 'medium'
+    assert 'Device Three' in issue['description']
+    assert 'invalid vendor-id format' in issue['description']
+    
+    assert len(affected_nodes) == 1

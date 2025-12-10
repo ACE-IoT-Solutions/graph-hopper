@@ -5,7 +5,7 @@ from graph_hopper.graph_checks.unreachable_networks import check_unreachable_net
 def test_empty_graph():
     """Test behavior with empty graph"""
     g = Graph()
-    issues, affected_nodes = check_unreachable_networks(g)
+    issues, affected_triples, affected_nodes = check_unreachable_networks(g)
     assert len(issues) == 0
 
 
@@ -33,7 +33,7 @@ def test_single_network_ttl():
     g = Graph()
     g.parse(data=ttl_content, format='turtle')
     
-    issues, affected_nodes = check_unreachable_networks(g)
+    issues, affected_triples, affected_nodes = check_unreachable_networks(g)
     # Single network should have no isolation issues
     assert len(issues) == 0
 
@@ -82,7 +82,7 @@ def test_isolated_network_ttl():
     g = Graph()
     g.parse(data=ttl_content, format='turtle')
     
-    issues, affected_nodes = check_unreachable_networks(g)
+    issues, affected_triples, affected_nodes = check_unreachable_networks(g)
     
     # Should detect isolation issues
     # Network 3 is completely isolated (1 issue)
@@ -138,6 +138,6 @@ def test_connected_networks_ttl():
     g = Graph()
     g.parse(data=ttl_content, format='turtle')
     
-    issues, affected_nodes = check_unreachable_networks(g)
+    issues, affected_triples, affected_nodes = check_unreachable_networks(g)
     # All networks are connected, so no issues
     assert len(issues) == 0

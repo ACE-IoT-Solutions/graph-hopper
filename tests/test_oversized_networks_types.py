@@ -30,7 +30,7 @@ def test_mstp_network_type_detection():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
 
-    issues, affected_nodes = check_oversized_networks(graph)
+    issues, affected_triples, affected_nodes = check_oversized_networks(graph)
 
     # Should detect MSTP network warning (17 > 15 threshold)
     assert len(issues) == 1
@@ -69,7 +69,7 @@ def test_ip_network_type_detection():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
 
-    issues, affected_nodes = check_oversized_networks(graph)
+    issues, affected_triples, affected_nodes = check_oversized_networks(graph)
 
     # Should detect IP network warning (60 > 50 threshold)  
     assert len(issues) == 1
@@ -123,7 +123,7 @@ def test_network_type_comparison():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
 
-    issues, affected_nodes = check_oversized_networks(graph)
+    issues, affected_triples, affected_nodes = check_oversized_networks(graph)
 
     # Should have 1 issue: MSTP network triggers warning (25 > 15), IP network doesn't (25 < 50)
     assert len(issues) == 1

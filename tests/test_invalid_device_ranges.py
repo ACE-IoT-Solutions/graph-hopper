@@ -19,7 +19,7 @@ class TestInvalidDeviceRanges:
     def test_empty_graph(self):
         """Test with empty graph - should return no issues."""
         graph = Graph()
-        issues, affected_nodes = check_invalid_device_ranges(graph)
+        issues, affected_triples, affected_nodes = check_invalid_device_ranges(graph)
         
         assert issues == []
         assert affected_nodes == []
@@ -50,7 +50,7 @@ class TestInvalidDeviceRanges:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_invalid_device_ranges(graph)
+        issues, affected_triples, affected_nodes = check_invalid_device_ranges(graph)
         
         assert issues == []
         assert affected_nodes == []
@@ -71,12 +71,12 @@ class TestInvalidDeviceRanges:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_invalid_device_ranges(graph)
+        issues, affected_triples, affected_nodes = check_invalid_device_ranges(graph)
         
         assert len(issues) == 1
         issue = issues[0]
         
-        assert issue['type'] == 'invalid-device-ranges'
+        assert issue['issue_type'] == 'invalid-device-ranges'
         assert issue['severity'] == 'critical'
         assert issue['device_instance'] == -1  # Integer, not string
         assert issue['label'] == 'Invalid Device'
@@ -100,12 +100,12 @@ class TestInvalidDeviceRanges:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_invalid_device_ranges(graph)
+        issues, affected_triples, affected_nodes = check_invalid_device_ranges(graph)
         
         assert len(issues) == 1
         issue = issues[0]
         
-        assert issue['type'] == 'invalid-device-ranges'
+        assert issue['issue_type'] == 'invalid-device-ranges'
         assert issue['severity'] == 'critical'
         assert issue['device_instance'] == 4194304  # Integer, not string
         assert issue['label'] == 'Oversized Device'
@@ -139,7 +139,7 @@ class TestInvalidDeviceRanges:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_invalid_device_ranges(graph)
+        issues, affected_triples, affected_nodes = check_invalid_device_ranges(graph)
         
         assert len(issues) == 2  # Only invalid devices
         assert len(affected_nodes) == 2
@@ -170,7 +170,7 @@ class TestInvalidDeviceRanges:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_invalid_device_ranges(graph)
+        issues, affected_triples, affected_nodes = check_invalid_device_ranges(graph)
         
         assert issues == []
         assert affected_nodes == []
@@ -191,12 +191,12 @@ class TestInvalidDeviceRanges:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_invalid_device_ranges(graph)
+        issues, affected_triples, affected_nodes = check_invalid_device_ranges(graph)
         
         assert len(issues) == 1
         issue = issues[0]
         
-        assert issue['type'] == 'invalid-device-ranges'
+        assert issue['issue_type'] == 'invalid-device-ranges'
         assert issue['severity'] == 'critical'
         assert issue['device_instance'] == 'abc123'  # String for non-numeric
         assert 'not a valid number' in issue['description']
@@ -221,7 +221,7 @@ class TestInvalidDeviceRanges:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_invalid_device_ranges(graph)
+        issues, affected_triples, affected_nodes = check_invalid_device_ranges(graph)
         
         # Only devices with instances are checked
         assert issues == []
@@ -243,7 +243,7 @@ class TestInvalidDeviceRanges:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_invalid_device_ranges(graph, verbose=True)
+        issues, affected_triples, affected_nodes = check_invalid_device_ranges(graph, verbose=True)
         
         assert len(issues) == 1
         issue = issues[0]
@@ -275,7 +275,7 @@ class TestInvalidDeviceRanges:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_invalid_device_ranges(graph)
+        issues, affected_triples, affected_nodes = check_invalid_device_ranges(graph)
         
         assert len(issues) == 2
         assert len(affected_nodes) == 2
@@ -301,12 +301,12 @@ class TestInvalidDeviceRanges:
         graph = Graph()
         graph.parse(data=ttl_content, format="turtle")
         
-        issues, affected_nodes = check_invalid_device_ranges(graph)
+        issues, affected_triples, affected_nodes = check_invalid_device_ranges(graph)
         
         assert len(issues) == 1
         issue = issues[0]
         
-        assert issue['type'] == 'invalid-device-ranges'
+        assert issue['issue_type'] == 'invalid-device-ranges'
         assert issue['device_instance'] == '123.456'
         # Should be treated as invalid format since BACnet requires integers
 
@@ -353,7 +353,7 @@ def test_invalid_device_ranges_integration():
     graph = Graph()
     graph.parse(data=ttl_content, format="turtle")
     
-    issues, affected_nodes = check_invalid_device_ranges(graph, verbose=True)
+    issues, affected_triples, affected_nodes = check_invalid_device_ranges(graph, verbose=True)
     
     # Should find exactly two invalid devices
     assert len(issues) == 2

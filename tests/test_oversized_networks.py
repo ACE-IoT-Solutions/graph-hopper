@@ -12,7 +12,7 @@ from graph_hopper.graph_checks.oversized_networks import check_oversized_network
 def test_empty_graph():
     """Test empty graph returns no issues."""
     graph = Graph()
-    issues, affected_nodes = check_oversized_networks(graph)
+    issues, affected_triples, affected_nodes = check_oversized_networks(graph)
     assert len(issues) == 0
     assert len(affected_nodes) == 0
 
@@ -42,7 +42,7 @@ def test_normal_sized_networks():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_oversized_networks(graph)
+    issues, affected_triples, affected_nodes = check_oversized_networks(graph)
     
     # Should find no issues
     assert len(issues) == 0
@@ -69,7 +69,7 @@ def test_detects_oversized_network():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
 
-    issues, affected_nodes = check_oversized_networks(graph)
+    issues, affected_triples, affected_nodes = check_oversized_networks(graph)
 
     # Should detect oversized network (warning level for 'other' network type)
     assert len(issues) == 1
@@ -99,7 +99,7 @@ def test_detects_critical_oversized_network():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_oversized_networks(graph)
+    issues, affected_triples, affected_nodes = check_oversized_networks(graph)
     
     # Should detect critically oversized network
     assert len(issues) == 1
@@ -135,7 +135,7 @@ def test_subnet_device_counting():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_oversized_networks(graph)
+    issues, affected_triples, affected_nodes = check_oversized_networks(graph)
     
     # Should find no issues (only 3 devices total)
     assert len(issues) == 0
@@ -169,7 +169,7 @@ def test_multiple_networks_mixed_sizes():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_oversized_networks(graph)
+    issues, affected_triples, affected_nodes = check_oversized_networks(graph)
     
     # Should detect only the oversized network
     assert len(issues) == 1

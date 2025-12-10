@@ -20,7 +20,7 @@ class TestRoutingInefficiencies:
     def test_routing_loop_detection(self):
         """Test detection of routing loops."""
         graph = load_test_graph("complex_network_loops.ttl")
-        issues, affected_nodes = check_routing_inefficiencies(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_routing_inefficiencies(graph, verbose=False)
         
         # Should detect the 3-network routing loop (3000 -> 4000 -> 5000 -> 3000)
         loop_issues = [i for i in issues if i['issue_type'] == 'routing-loop']
@@ -41,7 +41,7 @@ class TestRoutingInefficiencies:
         """Test detection of suboptimal routing paths."""
         # This would require a more complex test graph with longer paths
         graph = load_test_graph("complex_network_loops.ttl")
-        issues, affected_nodes = check_routing_inefficiencies(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_routing_inefficiencies(graph, verbose=False)
         
         # The basic loop graph may not have suboptimal paths, but check the structure
         suboptimal_issues = [i for i in issues if i['issue_type'] == 'suboptimal-routing-path']
@@ -51,7 +51,7 @@ class TestRoutingInefficiencies:
     def test_router_single_point_failure(self):
         """Test detection of single point of failure routers."""
         graph = load_test_graph("complex_network_loops.ttl")
-        issues, affected_nodes = check_routing_inefficiencies(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_routing_inefficiencies(graph, verbose=False)
         
         # Each router in the loop is on only one network, so they might be single points
         failure_issues = [i for i in issues if i['issue_type'] == 'router-single-point-failure']
@@ -66,7 +66,7 @@ class TestRoutingInefficiencies:
     def test_asymmetric_routing_detection(self):
         """Test detection of asymmetric routing configurations."""
         graph = load_test_graph("complex_network_loops.ttl")
-        issues, affected_nodes = check_routing_inefficiencies(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_routing_inefficiencies(graph, verbose=False)
         
         # The loop graph should have symmetric routing, so no asymmetric issues expected
         asymmetric_issues = [i for i in issues if i['issue_type'] == 'asymmetric-routing']
@@ -81,7 +81,7 @@ class TestRoutingInefficiencies:
     def test_missing_redundancy_detection(self):
         """Test detection of missing redundancy in network paths."""
         graph = load_test_graph("complex_network_loops.ttl")
-        issues, affected_nodes = check_routing_inefficiencies(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_routing_inefficiencies(graph, verbose=False)
         
         # The 3-network loop might have redundancy issues
         redundancy_issues = [i for i in issues if i['issue_type'] == 'missing-redundancy']
@@ -95,7 +95,7 @@ class TestRoutingInefficiencies:
     def test_verbose_output(self):
         """Test that verbose mode provides additional details."""
         graph = load_test_graph("complex_network_loops.ttl")
-        issues, affected_nodes = check_routing_inefficiencies(graph, verbose=True)
+        issues, affected_triples, affected_nodes = check_routing_inefficiencies(graph, verbose=True)
         
         # Find any issue and check for verbose description
         if issues:
@@ -106,7 +106,7 @@ class TestRoutingInefficiencies:
     def test_affected_nodes_populated(self):
         """Test that affected nodes are properly identified."""
         graph = load_test_graph("complex_network_loops.ttl")
-        issues, affected_nodes = check_routing_inefficiencies(graph, verbose=False)
+        issues, affected_triples, affected_nodes = check_routing_inefficiencies(graph, verbose=False)
         
         # Should have affected nodes if issues are found
         if issues:

@@ -11,7 +11,7 @@ from graph_hopper.graph_checks.missing_routers import check_missing_routers
 def test_empty_graph():
     """Test empty graph returns no issues."""
     graph = Graph()
-    issues, affected_nodes = check_missing_routers(graph)
+    issues, affected_triples, affected_nodes = check_missing_routers(graph)
     assert len(issues) == 0
     assert len(affected_nodes) == 0
 
@@ -47,7 +47,7 @@ def test_single_network_ttl():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_missing_routers(graph)
+    issues, affected_triples, affected_nodes = check_missing_routers(graph)
     
     # Single network - no routing needed
     assert len(issues) == 0
@@ -94,7 +94,7 @@ def test_multiple_networks_no_routers_ttl():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_missing_routers(graph)
+    issues, affected_triples, affected_nodes = check_missing_routers(graph)
     
     # Should find 3 networks that need routing but have no routers
     assert len(issues) == 1
@@ -143,7 +143,7 @@ def test_multiple_networks_with_routers_ttl():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_missing_routers(graph)
+    issues, affected_triples, affected_nodes = check_missing_routers(graph)
     
     # Networks are connected by router - no missing router issues
     assert len(issues) == 0
@@ -208,7 +208,7 @@ def test_partial_routing_coverage_ttl():
     graph = Graph()
     graph.parse(data=ttl_data, format='turtle')
     
-    issues, affected_nodes = check_missing_routers(graph)
+    issues, affected_triples, affected_nodes = check_missing_routers(graph)
     
     # Should find isolated networks 3000 and 4000
     assert len(issues) == 1
