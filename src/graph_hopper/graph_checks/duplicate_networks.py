@@ -93,6 +93,7 @@ def check_duplicate_networks(graph: Graph, verbose: bool = False) -> Tuple[List[
                 }
                 issues.append(issue)
                 affected_nodes.append(network)
+                affected_nodes.extend([router_info['router'] for router_info in router_list])
                 
                 if verbose:
                     # Collect affected triples for all routers involved
