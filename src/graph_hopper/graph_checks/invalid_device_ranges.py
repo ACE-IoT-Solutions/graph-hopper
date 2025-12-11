@@ -47,6 +47,10 @@ def check_invalid_device_ranges(graph: Graph, verbose: bool = False) -> Tuple[Li
             device_name = str(label_value)
             break
         
+        # Skip Grasshopper nodes
+        if device_name == "bacnet://Grasshopper":
+            continue
+        
         # Extract device instance
         for _, _, instance_value in graph.triples((device, BACNET_NS['device-instance'], None)):
             device_instance = str(instance_value)
