@@ -45,8 +45,9 @@ def check_missing_vendor_ids(graph: Graph, verbose: bool = False) -> Tuple[List[
             device_name = str(label_value)
             break
         
-        # Skip Grasshopper nodes
-        if device_name == "bacnet://Grasshopper":
+        # Skip Grasshopper nodes - check both URI and label
+        device_uri = str(device)
+        if (device_name and "Grasshopper" in device_name) or "Grasshopper" in device_uri:
             continue
         
         # Extract device instance
