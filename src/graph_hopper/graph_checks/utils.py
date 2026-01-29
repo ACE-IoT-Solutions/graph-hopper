@@ -89,6 +89,37 @@ def format_human_readable(issues: List[Dict[str, Any]], issue_type: str, verbose
             if verbose and 'verbose_description' in issue:
                 output.append(f"   Details: {issue['verbose_description']}")
             output.append("")
+        elif issue_type == 'missing-properties':
+            missing_count = issue.get('missing_count', 0)
+            total_essential = issue.get('total_essential', 0)
+            severity = issue.get('severity', 'info')
+            output.append(f"{i}. {severity.title()} missing properties: {issue['device_name']} (instance {issue['device_instance']})")
+            output.append(f"   Device URI: {issue['device']}")
+            output.append(f"   Address: {issue['address']}")
+            output.append(f"   Missing: {missing_count}/{total_essential} essential properties")
+            
+            missing_props = issue.get('missing_properties', [])
+            present_props = issue.get('present_properties', [])
+            
+            if missing_props:
+                output.append(f"   Missing properties: {', '.join(missing_props)}")
+            if present_props:
+                output.append(f"   Present properties: {', '.join(present_props)}")
+            
+            output.append(f"   Problem: {issue['description']}")
+            
+            if verbose and 'verbose_description' in issue:
+                output.append(f"   Details: {issue['verbose_description']}")
+                
+                # Show all properties if verbose
+                all_props = issue.get('all_properties', [])
+                if all_props:
+                    output.append(f"   All properties ({len(all_props)}):")
+                    for prop in all_props[:10]:  # Limit to first 10 to avoid spam
+                        output.append(f"     - {prop['property']}: {prop['value'][:50]}{'...' if len(prop['value']) > 50 else ''}")
+                    if len(all_props) > 10:
+                        output.append(f"     ... and {len(all_props) - 10} more properties")
+            output.append("")
         elif issue_type == 'unreachable-networks':
             isolation_type = issue.get('isolation_type', 'unknown')
             if isolation_type == 'isolated':

@@ -17,6 +17,7 @@ from .orphaned_devices import check_orphaned_devices
 from .invalid_device_ranges import check_invalid_device_ranges
 from .device_address_conflicts import check_device_address_conflicts
 from .missing_vendor_ids import check_missing_vendor_ids
+from .missing_properties import check_missing_properties
 from .unreachable_networks import check_unreachable_networks
 from .missing_routers import check_missing_routers
 from .subnet_mismatches import check_subnet_mismatches
@@ -59,6 +60,12 @@ class CheckRegistry:
             'missing-vendor-ids': {
                 'function': check_missing_vendor_ids,
                 'description': 'Detect devices without vendor identification or invalid vendor formats',
+                'category': 'device-validation',
+                'single_check': True  # Returns issues for one type only
+            },
+            'missing-properties': {
+                'function': check_missing_properties,
+                'description': 'Detect devices lacking essential BACnet properties',
                 'category': 'device-validation',
                 'single_check': True  # Returns issues for one type only
             },
