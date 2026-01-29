@@ -1,0 +1,61 @@
+@prefix ns1: <http://data.ashrae.org/bacnet/2020#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+# Complete device with all properties
+<bacnet://device/complete> rdf:type ns1:Device ;
+    rdfs:label "Complete Device" ;
+    ns1:device-instance "1000" ;
+    ns1:address "192.168.1.100" ;
+    ns1:vendor-id "bacnet://vendor/8" ;
+    ns1:model-name "CompleteModel" ;
+    ns1:device-name "Complete Device Name" ;
+    ns1:firmware-revision "1.2.3" ;
+    ns1:device-on-network <bacnet://network/1> .
+
+# Device missing some non-critical properties (info level)
+<bacnet://device/minimal> rdf:type ns1:Device ;
+    rdfs:label "Minimal Device" ;
+    ns1:device-instance "2000" ;
+    ns1:address "192.168.1.101" ;
+    ns1:vendor-id "bacnet://vendor/10" ;
+    ns1:model-name "MinimalModel" ;
+    ns1:device-name "Minimal Device Name" ;
+    ns1:firmware-revision "1.0.0" .
+    # Missing: device-on-network (1 missing = info level)
+
+# Device with warning level missing properties 
+<bacnet://device/warning> rdf:type ns1:Device ;
+    rdfs:label "Warning Device" ;
+    ns1:device-instance "3000" ;
+    ns1:address "192.168.1.102" ;
+    ns1:vendor-id "bacnet://vendor/15" ;
+    ns1:model-name "WarningModel" ;
+    ns1:device-name "Warning Device Name" .
+    # Missing: firmware-revision, device-on-network (2 missing = warning)
+
+# Device with major level missing properties
+<bacnet://device/major> rdf:type ns1:Device ;
+    rdfs:label "Major Issues Device" ;
+    ns1:device-instance "4000" ;
+    ns1:address "192.168.1.103" ;
+    ns1:vendor-id "bacnet://vendor/20" .
+    # Missing: model-name, device-name, firmware-revision, device-on-network (4 missing = major)
+
+# Device with critical missing properties (missing critical ones)
+<bacnet://device/critical> rdf:type ns1:Device ;
+    rdfs:label "Critical Issues Device" ;
+    ns1:device-instance "5000" ;
+    ns1:model-name "CriticalModel" .
+    # Missing: address, vendor-id (critical properties missing = critical)
+
+# Non-device entity (should be ignored)
+<bacnet://router/1> rdf:type ns1:Router ;
+    rdfs:label "Test Router" ;
+    ns1:address "192.168.1.1" .
+
+# Grasshopper device (should be ignored)
+<bacnet://device/grasshopper> rdf:type ns1:Device ;
+    rdfs:label "Grasshopper Control Device" ;
+    ns1:device-instance "99999" ;
+    ns1:address "192.168.1.50" .
