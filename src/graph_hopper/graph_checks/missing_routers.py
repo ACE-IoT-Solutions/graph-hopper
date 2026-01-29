@@ -106,6 +106,6 @@ def check_missing_routers(graph: Graph, verbose: bool = False) -> Tuple[List[Dic
             )
         
         issues.append(issue)
-        affected_nodes.extend(isolated_networks)
+        affected_nodes.extend([network['network_uri'] for network in network_details])
     
     return issues, affected_triples, affected_nodes

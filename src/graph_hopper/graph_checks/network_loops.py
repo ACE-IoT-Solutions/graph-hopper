@@ -78,7 +78,7 @@ def check_network_loops(graph: Graph, verbose: bool = False) -> Tuple[List[Dict[
                 'severity': 'critical',
                 'description': f'Network loop detected involving {len(cycle)} networks',
                 'loop_size': len(cycle),
-                'loop_path': cycle + [cycle[0]],  # Close the loop for display
+                'loop_path': cycle,  # Close the loop for display
                 'details': {
                     'networks_in_loop': cycle,
                     'routers_causing_loop': loop_routers,
